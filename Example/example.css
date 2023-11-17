@@ -1,0 +1,123 @@
+body {
+	background: blue;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+#canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	/* not sure whether to keep this.... */
+	cursor:
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" opacity=".5"><path d="M12 2v20m8-8H4m16-8L4 20M4 4l16 16"/></svg>')
+			12 12,
+		auto;
+}
+#controlPanelContainer {
+	position: fixed;
+	top: 0;
+	right: -200px; /* Initially hidden */
+	/*right: 0;*/
+	width: 200px;
+	height: 100%;
+	background-color: #ffffff4d; /* Transparent white */
+	transition: right 0.3s ease;
+	margin-left: 30px;
+	/*overflow: hidden;*/
+	border-radius: 20px 0 0 20px;
+	border-left: 1px solid #ffffff5d;
+}
+
+.controlPanel {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	position: relative;
+}
+
+.controlPanelHeader {
+	display: flex;
+	justify-content: flex-start;
+	padding: 30px;
+
+	position: relative;
+}
+
+/*settings and cursor*/
+.toggleButton {
+	position: absolute;
+	left: -150px;
+	background: none;
+	border: none;
+	font-size: 25px;
+	cursor: pointer;
+	outline: none;
+	color: red;
+	text-shadow: 2px 2px 2px black;
+    box-shadow: none;
+}
+
+.controlPanelContent {
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	text-shadow: 2px 2px 2px black;
+	display: none;
+}
+.controlPanelContent * {
+	margin-top: 10px;
+}
+.controlPanelContent input,
+button {
+	box-shadow: 2px 2px 2px #000000b1;
+}
+
+#controlPanelContainer.open {
+	right: 0px;
+}
+#controlPanelContainer.open .controlPanelContent {
+	right: 0px;
+	display: flex;
+}
+
+#controlPanelContainer.open .toggleButton {
+	left: 5px;
+	position: absolute;
+}
+
+input [type='color'] {
+	padding: 0;
+	margin: 0;
+}
+/* Hide the default color picker dropdown arrow */
+input[type='color']::-webkit-color-swatch-wrapper {
+	height: 50px;
+	width: 56px;
+	left: -5px;
+	position: relative;
+}
+
+#toggleAnimation {
+	margin-top: 50px;
+	position: relative;
+	font-size: 1.1em;
+	height: 40px;
+	background: #fff;
+	color: black;
+	transition:
+		background 0.3s ease,
+		color 0.3s ease;
+}
+
+#toggleAnimation:hover {
+	background: #f95050; /* New background color on hover */
+	color: white;
+}
