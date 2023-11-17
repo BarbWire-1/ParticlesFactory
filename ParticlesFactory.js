@@ -21,7 +21,9 @@ export default class ParticleFactory {
 		this.numParticles = numParticles;
 		this.speed = speed;
 		this.strokeColor = strokeColor;
-		this.fillColor = fillColor;
+        this.fillColor = fillColor;
+
+
 		this.connectDistance = connectDistance;
 		this._mouseDistance = mouseDistance;
 		this.animationId = null;
@@ -99,19 +101,22 @@ export default class ParticleFactory {
 		this.#ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 		for (let i = 0; i < this.#particles.length; i++) {
-			const particle = this.#particles[i];
+            const particle = this.#particles[ i ];
+
+
 
 			// get the particles inside the set distance and draw connection-lines
 			for (let j = i + 1; j < this.#particles.length; j++) {
-				const otherParticle = this.#particles[j];
-				if (
-					this.#getDistance(
-						particle.x,
-						particle.y,
-						otherParticle.x,
-						otherParticle.y
-					) <= this.connectDistance
-				) {
+                const otherParticle = this.#particles[ j ];
+                const isInRadius = this.#getDistance(
+                    particle.x,
+                    particle.y,
+                    otherParticle.x,
+                    otherParticle.y
+                ) <= this.connectDistance;
+
+                if (isInRadius) {
+                    // draw connecting line
 					this.#ctx.beginPath();
 					this.#ctx.moveTo(particle.x, particle.y);
 					this.#ctx.lineTo(otherParticle.x, otherParticle.y);
@@ -120,8 +125,9 @@ export default class ParticleFactory {
 				}
 			}
 
-			particle.update();
-			particle.draw(this.#ctx, this.fillColor);
+            particle.update();
+            //TODO call only optional for different color??
+			//particle.draw(this.#ctx, this.strokeColor);
 		}
 
 		this.animationId = requestAnimationFrame(
@@ -155,7 +161,7 @@ class Particle {
 
 	draw(ctx, fillColor) {
 		ctx.fillStyle = fillColor;
-		ctx.fillRect(this.x, this.y, 1, 1);
+		ctx.fillRect(this.x, this.y, 10, 10);
 	}
 
 	update() {
