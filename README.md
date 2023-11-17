@@ -30,7 +30,7 @@
 
   The usage is just like this
   ```js
-  import ParticlesFactory from "../ParticlesFactory.js";
+  import ParticlesFactory from "yourPathTo/ParticlesFactory.js";
 
 // Initialisation
 const options = {
@@ -43,7 +43,7 @@ const options = {
   mouseDistance: 100,
 };
 
-export const yourParticles = new ParticlesFactory(options);
+const yourParticles = new ParticlesFactory(options);
 ```
 There is an example attached for interactive playing with the particles using inputHandlers.
 If you'd like to make use of them, make sure to use the same ids in your HTML and the handleControl function.
@@ -51,7 +51,7 @@ If you'd prefer to dynamically change some of the options I added an optional pr
 In odrder to make use of that option add it in your js file:
 
 ```js
-import particlesProxy from './particlesProxy.js'
+import particlesProxy from 'yourPathTo/particlesProxy.js'
 
 // for setting dynamically in JS use the particlesProxy
 const yourProxy = particlesProxy(yourParticles);
