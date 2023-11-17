@@ -1,4 +1,12 @@
+// TODO make maps for properties and inputTypes?
+// could become nicer to maintain but harder to read
+
 export default function handleControl(el) {
+	// event-delegation on controlPanelContainer
+	const controlPanel = document.getElementById('controlPanelContainer');
+
+
+    // EVENT - CALLBACKS
 	// switch on id: generalise with sliced string?
 	function handleInputChange(el, id, value) {
 		switch (id) {
@@ -27,38 +35,25 @@ export default function handleControl(el) {
 			default:
 				break;
 		}
-
-		// el.drawParticles();
 	}
 
-	// event-delegation on controlPanelContainer
-	const controlPanel = document.getElementById('controlPanelContainer');
+    function handleButtonClick(e) {
 
+		const id = e.target.id;
+		const elements = {
+			togglePanel: () => controlPanel.classList.toggle('open'),
+			toggleAnimation: () => el.toggleAnimation(),
+		};
+		// call the corresponding function
+		if (elements[id]) elements[id]();
+	}
+
+
+    // EVENT LISTENERS
+    controlPanel.addEventListener('click', handleButtonClick);
 	controlPanel.addEventListener('input', (event) => {
 		const { id, value } = event.target;
 		handleInputChange(el, id, value);
 	});
-
-	const togglePanel = document.getElementById('togglePanel');
-
-	togglePanel.addEventListener('click', () => {
-		controlPanel.classList.toggle('open');
-	});
-
-	// Get the button element
-	const toggleAnimation = document.getElementById('toggleAnimation');
-
-	toggleAnimation.addEventListener('click', () => {
-		el.toggleAnimation();
-	});
-
-	// for full-screen canvas
-	function resizeCanvas() {
-		el.canvas.width = window.innerWidth;
-		el.canvas.height = window.innerHeight;
-		el.drawParticles();
-	}
-
-	resizeCanvas();
 	window.addEventListener('resize', resizeCanvas);
 }

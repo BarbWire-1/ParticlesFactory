@@ -33,6 +33,7 @@ export default class ParticleFactory {
     this.canvas.addEventListener("pointermove", (e) => {
       this.#handleMouseMove(e);
     });
+    this.#resizeCanvas();// initial size-adjustment
     this.drawParticles();
     this.#startAnimation();
   }
@@ -139,6 +140,15 @@ export default class ParticleFactory {
       this.#startAnimation();
     }
   }
+
+    // for resposiveness
+	// set relative width/height in CSS
+	#resizeCanvas() {
+		this.canvas.width = window.innerWidth;
+		this.canvas.height = window.innerHeight;
+		this.drawParticles();
+	}
+
 }
 
 class Particle {
