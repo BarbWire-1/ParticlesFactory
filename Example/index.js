@@ -1,7 +1,5 @@
 import { myParticles } from "./example.js";
 import handleControl from "./handleInput.js";
-
-
 //import particlesProxy from './particlesProxy.js'
 
 handleControl(myParticles);
