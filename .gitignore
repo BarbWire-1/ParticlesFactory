@@ -1,2 +1,5 @@
 .vscode
 *.txt
+.DS_Store
+
+minify.js
