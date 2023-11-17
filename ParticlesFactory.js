@@ -1,5 +1,6 @@
 // TODO add more optional variables??
 // TODO convert into a factory function?
+// TODO change to drawing imageData bulk operation? test performance diferences
 
 export default class ParticleFactory {
   #ctx;
