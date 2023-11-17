@@ -48,7 +48,6 @@ export default function handleControl(el) {
 	// Get the button element
 	const toggleAnimation = document.getElementById('toggleAnimation');
 
-
 	toggleAnimation.addEventListener('click', () => {
 		el.toggleAnimation();
 	});
