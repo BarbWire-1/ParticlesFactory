@@ -61,14 +61,15 @@ yourProxy.numParticles = 50;
 
   ## Contributing
 
-  Any questions or suggestions are highly appreciated. If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute...
+  Any questions or suggestions are highly appreciated. If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
 
 
   ## License
 
 
-MIT License
-
+<details>
+ <summary><b>MIT License<b></summary>
+<br>
 Copyright (c) 2023 BarbWire-1
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -87,7 +88,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SOFTWARE..</br>
+    </details>
 
 
 
@@ -100,5 +102,5 @@ SOFTWARE.
   >GitHub : [BarbWire-1](https://github.com/BarbWire-1)
 
   This beautiful readme-file was create with the awesome
-  https://github.com/Thenlie/readme-generator
-  Thank you Thenlie. It's just an ease!!!
+  https://github.com/Thenlie/readme-generator<br><br>
+  Thank you, Thenlie. It's just an ease!!!
