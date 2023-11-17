@@ -23,8 +23,8 @@
   ***
 ![PartilesFactory_Image](/Particles-Factory.png)
   ## Installation
-    For now you can simply load the ParticleFactory.js (4kb)
-    And if needed the particlesProxy.js (430byte) into your project...
+    For now you can simply load the ParticleFactory.js (4kb - minified 2kb)
+    And if needed the particlesProxy.js (430byte - minified 130byte) into your project...
 
 
   ## Usage

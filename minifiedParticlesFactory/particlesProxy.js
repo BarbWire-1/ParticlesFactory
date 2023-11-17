@@ -1,0 +1,1 @@
+export default function e(e){return new Proxy(e,{set:(e,t,r)=>(e[t]=r,("numParticles"===t||"speed"===t)&&e.drawParticles(),!0)})};
