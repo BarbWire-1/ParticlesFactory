@@ -78,5 +78,5 @@ If you have any questions, suggestions or criticism about the project you can re
 
 ## Acknowledgement
 *This readme-file was mainly created with the awesome
-[readme-generator](https://github.com/Thenlie/readme-generator) by Thenlie.<br><br>
+[readme-generator](https://github.com/Thenlie/readme-generator) by Thenlie.<br>
 Thank you, Thenlie. It's just an ease!!!*
