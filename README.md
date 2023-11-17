@@ -4,9 +4,9 @@
   ## Description
 
   It's just another Particles JS Canvas :)<br>
-  Pure JS/HTML/CSS
+  Pure JS/HTML/CSS (only 4kb - minified 2kb)
 
-  #### NO DEPENDENCIES!!!
+  #### No Dependencies!!!
 
   ## Table of Contents
 
@@ -23,8 +23,8 @@
   ***
 ![PartilesFactory_Image](/Particles-Factory.png)
   ## Installation
-    For now you can simply load the ParticleFactory.js (4kb - minified 2kb)
-    And if needed the particlesProxy.js (430byte - minified 130byte) into your project...
+For now you can simply load the ParticleFactory.js (4kb - minified 2kb)
+And if needed the particlesProxy.js (430byte - minified 130byte) into your project...
 
 
   ## Usage
@@ -62,7 +62,7 @@ yourProxy.numParticles = 50;
 
   ## Contributing
 
-  If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
+If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
 
 
   ## License
@@ -94,17 +94,17 @@ SOFTWARE..</br>
 
 
 
-  ## Questions
+## Questions
 
-  If you have any questions, suggestions or criticism about the project you can reach out to me via email or GitHub with the information below.
+If you have any questions, suggestions or criticism about the project you can reach out to me via email or GitHub with the information below.
 
-  >Email: barbwire.clocks@gmail.com
+>Email: barbwire.clocks@gmail.com
 
-  >GitHub : [BarbWire-1](https://github.com/BarbWire-1)
+>GitHub : [BarbWire-1](https://github.com/BarbWire-1)
 
 
 
-  ## Acknowledgement
-  This readme-file was created with the awesome
-  https://github.com/Thenlie/readme-generator<br><br>
-  Thank you, Thenlie. It's just an ease!!!
+## Acknowledgement
+This readme-file was mainly created with the awesome
+[readme-generator](https://github.com/Thenlie/readme-generator) by Thenlie.<br><br>
+Thank you, Thenlie. It's just an ease!!!
