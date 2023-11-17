@@ -30,7 +30,7 @@ export default class ParticleFactory {
 
 		this.#particles = [];
 
-		this.canvas.addEventListener('mousemove', (e) => {
+		this.canvas.addEventListener('pointermove', (e) => {
 			this.#handleMouseMove(e);
 		});
 		this.drawParticles();
