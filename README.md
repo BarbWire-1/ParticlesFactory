@@ -6,23 +6,24 @@
   It's just another Particles JS Canvas :)<br>
   Pure JS/HTML/CSS (only 4kb - minified 2kb)
 
-  #### No Dependencies!!!
+  **No Dependencies!!!**
 
   ## Table of Contents
 
   * [Installation](#Installation)
   * [Usage](#Usage)
   * [Contributing](#Contributing)
-  * [License](#license)
+  * [License](LICENSE)
   * [Questions](#Questions)
   * [Acknowledgement](#Acknowledgement)
 
   ***
   Click the button below to play with it on netlify:<br><br>
   [![Netlify Status](https://api.netlify.com/api/v1/badges/ba7818d0-76da-49a3-bd61-e75e9c130101/deploy-status)](https://particles-factory.netlify.app/)
-  ***
+
 ![PartilesFactory_Image](/Particles-Factory.png)
-  ## Installation
+***
+## Installation
 For now you can simply load the ParticleFactory.js (4kb - minified 2kb)
 And if needed the particlesProxy.js (430byte - minified 130byte) into your project...
 
@@ -59,52 +60,23 @@ const yourProxy = particlesProxy(yourParticles);
 yourProxy.numParticles = 50;
 
 ```
-
+***
   ## Contributing
 
 If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
 
 
-  ## License
-
-
-<details>
- <summary><b>MIT License<b></summary>
-<br>
-Copyright (c) 2023 BarbWire-1
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE..</br>
-    </details>
-
-
 
 ## Questions
-
 If you have any questions, suggestions or criticism about the project you can reach out to me via email or GitHub with the information below.
 
 >Email: barbwire.clocks@gmail.com
 
 >GitHub : [BarbWire-1](https://github.com/BarbWire-1)
 
-
+***
 
 ## Acknowledgement
-This readme-file was mainly created with the awesome
+*This readme-file was mainly created with the awesome
 [readme-generator](https://github.com/Thenlie/readme-generator) by Thenlie.<br><br>
-Thank you, Thenlie. It's just an ease!!!
+Thank you, Thenlie. It's just an ease!!!*
