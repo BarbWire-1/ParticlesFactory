@@ -47,10 +47,13 @@ const options = {
 
 const yourParticles = new ParticlesFactory(options);
 ```
+<br>
 There is an example attached for interactive playing with the particles using inputHandlers.
 If you'd like to make use of them, make sure to use the same ids in your HTML and the handleControl function.
 If you'd prefer to dynamically change some of the options I added an optional proxy instead of getteres/setters in the class.
 In odrder to make use of that option add it in your js file:
+
+<br>
 
 ```js
 import particlesProxy from 'yourPathTo/particlesProxy.js'
@@ -58,7 +61,6 @@ import particlesProxy from 'yourPathTo/particlesProxy.js'
 // for setting dynamically in JS use the particlesProxy
 const yourProxy = particlesProxy(yourParticles);
 yourProxy.numParticles = 50;
-
 ```
 ***
   ## Contributing
