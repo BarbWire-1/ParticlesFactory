@@ -62,7 +62,7 @@ yourProxy.numParticles = 50;
 
   ## Contributing
 
-  Any questions or suggestions are highly appreciated. If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
+  If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
 
 
   ## License
@@ -96,7 +96,7 @@ SOFTWARE..</br>
 
   ## Questions
 
-  If you have any questions about the project you can reach out to me via email or GitHub with the information below.
+  If you have any questions, suggestions or criticism about the project you can reach out to me via email or GitHub with the information below.
 
   >Email: barbwire.clocks@gmail.com
 
