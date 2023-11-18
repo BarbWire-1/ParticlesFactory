@@ -54,6 +54,19 @@ export default function handleControl(el) {
 	controlPanel.addEventListener('input', (event) => {
 		const { id, value } = event.target;
 		handleInputChange(el, id, value);
-	});
-	window.addEventListener('resize', resizeCanvas);
+    });
+
+
+
+    // for resposiveness
+	// set relative width/height in CSS
+	function resizeCanvas() {
+		el.canvas.width = window.innerWidth;
+		el.canvas.height = window.innerHeight;
+		el.drawParticles();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();// initial size-adjustment
+
 }
