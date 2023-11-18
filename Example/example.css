@@ -53,12 +53,12 @@ body {
 .toggleButton {
 	position: absolute;
 	left: -150px;
-	background: none;
-	border: none;
+	background: none !important;
+	border: none !important;
 	font-size: 25px;
 	cursor: pointer;
 	outline: none;
-	color: red;
+	color: red !important;
 	text-shadow: 2px 2px 2px black;
     box-shadow: none;
 }
