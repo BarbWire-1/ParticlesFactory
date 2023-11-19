@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas Particles</title>
-    <link rel="stylesheet" type="text/css" href="example.css">
+    <link rel="stylesheet" type="text/css" href="./Example/example.css">
 </head>
 
 <body>
@@ -14,33 +14,38 @@
     <div id="controlPanelContainer">
         <div id="controlPanel" class="controlPanel">
             <div class="controlPanelHeader">
-                <button id="togglePanel" class="toggleButton"><span style="color: white">Settings </span>▶</button>
+                <button id="togglePanel" data-action="particles-togglePanel" class="toggleButton"><span
+                        style="color: white">Settings </span>▶</button>
             </div>
             <div class="controlPanelContent">
                 <label for="numParticlesInput">Number of Particles:</label>
-                <input type="number" id="numParticlesInput" value="200" min="50" max="1000" step="50">
+                <input data-attribute="particles-numParticles" type="number" id="numParticlesInput" value="200" min="50"
+                    max="1000" step="50">
 
                 <label for="speedInput">Speed:</label>
-                <input type="number" id="speedInput" step="0.1" value="0.2">
+                <input data-attribute="particles-speed" type="number" id="speedInput" step="0.1" value="0.2" min="0.1"
+                    max="5">
 
                 <label for="strokeColorInput">Stroke Color:</label>
-                <input type="color" id="strokeColorInput" value="#ffffff">
+                <input data-attribute="particles-strokeColor" type="color" id="strokeColorInput" value="#ffffff">
 
-                <label for="fillColorInput">Fill Color:</label>
-                <input type="color" id="fillColorInput" value="#000000">
+                <label for="bgColorInput">Fill Color:</label>
+                <input data-attribute="particles-bgColor" type="color" id="bgColorInput" value="#000000">
 
                 <label for="connectDistanceInput">Connect Distance:</label>
-                <input type="number" id="connectDistanceInput" value="150" min="50" max="400" step="50">
+                <input data-attribute="particles-connectDistance" type="number" id="connectDistanceInput" value="150"
+                    min="50" max="400" step="50">
 
                 <label for="mouseDistanceInput">Mouse Distance:</label>
-                <input type="number" id="mouseDistanceInput" value="100" min="50" max="400" step="50">
+                <input data-attribute="particles-mouseDistance" type="number" id="mouseDistanceInput" value="100"
+                    min="50" max="400" step="50">
 
-                <button id="toggleAnimation">Toggle Animation</button>
+                <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="index.js"></script>
+    <script type="module" src="example.js"></script>
 </body>
 
 </html>
