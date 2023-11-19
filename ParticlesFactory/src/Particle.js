@@ -10,7 +10,7 @@ export class Particle {
 
   draw(ctx, fillColor) {
     ctx.fillStyle = fillColor;
-    ctx.fillRect(this.x, this.y, 10, 10);
+    ctx.fillRect(this.x, this.y, this.size, this.size);
   }
 
   collisionDetection() {
@@ -31,6 +31,7 @@ export class Particle {
   update() {
     this.collisionDetection();
     this.x += this.xSpeed;
-    this.y += this.ySpeed;
+      this.y += this.ySpeed;
+      
   }
 }

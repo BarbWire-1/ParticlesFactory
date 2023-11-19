@@ -18,7 +18,7 @@ export function particlesProxy(el) {
     set(target, property, value) {
       target[property] = value;
       if (property === 'numParticles' || property === 'speed') {
-        target.drawParticles();
+        target.createParticles();
         updateInputValue(target, property);
       }
       return true;

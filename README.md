@@ -70,7 +70,7 @@ proxy.numParticles = 150;
 
 **METHODS**
 
-* drawParticles() - now used in the handleInput/proxy
+* createParticles() - now used in the handleInput/proxy
 * toggleAnimation() - cancel/start requestAnimationFrame
 
 

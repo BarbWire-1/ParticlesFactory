@@ -35,11 +35,11 @@ export class ParticlesFactory {
       this.#handleMouseMove(e);
     });
 
-    this.drawParticles();
+    this.createParticles();
     this.#startAnimation();
   }
 
-  drawParticles() {
+  createParticles() {
     this.#particles = [];
 
     for (let i = 0; i < this.numParticles; i++) {
@@ -117,7 +117,7 @@ export class ParticlesFactory {
 
       particle.update();
       //TODO call only optional for different color??
-      //particle.draw(this.#ctx, this.strokeColor);
+      // particle.draw(this.#ctx, this.strokeColor);
     }
 
     this.animationId = requestAnimationFrame(this.#startAnimation.bind(this));// otherwise on proto

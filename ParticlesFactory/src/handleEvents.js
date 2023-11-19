@@ -42,7 +42,7 @@ export function handleEvents(el, containerId) {
   function resizeCanvas() {
     el.canvas.width = window.innerWidth;
     el.canvas.height = window.innerHeight;
-    el.drawParticles();
+    el.createParticles();
   }
 
   window.addEventListener("resize", resizeCanvas);
