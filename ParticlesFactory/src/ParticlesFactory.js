@@ -25,7 +25,7 @@ export class ParticlesFactory {
     this.bgColor = bgColor;
 
     this.connectDistance = connectDistance;
-    this._mouseDistance = mouseDistance;
+    this.mouseDistance = mouseDistance;
     this.animationId = null;
 
     this.#particles = [];
@@ -64,7 +64,7 @@ export class ParticlesFactory {
     for (let particle of this.#particles) {
       let distance = this.#getDistance(particle.x, particle.y, mouseX, mouseY);
 
-      if (distance < this._mouseDistance) {
+      if (distance < this.mouseDistance) {
         let dx = mouseX - particle.x;
         let dy = mouseY - particle.y;
         // get the vector from mouse to particle pos
