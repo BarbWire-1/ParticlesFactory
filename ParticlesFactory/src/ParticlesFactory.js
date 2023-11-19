@@ -1,6 +1,7 @@
 // TODO add more optional variables??
 // TODO convert into a factory function?
 // TODO change to drawing imageData bulk operation? test performance diferences
+//TODO1 check collision detection boundaries and particles update...
 import { Particle } from "./Particle.js";
 export class ParticlesFactory {
   #ctx;
