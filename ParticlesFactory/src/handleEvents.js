@@ -12,7 +12,7 @@ export function handleEvents(el, containerId) {
   function handleInputChange(el, attribute, value) {
     el[attribute] = +value || value;
     if (attribute === "numParticles" || attribute === "speed")
-      el.drawParticles();
+      el.createParticles();
   }
 
   function handleButtonClick(e) {
