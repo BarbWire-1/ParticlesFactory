@@ -1,4 +1,9 @@
-import { ParticlesFactory, handleEvents, particlesProxy } from "../ParticlesFactory/index.js";
+
+import *  as particles from "../ParticlesFactory/index.js";
+const {
+    ParticlesFactory,
+    handleEvents,
+    particlesProxy } = particles;
 
 // Initialisation
 const options = {
