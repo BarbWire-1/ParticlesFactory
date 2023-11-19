@@ -16,7 +16,8 @@ export function handleEvents(el, containerId) {
   }
 
   function handleButtonClick(e) {
-    const dataAction = e.target.getAttribute("data-action").split('-')[1];
+    if (!e.target.matches("button")) return;// only listen for buttons, else get elements by data-attribute
+    const dataAction = e.target.dataset.action.split("-")[1];
 
     const clickAction = {
       togglePanel: () => container.classList.toggle("open"),
@@ -32,8 +33,8 @@ export function handleEvents(el, containerId) {
   container.addEventListener("input", (event) => {
     if (!event.target.matches("input")) return;
 
-      const { dataset, value } = event.target;
-      const attribute = dataset.attribute.split('-')[1]
+    const { dataset, value } = event.target;
+    const attribute = dataset.attribute.split("-")[1];
     handleInputChange(el, attribute, value);
   });
 
