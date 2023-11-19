@@ -69,8 +69,8 @@ proxy.numParticles = 150;
 
 **METHODS**
 
-* drawParticles();// now used in the handleInput/proxy
-* toggleAnimation();// cancel/start requestAnimationFrame
+* drawParticles() - now used in the handleInput/proxy
+* toggleAnimation() - cancel/start requestAnimationFrame
 
 
 To make use of the `handleInput()` and/or the `particlesProxy()` the input-elements and the clickable elements need to have a data-attributes beginning with the prefix "particles-" to avoid interferation with other datasets.
