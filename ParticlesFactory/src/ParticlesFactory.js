@@ -63,7 +63,11 @@ export class ParticlesFactory {
     let mouseY = event.clientY - top;
 
     for (let particle of this.#particles) {
-      let distance = this.#getDistance(particle.x, particle.y, mouseX, mouseY);
+        let distance = this.#getDistance(
+            particle.x,
+            particle.y,
+            mouseX,
+            mouseY);
 
       if (distance < this.mouseDistance) {
         let dx = mouseX - particle.x;
@@ -73,21 +77,11 @@ export class ParticlesFactory {
         dx /= length;
         dy /= length;
 
-        let moveAmount = 5; // variable to multiply offset
+          let moveAmount = 5; // variable to multiply offset
 
-        let proposedX = particle.x + dx * -moveAmount;
-        let proposedY = particle.y + dy * -moveAmount;
+        particle.x = particle.x + dx * -moveAmount;
+        particle.y = particle.y + dy * -moveAmount;
 
-        // Ensure the new positions stay within the canvas boundaries
-        particle.x = Math.min(
-          Math.max(proposedX, particle.size),
-          width - particle.size
-        );
-        particle.y = Math.min(
-          Math.max(proposedY, particle.size),
-          height - particle.size
-        );
-        //console.log(particle.x, particle.y)
       }
     }
   }

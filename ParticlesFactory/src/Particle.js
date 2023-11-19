@@ -1,11 +1,11 @@
 export class Particle {
-  constructor(x, y, size,speed) {
+  constructor(x, y, size, speed) {
     this.x = x;
     this.y = y;
     this.size = size;
     // rondomize speed and direction
-    this.xSpeed = speed * (Math.random() * 6 - 3);
-    this.ySpeed = speed * (Math.random() * 6 - 3);
+    this.xSpeed = speed * (Math.random() * 2 - 1);
+    this.ySpeed = speed * (Math.random() * 2 - 1);
   }
 
   draw(ctx, fillColor) {
@@ -13,14 +13,23 @@ export class Particle {
     ctx.fillRect(this.x, this.y, 10, 10);
   }
 
-  update() {
-    // return if boundaries touched
-    if (this.x <= this.size || this.x >= canvas.width - this.size) {
+  collisionDetection() {
+    const { x, y, size } = this;
+    const { width, height } = canvas;
+
+    if (x <= size || x >= width - size) {
+      this.x = x <= size ? size : width - size;
       this.xSpeed *= -1;
     }
-    if (this.y <= this.size || this.y >= canvas.height - this.size) {
+
+    if (y <= size || y >= height - size) {
+      this.y = y <= size ? size : height - size;
       this.ySpeed *= -1;
     }
+  }
+
+  update() {
+    this.collisionDetection();
     this.x += this.xSpeed;
     this.y += this.ySpeed;
   }
