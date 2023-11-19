@@ -24,7 +24,7 @@
 ![PartilesFactory_Image](/Particles-Factory.png)
 ***
 ## Installation
-For now you can simply copy the ParticleFactory - folder into your project.<br>
+For now you can simply copy the ParticlesFactory - folder holding the src and exports into your project.<br>
 To reduce size you can remove unnecessary as not used parts.
 
 
@@ -47,8 +47,9 @@ const options = {
 
 const yourParticles = new ParticlesFactory(options);
 
-// optional for using inputElements - currently defined for input/click
-// takes the element and the id of the el for event-delegation
+// optional for using inputElements  or click-events
+// takes the element and the id of the parentElement holding the inputs
+// (for event-delegation)
 handleEvents(yourParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
@@ -77,6 +78,7 @@ To make use of the `handleInput()` and/or the `particlesProxy()` the input-eleme
 
 Like in the example for the inputs to change attribute-values set
 
+
 ```html
 <input data-attribute="particles-speed"/> <!--other settings-->
 ```
@@ -87,7 +89,7 @@ The clickable elements need to be set up like
 <button data-action="particles-toggleAnimation"></button><!--other settings-->
 ```
 
-Inside the [handleEvents()](./ParticlesFactory/src/handleEvents.js) you can define your custom event callback if needed, key is the data-action, value the assiciated callback.
+Inside the [handleEvents()](./ParticlesFactory/src/handleEvents.js) you can define your custom event callback if needed, key is the data-action, value the assiociated callback.
 
 ```js
 const clickAction = {
