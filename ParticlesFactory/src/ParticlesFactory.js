@@ -1,8 +1,8 @@
 // TODO add more optional variables??
 // TODO convert into a factory function?
 // TODO change to drawing imageData bulk operation? test performance diferences
-import Particle from './Particle.js'
-export default class ParticleFactory {
+import { Particle } from "./Particle.js";
+export class ParticlesFactory {
   #ctx;
   #particles;
 
@@ -30,10 +30,9 @@ export default class ParticleFactory {
 
     this.#particles = [];
 
-    this.canvas.addEventListener("pointermove", e => {
+    this.canvas.addEventListener("pointermove", (e) => {
       this.#handleMouseMove(e);
     });
-
 
     this.drawParticles();
     this.#startAnimation();
@@ -141,7 +140,4 @@ export default class ParticleFactory {
       this.#startAnimation();
     }
   }
-
-
-
 }

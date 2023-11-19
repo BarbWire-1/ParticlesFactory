@@ -1,4 +1,4 @@
-import ParticlesFactory from "../src/ParticlesFactory.js";
+import { ParticlesFactory, handleEvents, particlesProxy } from "../ParticlesFactory/index.js";
 
 // Initialisation
 const options = {
@@ -11,4 +11,10 @@ const options = {
   mouseDistance: 100,
 };
 
-export const myParticles = new ParticlesFactory(options);
+const myParticles = new ParticlesFactory(options);
+
+handleEvents(myParticles, "controlPanelContainer");
+
+// for setting dynamically in JS use the particlesProxy
+const proxy = particlesProxy(myParticles);
+proxy.numParticles = 150;

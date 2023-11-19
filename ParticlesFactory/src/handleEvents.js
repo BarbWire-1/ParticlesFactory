@@ -1,6 +1,6 @@
-export default function handleControl(el) {
-  // event-delegation on controlPanelContainer
-  const controlPanel = document.getElementById("controlPanelContainer");
+export function handleEvents(el, containerId) {
+  // event-delegation on parent container
+  const container = document.getElementById(containerId);
 
   // EVENT - CALLBACKS
   /**
@@ -19,7 +19,7 @@ export default function handleControl(el) {
     const dataAction = e.target.getAttribute("data-action");
 
     const clickAction = {
-      togglePanel: () => controlPanel.classList.toggle("open"),
+      togglePanel: () => container.classList.toggle("open"),
       toggleAnimation: () => el.toggleAnimation(),
     };
 
@@ -27,8 +27,8 @@ export default function handleControl(el) {
   }
 
   // EVENT LISTENERS
-  controlPanel.addEventListener("click", handleButtonClick);
-  controlPanel.addEventListener("input", (event) => {
+  container.addEventListener("click", handleButtonClick);
+  container.addEventListener("input", (event) => {
     if (!event.target.matches("input")) return;
 
     const { dataset, value } = event.target;
