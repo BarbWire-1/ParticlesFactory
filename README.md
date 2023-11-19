@@ -93,8 +93,8 @@ Inside the [handleEvents()](./ParticlesFactory/src/handleEvents.js) you can defi
 
 ```js
 const clickAction = {
-      "particles-togglePanel": () => container.classList.toggle("open"),
-      "particles-toggleAnimation": () => el.toggleAnimation(),
+      togglePanel: () => container.classList.toggle("open"),
+      toggleAnimation: () => el.toggleAnimation(),
       // add more callbacks here if needed
     };
 ```

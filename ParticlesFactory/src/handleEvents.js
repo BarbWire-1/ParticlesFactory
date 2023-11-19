@@ -16,11 +16,11 @@ export function handleEvents(el, containerId) {
   }
 
   function handleButtonClick(e) {
-    const dataAction = e.target.getAttribute("data-action");
+    const dataAction = e.target.getAttribute("data-action").split('-')[1];
 
     const clickAction = {
-      "particles-togglePanel": () => container.classList.toggle("open"),
-      "particles-toggleAnimation": () => el.toggleAnimation(),
+      togglePanel: () => container.classList.toggle("open"),
+      toggleAnimation: () => el.toggleAnimation(),
       // add more callbacks here if needed
     };
 
