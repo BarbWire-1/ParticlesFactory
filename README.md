@@ -32,7 +32,7 @@ And if needed the particlesProxy.js (430byte - minified 130byte) into your proje
 
   The usage is just like this
   ```js
-  import ParticlesFactory from "yourPathTo/ParticlesFactory.js";
+  import { ParticlesFactory, handleEvents, particlesProxy } from "yourPathTo/ParticlesFactory/index.js";
 
 // Initialisation
 const options = {
@@ -40,27 +40,68 @@ const options = {
   numParticles: 200,
   speed: 0.2,
   strokeColor: "#fff",
-  fillColor: "#000",
+  bgColor: "#000",
   connectDistance: 150,
   mouseDistance: 100,
 };
 
 const yourParticles = new ParticlesFactory(options);
 
-//exposed methods are:
-drawParticles();// now used in the handleInput/proxy
-toggleAnimation();// cancel/start requestAnimationFrame
-```
-<br>
-There is an example attached for interactive playing with the particles using inputHandlers.
-If you'd like to make use of them, make sure to use the same ids in your HTML and the handleControl function.
-If you'd prefer to dynamically change some of the options I added an optional proxy instead of getteres/setters in the class.
-In order to make use of that option add it in your js file:<br><br>
-
-```js
-import particlesProxy from 'yourPathTo/particlesProxy.js'
+// optional for using inputElements - currently defined for input/click
+// takes the element and the id of the el for event-delegation
+handleEvents(yourParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
+const proxy = particlesProxy(yourParticles);
+proxy.numParticles = 150;
+```
+
+**ATTRIBUTES**
+
+* canvas
+* numParticles
+* speed
+* strokeColor
+* bgColor
+* connectDistance
+* mouseDistance
+
+
+**METHODS**
+
+* drawParticles();// now used in the handleInput/proxy
+* toggleAnimation();// cancel/start requestAnimationFrame
+
+
+To make use of the `handleInput()` and/or the `particlesProxy()` the input-elements and the clickable elements need to have a data-attributes beginning with the prefix "particles-" to avoid interferation with other datasets.
+
+Like in the example for the inputs to change attribute-values set
+
+```html
+<input data-attribute="particles-speed"/> <!--other settings-->
+```
+
+The clickable elements need to be set up like
+
+```html
+<button data-action="particles-toggleAnimation"></button><!--other settings-->
+```
+
+Inside the [handleEvents()](./ParticlesFactory/src/handleEvents.js) you can define your custom event callback if needed, key is the data-action, value the assiciated callback.
+
+```js
+const clickAction = {
+      "particles-togglePanel": () => container.classList.toggle("open"),
+      "particles-toggleAnimation": () => el.toggleAnimation(),
+      // add more callbacks here if needed
+    };
+```
+<br>
+<br>
+
+Instantiate a `particlesProxy()` for dynamically settings if needed.
+The proxy handles a data-double-binding to keep el.attributes and input values in sync.
+```js
 const yourProxy = particlesProxy(yourParticles);
 yourProxy.numParticles = 50;
 ```

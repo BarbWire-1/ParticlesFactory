@@ -19,8 +19,9 @@ export function handleEvents(el, containerId) {
     const dataAction = e.target.getAttribute("data-action");
 
     const clickAction = {
-      togglePanel: () => container.classList.toggle("open"),
-      toggleAnimation: () => el.toggleAnimation(),
+      "particles-togglePanel": () => container.classList.toggle("open"),
+      "particles-toggleAnimation": () => el.toggleAnimation(),
+      // add more callbacks here if needed
     };
 
     if (clickAction[dataAction]) clickAction[dataAction]();
@@ -31,8 +32,9 @@ export function handleEvents(el, containerId) {
   container.addEventListener("input", (event) => {
     if (!event.target.matches("input")) return;
 
-    const { dataset, value } = event.target;
-    handleInputChange(el, dataset.attribute, value);
+      const { dataset, value } = event.target;
+      const attribute = dataset.attribute.split('-')[1]
+    handleInputChange(el, attribute, value);
   });
 
   // for resposiveness

@@ -35,7 +35,7 @@ export function particlesProxy(el) {
  * @returns {void}
  */
 function updateInputValue(el, attribute) {
-    const input = document.querySelector(`input[data-attribute="${attribute}"]`);
+    const input = document.querySelector(`input[data-attribute="particles-${attribute}"]`);
     if (!input) return;
     input.value = el[ attribute ];
 }
