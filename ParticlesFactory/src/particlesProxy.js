@@ -1,6 +1,6 @@
 
 /**
- * Creates a proxy for a ParticlesFactory instance to handle property assignment and trigger updates.
+ * Creates a proxy for a ParticlesFactory instance to handle double-data-binding and trigger updates.
  *
  * @param {ParticlesFactory} el - ParticlesFactory instance
  * @returns {Proxy} - A proxy object for the ParticlesFactory instance
@@ -19,7 +19,7 @@ export function particlesProxy(el) {
       target[property] = value;
       if (property === 'numParticles' || property === 'speed') {
         target.drawParticles();
-        updateInputValue(target, property); // Update value of corresponding inputElement
+        updateInputValue(target, property);
       }
       return true;
     },
@@ -35,7 +35,7 @@ export function particlesProxy(el) {
  * @returns {void}
  */
 function updateInputValue(el, attribute) {
-  const input = document.querySelector(`input[data-attribute="${attribute}"]`);
-  if (!input) return;
-  input.value = el[attribute]; // Update the input value
+    const input = document.querySelector(`input[data-attribute="${attribute}"]`);
+    if (!input) return;
+    input.value = el[ attribute ];
 }

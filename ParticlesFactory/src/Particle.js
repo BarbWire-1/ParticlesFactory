@@ -1,11 +1,11 @@
 export class Particle {
-  constructor(x, y, size, _speed) {
+  constructor(x, y, size,speed) {
     this.x = x;
     this.y = y;
     this.size = size;
     // rondomize speed and direction
-    this.xSpeed = _speed * (Math.random() * 6 - 3);
-    this.ySpeed = _speed * (Math.random() * 6 - 3);
+    this.xSpeed = speed * (Math.random() * 6 - 3);
+    this.ySpeed = speed * (Math.random() * 6 - 3);
   }
 
   draw(ctx, fillColor) {

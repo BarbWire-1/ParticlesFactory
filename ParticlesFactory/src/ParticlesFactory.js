@@ -125,7 +125,7 @@ export class ParticlesFactory {
       //particle.draw(this.#ctx, this.strokeColor);
     }
 
-    this.animationId = requestAnimationFrame(this.#startAnimation.bind(this));
+    this.animationId = requestAnimationFrame(this.#startAnimation.bind(this));// otherwise on proto
   }
   #stopAnimation() {
     cancelAnimationFrame(this.animationId);
