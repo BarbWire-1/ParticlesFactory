@@ -4,7 +4,7 @@
   ## Description
 
   It's just another Particles JS Canvas :)<br>
-  Pure JS/HTML/CSS (only 4kb - minified 2kb)
+  Pure JS/HTML/CSS (only 4kb - minified 2kb, or 7kb with additional proxy and eventHandling for input/click)
 
   **No Dependencies!!!**
 
@@ -24,8 +24,8 @@
 ![PartilesFactory_Image](/Particles-Factory.png)
 ***
 ## Installation
-For now you can simply copy the ParticleFactory.js (4kb - minified 2kb)<br>
-And if needed the particlesProxy.js (430byte - minified 130byte) into your project...
+For now you can simply copy the ParticleFactory - folder into your project.<br>
+To reduce size you can remove unnecessary as not used parts.
 
 
   ## Usage
