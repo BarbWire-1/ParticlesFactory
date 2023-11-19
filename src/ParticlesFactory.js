@@ -1,7 +1,7 @@
 // TODO add more optional variables??
 // TODO convert into a factory function?
 // TODO change to drawing imageData bulk operation? test performance diferences
-
+import Particle from './Particle.js'
 export default class ParticleFactory {
   #ctx;
   #particles;
@@ -12,7 +12,7 @@ export default class ParticleFactory {
       numParticles = 300,
       speed = 0.5,
       strokeColor = "#fff",
-      fillColor = "#000",
+      bgColor = "#000",
       connectDistance = 100,
       mouseDistance = 100,
     } = options;
@@ -22,7 +22,7 @@ export default class ParticleFactory {
     this.numParticles = numParticles;
     this.speed = speed;
     this.strokeColor = strokeColor;
-    this.fillColor = fillColor;
+    this.bgColor = bgColor;
 
     this.connectDistance = connectDistance;
     this._mouseDistance = mouseDistance;
@@ -34,7 +34,7 @@ export default class ParticleFactory {
       this.#handleMouseMove(e);
     });
 
-    
+
     this.drawParticles();
     this.#startAnimation();
   }
@@ -93,7 +93,7 @@ export default class ParticleFactory {
   }
 
   #startAnimation() {
-    this.#ctx.fillStyle = this.fillColor;
+    this.#ctx.fillStyle = this.bgColor;
     this.#ctx.lineWidth = 0.5;
     this.#ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -144,32 +144,4 @@ export default class ParticleFactory {
 
 
 
-}
-
-class Particle {
-  constructor(x, y, size, _speed) {
-    this.x = x;
-    this.y = y;
-    this.size = size;
-    // rondomize speed and direction
-    this.xSpeed = _speed * (Math.random() * 6 - 3);
-    this.ySpeed = _speed * (Math.random() * 6 - 3);
-  }
-
-  draw(ctx, fillColor) {
-    ctx.fillStyle = fillColor;
-    ctx.fillRect(this.x, this.y, 10, 10);
-  }
-
-  update() {
-    // return if boundaries touched
-    if (this.x <= this.size || this.x >= canvas.width - this.size) {
-      this.xSpeed *= -1;
-    }
-    if (this.y <= this.size || this.y >= canvas.height - this.size) {
-      this.ySpeed *= -1;
-    }
-    this.x += this.xSpeed;
-    this.y += this.ySpeed;
-  }
 }

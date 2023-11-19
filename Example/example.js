@@ -1,4 +1,4 @@
-import ParticlesFactory from "../ParticlesFactory.js";
+import ParticlesFactory from "../src/ParticlesFactory.js";
 
 // Initialisation
 const options = {
