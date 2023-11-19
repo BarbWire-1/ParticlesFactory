@@ -24,8 +24,8 @@
 ![PartilesFactory_Image](/Particles-Factory.png)
 ***
 ## Installation
-For now you can simply copy the ParticlesFactory - folder holding the src and exports into your project.<br>
-To reduce size you can remove unnecessary as not used parts.
+For now you can simply copy the ParticlesFactory - folder holding the src and index.js with the exports into your project.<br>
+To reduce size you can remove unnecessary as not used parts (Particle.js and ParticlesFactory.js are required to make it work).
 
 
   ## Usage
