@@ -43,11 +43,13 @@ export class ParticlesFactory {
     this.#particles = [];
 
     for (let i = 0; i < this.numParticles; i++) {
+      const { width, height } = this.canvas;
+      const size = 2; // expose this?
       this.#particles.push(
         new Particle(
-          Math.random() * (this.canvas.width - 4) + 2,
-          Math.random() * (this.canvas.height - 4) + 2,
-          2,
+          Math.random() * (width - 2 * size) + size,
+          Math.random() * (height - 2 * size) + size,
+          size,
           this.speed
         )
       );
@@ -58,30 +60,27 @@ export class ParticlesFactory {
   }
   #handleMouseMove(event) {
     let rect = this.canvas.getBoundingClientRect();
-    const { left, top, width, height } = rect;
+    const { left, top } = rect;
+
     let mouseX = event.clientX - left;
     let mouseY = event.clientY - top;
 
     for (let particle of this.#particles) {
-        let distance = this.#getDistance(
-            particle.x,
-            particle.y,
-            mouseX,
-            mouseY);
+      const { x, y } = particle;
+      let distance = this.#getDistance(x, y, mouseX, mouseY);
 
       if (distance < this.mouseDistance) {
-        let dx = mouseX - particle.x;
-        let dy = mouseY - particle.y;
+        let dx = mouseX - x;
+        let dy = mouseY - y;
         // get the vector from mouse to particle pos
         let length = Math.sqrt(dx * dx + dy * dy);
         dx /= length;
         dy /= length;
 
-          let moveAmount = 5; // variable to multiply offset
+        let moveAmount = 5; // variable to multiply offset
 
-        particle.x = particle.x + dx * -moveAmount;
-        particle.y = particle.y + dy * -moveAmount;
-
+        particle.x = x + dx * -moveAmount;
+        particle.y = y + dy * -moveAmount;
       }
     }
   }
@@ -120,7 +119,7 @@ export class ParticlesFactory {
       // particle.draw(this.#ctx, this.strokeColor);
     }
 
-    this.animationId = requestAnimationFrame(this.#startAnimation.bind(this));// otherwise on proto
+    this.animationId = requestAnimationFrame(this.#startAnimation.bind(this)); // otherwise on proto
   }
   #stopAnimation() {
     cancelAnimationFrame(this.animationId);

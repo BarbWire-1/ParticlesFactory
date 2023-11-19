@@ -31,7 +31,7 @@ export class Particle {
   update() {
     this.collisionDetection();
     this.x += this.xSpeed;
-      this.y += this.ySpeed;
-      
+    this.y += this.ySpeed;
+
   }
 }
