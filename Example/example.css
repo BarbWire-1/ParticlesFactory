@@ -1,123 +1,199 @@
 body {
-	background: rgb(0, 0, 0);
+     background: rgb(0, 0, 0);
+     font-family: Arial;
 }
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
 }
 #canvas {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	/* not sure whether to keep this.... */
-	cursor:
-		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" opacity=".5"><path d="M12 2v20m8-8H4m16-8L4 20M4 4l16 16"/></svg>')
-			12 12,
-		auto;
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     /* not sure whether to keep this.... */
+     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" opacity=".5"><path d="M12 2v20m8-8H4m16-8L4 20M4 4l16 16"/></svg>')
+               12 12,
+          auto;
 }
 #controlPanelContainer {
-	position: fixed;
-	top: 0;
-	right: -200px; /* Initially hidden */
-	/*right: 0;*/
-	width: 200px;
-	height: 100%;
-	background-color: #ffffff4d; /* Transparent white */
-	transition: right 0.3s ease;
-	margin-left: 30px;
-	/*overflow: hidden;*/
-	border-radius: 20px 0 0 20px;
-	border-left: 1px solid #ffffff5d;
+     position: fixed;
+     top: 0;
+     right: -200px; /* Initially hidden */
+     /*right: 0;*/
+     width: 200px;
+     height: 100%;
+     background-color: #ffffff4d; /* Transparent white */
+     transition: right 0.3s ease;
+     margin-left: 30px;
+     /*overflow: hidden;*/
+     border-radius: 20px 0 0 20px;
+     border-left: 1px solid #ffffff5d;
+     z-index: 999;
 }
 
 .controlPanel {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
+     height: 100%;
+     display: flex;
+     flex-direction: column;
 
-	position: relative;
+     position: relative;
 }
 
 .controlPanelHeader {
-	display: flex;
-	justify-content: flex-start;
-	padding: 30px;
+     display: flex;
+     justify-content: flex-start;
+     padding: 30px;
 
-	position: relative;
+     position: relative;
 }
 
 /*settings and cursor*/
 .toggleButton {
-	position: absolute;
-	left: -150px;
-	background: none !important;
-	border: none !important;
-	font-size: 25px;
-	cursor: pointer;
-	outline: none;
-	color: red !important;
-	text-shadow: 2px 2px 2px black;
-    box-shadow: none;
+     position: absolute;
+     left: -150px;
+     background: none !important;
+     border: none !important;
+     font-size: 25px;
+     cursor: pointer;
+     outline: none;
+     color: red !important;
+     text-shadow: 2px 2px 2px black;
+     box-shadow: none;
 }
 
 .controlPanelContent {
-	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	font-family: Arial, Helvetica, sans-serif;
-	color: white;
-	text-shadow: 2px 2px 2px black;
-	display: none;
+     padding: 10px;
+     display: flex;
+     flex-direction: column;
+     font-family: Arial, Helvetica, sans-serif;
+     color: white;
+     text-shadow: 2px 2px 2px black;
+     display: none;
+     height: fit-content;
 }
 .controlPanelContent * {
-	margin-top: 10px;
+     margin-top: 10px;
 }
 .controlPanelContent input,
 button {
-	box-shadow: 2px 2px 2px #000000b1;
+     box-shadow: 2px 2px 2px #000000b1;
 }
 
 #controlPanelContainer.open {
-	right: 0px;
+     right: 0px;
 }
 #controlPanelContainer.open .controlPanelContent {
-	right: 0px;
-	display: flex;
+     right: 0px;
+     display: flex;
 }
 
 #controlPanelContainer.open .toggleButton {
-	left: 5px;
-	position: absolute;
+     left: 5px;
+     position: absolute;
 }
 
-input [type='color'] {
-	padding: 0;
-	margin: 0;
+input [type="color"] {
+     padding: 0;
+     margin: 0;
 }
 /* Hide the default color picker dropdown arrow */
-input[type='color']::-webkit-color-swatch-wrapper {
-	height: 50px;
-	width: 56px;
-	left: -5px;
-	position: relative;
+input[type="color"]::-webkit-color-swatch-wrapper {
+     height: 50px;
+     width: 56px;
+     left: -5px;
+     position: relative;
 }
 
-#toggleAnimation {
-	margin-top: 50px;
-	position: relative;
-	font-size: 1.1em;
-	height: 40px;
-	background: #fff;
-	color: black;
-	transition:
-		background 0.3s ease,
-		color 0.3s ease;
+.controlPanelContent button {
+     margin-top: 50px;
+     position: relative;
+     font-size: 1.1em;
+     height: 40px;
+     background: #fff;
+     color: black;
+     transition: background 0.3s ease, color 0.3s ease;
 }
 
-#toggleAnimation:hover {
-	background: #f95050; /* New background color on hover */
-	color: white;
+.controlPanelContent button:hover {
+     background: #f95050; /* New background color on hover */
+     color: white;
+}
+#toggleContent {
+     margin-top: 10px;
+}
+
+a {
+     color: white;
+     position: absolute;
+     bottom: 10px;
+     left: 50%;
+     transform: translateX(-50%);
+     font-size: 16px;
+     z-index: 100;
+}
+/*-------------------------------------------------------------------------------------------------*/
+#content-container {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+
+     display: none;
+     flex-direction: column;
+     align-items: center;
+     z-index: 100;
+     pointer-events: none;
+}
+h4 {
+     margin-top: 50px;
+     font-size: 2em;
+     color: white;
+}
+
+#landing {
+     position: absolute;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: space-around;
+     top: 50%;
+     transform: translateY(-50%);
+     width: max(300px, 50vw);
+     height: max(240px, 40vw);
+     background-color: #000000e0;
+     box-shadow: 15px 15px 15px #ffffff33;
+     border-radius: 50px;
+     border: 1px solid white;
+     color: white;
+     font-size: 1em;
+     pointer-events: visible; /* this way hovering over the inner div does not interact with the canvas - preferences*/
+}
+#landing button {
+     transform: scale(1.5);
+     padding: 3px 6px;
+     border: radius 5px;
+     cursor: pointer;
+}
+#landing button:hover {
+     background: #f95050; /* New background color on hover */
+     color: white;
+}
+
+/* Single class for toggling display */
+.display-toggle {
+     display: none !important;
+}
+.display-toggle.show {
+     display: flex !important;
+     flex-direction: column !important;
+     justify-items: center;
+     align-items: center;
+}
+
+button {
+     cursor: pointer;
 }

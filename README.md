@@ -12,6 +12,7 @@
 
   * [Installation](#Installation)
   * [Usage](#Usage)
+  * [Use as interactive Background](#Background)
   * [Contributing](#Contributing)
   * [License](LICENSE)
   * [Questions](#Questions)
@@ -107,6 +108,23 @@ The proxy handles a data-double-binding to keep el.attributes and input values i
 const yourProxy = particlesProxy(yourParticles);
 yourProxy.numParticles = 50;
 ```
+## Background
+In order to use the canvas as an **interactive background**, create a div on top to wrap your page's content.
+
+```css
+.content-wrapper {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+
+     z-index: 100;/* or any value as needed */
+     pointer-events: none;
+}
+```
+
+To interact with the elements INSIDE your content-wrapper, you then need to set them to `pointer-events: auto` or any other detection you want.
 ***
   ## Contributing
 

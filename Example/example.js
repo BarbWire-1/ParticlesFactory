@@ -8,7 +8,7 @@ const {
 // Initialisation
 const options = {
   canvasId: "canvas", // required
-  numParticles: 200,
+  numParticles: 50,
   speed: 0.2,
   strokeColor: "#fff",
   fillColor: "#000",
@@ -22,4 +22,19 @@ handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
 const proxy = particlesProxy(myParticles);
-proxy.numParticles = 150;
+proxy.numParticles = 200;
+
+//--------------------------------------------------------------------------------------------------
+// unrelated, just to demonstrate how to use particlesFactory as background
+document.getElementById("toggleContent").addEventListener("click", function () {
+     const contentContainer = document.getElementById("content-container");
+     contentContainer.classList.toggle("show");
+});
+
+function changeText() {
+     const button = document.querySelector("#test-button");
+     button.textContent = "Yeah, it clicked!";
+     setTimeout(function () {
+          button.textContent = "I'm listening :)";
+     }, 1000);
+}

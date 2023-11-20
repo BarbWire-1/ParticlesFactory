@@ -9,6 +9,8 @@
 </head>
 
 <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <canvas id="canvas" x="0" y="0" width="1000" height="1000"></canvas>
 
     <div id="controlPanelContainer">
@@ -40,7 +42,21 @@
                     step="50">
 
                 <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
+                <button id="toggleContent">Toggle Content</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Link with text and GitHub icon -->
+    <a href="https://github.com/BarbWire-1/ParticlesFactory" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i>
+        Github Repo
+
+    </a>
+    <div id="content-container" class="display-toggle">
+        <h4 class="description">Use Particles As A Background</h4>
+        <div id="landing">Your Page Content Example
+            <button id="test-button" style="pointer-events: auto" onclick="changeText()">I'm listening :)</button>
         </div>
     </div>
 
