@@ -177,6 +177,7 @@ h4 {
      padding: 3px 6px;
      border: radius 5px;
      cursor: pointer;
+     pointer-events:all;
 }
 #landing button:hover {
      background: #f95050; /* New background color on hover */

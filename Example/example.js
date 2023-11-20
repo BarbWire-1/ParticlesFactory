@@ -38,3 +38,8 @@ function changeText() {
           button.textContent = "I'm listening :)";
      }, 1000);
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const button = document.querySelector("#test-button");
+    button.addEventListener("click", changeText);
+});
