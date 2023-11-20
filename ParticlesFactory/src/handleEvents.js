@@ -36,10 +36,10 @@ export function handleEvents(el, containerId) {
 	// EVENT LISTENERS
 	container.addEventListener('click', handleButtonClick);
     container.addEventListener('input', e => {
-		const attribute = isValidAttribute(e,'attribute');
+		const dataAttribute = isValidAttribute(e,'attribute');
 		const value = e.target.value;
 
-		handleInputChange(el, attribute, value);
+		handleInputChange(el, dataAttribute, value);
 	});
 
 	// for resposiveness - redraws canvas on resize
