@@ -162,8 +162,8 @@ h4 {
      justify-content: space-around;
      top: 50%;
      transform: translateY(-50%);
-     width: max(300px, 50vw);
-     height: max(240px, 40vw);
+     width: clamp(300px, 50vw, 750px);
+     height: clamp(240px, 40vw, 600px);
      background-color: #000000e0;
      box-shadow: 15px 15px 15px #ffffff33;
      border-radius: 50px;
