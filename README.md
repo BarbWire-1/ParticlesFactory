@@ -75,7 +75,7 @@ proxy.numParticles = 150;
 
 * createParticles() - now used in the handleInput/proxy
 * toggleAnimation() - cancel/start requestAnimationFrame
-&nbsp;
+<br><br>
 
 
 To make use of the `handleInput()` and/or the `particlesProxy()` the input-elements and the clickable elements need to have a data-attributes beginning with the prefix "particles-" to avoid interferation with other datasets.
