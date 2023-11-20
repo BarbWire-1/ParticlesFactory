@@ -1,51 +1,55 @@
 export function handleEvents(el, containerId) {
-     // event-delegation on parent container
-     const container = document.getElementById(containerId);
+	// event-delegation on parent container
+	const container = document.getElementById(containerId);
 
-     // EVENT - CALLBACKS
-     /**
-      *
-      * @param {*} el The particles instance
-      * @param {*} attribute The value of the data-attribute of the target input element
-      * @param {*} value The recieved value to apply to the el's attribute of same name
-      */
+	// EVENT - CALLBACKS
+	/**
+	 *
+	 * @param {*} el The particles instance
+	 * @param {*} attribute The value of the data-attribute of the target input element
+	 * @param {*} value The recieved value to apply to the el's attribute of same name
+	 */
 
-     function handleInputChange(el, attribute, value) {
-          el[attribute] = +value || value;
-          if (attribute === "numParticles" || attribute === "speed")
-               el.createParticles();
-     }
+	function handleInputChange(el, attribute, value) {
+		el[attribute] = +value || value;
+		if (attribute === 'numParticles' || attribute === 'speed')
+			el.createParticles();
+	}
 
-     function handleButtonClick(e) {
-          const dataAction = e.target.dataset.action?.split("-")[1];
-          if (!dataAction) return;
+	function handleButtonClick(e) {
+		const dataAttribute = e.target.dataset?.action?.split('-');
+		if (!dataAttribute || !dataAttribute[0] === 'particles') return;
 
-          const clickAction = {
-               togglePanel: () => container.classList.toggle("open"),
-               toggleAnimation: () => el.toggleAnimation()
-               // add more callbacks here if needed
-          };
+		const dataAction = dataAttribute[1];
 
-          if (clickAction[dataAction]) clickAction[dataAction]();
-     }
+		const clickAction = {
+			togglePanel: () => container.classList.toggle('open'),
+			toggleAnimation: () => el.toggleAnimation(),
+			// add more callbacks here if needed
+		};
 
-     // EVENT LISTENERS
-     container.addEventListener("click", handleButtonClick);
-     container.addEventListener("input", (event) => {
-          const { dataset, value } = event.target;
-          const attribute = dataset.attribute?.split("-")[1];
-          if (!attribute) return;
+		if (clickAction[dataAction]) clickAction[dataAction]();
+	}
 
-          handleInputChange(el, attribute, value);
-     });
+	// EVENT LISTENERS
+	container.addEventListener('click', handleButtonClick);
+	container.addEventListener('input', (event) => {
+		const dataAttribute = event.target.dataset?.attribute?.split('-');
+		if (!dataAttribute || !dataAttribute[0] === 'particles') return;
 
-     // for resposiveness - redraws canvas on resize
-     function resizeCanvas() {
-          el.canvas.width = window.innerWidth;
-          el.canvas.height = window.innerHeight;
-          el.createParticles();
-     }
+		const attribute = dataAttribute[1];
+		const value = event.target.value;
 
-     window.addEventListener("resize", resizeCanvas);
-     resizeCanvas(); // initial size-adjustment
+		handleInputChange(el, attribute, value);
+	});
+
+	// for resposiveness - redraws canvas on resize
+	function resizeCanvas() {
+		el.canvas.width = window.innerWidth;
+		el.canvas.height = window.innerHeight;
+		el.createParticles();
+	}
+
+	window.addEventListener('resize', resizeCanvas);
+	resizeCanvas(); // initial size-adjustment
 }
