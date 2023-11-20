@@ -14,14 +14,16 @@ export function handleEvents(el, containerId) {
 		el[attribute] = +value || value;
 		if (attribute === 'numParticles' || attribute === 'speed')
 			el.createParticles();
-	}
+    }
+
+    function isValidAttribute(e,type) {
+        const dataAttribute = e.target.dataset?.[type]?.split('-');
+		if (!dataAttribute || !dataAttribute[0] === 'particles') return;
+		return dataAttribute[1];
+    }
 
 	function handleButtonClick(e) {
-		const dataAttribute = e.target.dataset?.action?.split('-');
-		if (!dataAttribute || !dataAttribute[0] === 'particles') return;
-
-		const dataAction = dataAttribute[1];
-
+		const dataAction = isValidAttribute(e,'action');
 		const clickAction = {
 			togglePanel: () => container.classList.toggle('open'),
 			toggleAnimation: () => el.toggleAnimation(),
@@ -33,12 +35,9 @@ export function handleEvents(el, containerId) {
 
 	// EVENT LISTENERS
 	container.addEventListener('click', handleButtonClick);
-	container.addEventListener('input', (event) => {
-		const dataAttribute = event.target.dataset?.attribute?.split('-');
-		if (!dataAttribute || !dataAttribute[0] === 'particles') return;
-
-		const attribute = dataAttribute[1];
-		const value = event.target.value;
+    container.addEventListener('input', e => {
+		const attribute = isValidAttribute(e,'attribute');
+		const value = e.target.value;
 
 		handleInputChange(el, attribute, value);
 	});
