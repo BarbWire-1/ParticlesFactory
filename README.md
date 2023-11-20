@@ -24,10 +24,12 @@
 
 ![PartilesFactory_Image](/Particles-Factory.png)
 ***
+
+
 ## Installation
 For now you can simply copy the ParticlesFactory - folder holding the src and index.js with the exports into your project.<br>
 To reduce size you can remove unnecessary as not used parts (Particle.js and ParticlesFactory.js are required to make it work).
-
+&nbsp;
 
   ## Usage
 
@@ -73,6 +75,7 @@ proxy.numParticles = 150;
 
 * createParticles() - now used in the handleInput/proxy
 * toggleAnimation() - cancel/start requestAnimationFrame
+&nbsp;
 
 
 To make use of the `handleInput()` and/or the `particlesProxy()` the input-elements and the clickable elements need to have a data-attributes beginning with the prefix "particles-" to avoid interferation with other datasets.
@@ -91,6 +94,7 @@ The clickable elements need to be set up like
 ```
 
 Inside the [handleEvents()](./ParticlesFactory/src/handleEvents.js) you can define your custom event callback if needed, key is the data-action, value the assiociated callback.
+<br>
 
 ```js
 const clickAction = {
@@ -100,7 +104,7 @@ const clickAction = {
     };
 ```
 <br>
-<br>
+
 
 Instantiate a `particlesProxy()` for dynamically settings if needed.
 The proxy handles a data-double-binding to keep el.attributes and input values in sync.
@@ -108,6 +112,9 @@ The proxy handles a data-double-binding to keep el.attributes and input values i
 const yourProxy = particlesProxy(yourParticles);
 yourProxy.numParticles = 50;
 ```
+<br>
+
+
 ## Background
 In order to use the canvas as an **interactive background**, create a div on top to wrap your page's content.
 
@@ -126,6 +133,7 @@ In order to use the canvas as an **interactive background**, create a div on top
 
 To interact with the elements INSIDE your content-wrapper, you then need to set them to `pointer-events: auto` or any other detection you want.
 ***
+<br><br>
   ## Contributing
 
 If you'd like to contribute, just fork the project and open a pullrequest - or discuss your ideas with me. Also if you got an idea for a project where I could contribute, shout out! ...
