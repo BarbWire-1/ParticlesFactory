@@ -1,5 +1,7 @@
 .vscode
 *.txt
 .DS_Store
+.shapes
 
 minify.js
+.gitignore
