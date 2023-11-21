@@ -10,20 +10,25 @@ export function handleEvents(el, containerId) {
 	 * @param {*} value The recieved value to apply to the el's attribute of same name
 	 */
 
-	function handleInputChange(el, attribute, value) {
-		el[attribute] = +value || value;
-		if (attribute === 'numParticles' || attribute === 'speed')
+    function handleInputChange(e) {
+
+        const property = isValidAttribute(e, 'attribute');
+        const value = e.target.value;
+        el[ property ] = +value || value;
+
+		if (property === 'numParticles' || property === 'speed')
 			el.createParticles();
 	}
 
 	function isValidAttribute(e, type) {
-		const dataAttribute = e.target.dataset?.[type]?.split('-');
+        const dataAttribute = e.target.dataset?.[ type ]?.split('-');
 		if (!dataAttribute || dataAttribute[0] !== 'particles') return;
 		return dataAttribute[1];
 	}
 
 	function handleButtonClick(e) {
-		const dataAction = isValidAttribute(e, 'action');
+        const dataAction = isValidAttribute(e, 'action');
+        // for control-sidebar in example - could be customised, perhaps pass from main???
 		const clickAction = {
 			togglePanel: () => container.classList.toggle('open'),
 			toggleAnimation: () => el.toggleAnimation(),
@@ -35,12 +40,8 @@ export function handleEvents(el, containerId) {
 
 	// EVENT LISTENERS
 	container.addEventListener('click', handleButtonClick);
-	container.addEventListener('input', (e) => {
-		const dataAttribute = isValidAttribute(e, 'attribute');
-		const value = e.target.value;
+    container.addEventListener('input', handleInputChange);
 
-		handleInputChange(el, dataAttribute, value);
-	});
 
 	// for resposiveness - redraws canvas on resize
 	function resizeCanvas() {
