@@ -1,10 +1,11 @@
 // TODO add more optional variables??
-// TODO convert into a factory function?
-// TODO change to drawing imageData bulk operation? test performance diferences
-// TODO add draw particle itself - with own fillStyle? now only drawing the connecting lines
-// TODO if so - expose this.particles? add a method for fix or random fillStyle?
+// TODO1.1 convert into a factory function?
+// TODO1.1.1 add offscreencanvas
 
-// TODO include redraw on setting numParticles, speed and resize in here and remove from handleInput?
+// TODO2 change to baseParticle and extending shapes
+// TODO2.1  add fillSyle for particleFill
+
+
 
 import { Particle } from './Particle.js';
 export class ParticlesFactory {
