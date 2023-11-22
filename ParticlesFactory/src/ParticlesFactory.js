@@ -6,7 +6,7 @@
 // TODO2.1  add fillSyle for particleFill
 
 
-const offscreenCanvas = document.createElement('canvas');
+export const offscreenCanvas = document.createElement('canvas');
 let offCTX = offscreenCanvas.getContext('2d');
 
 import { Particle } from './Particle.js';
@@ -16,9 +16,10 @@ export class ParticlesFactory {
 	#animationId;
 
 	constructor(options) {
-		const {
-			canvasId = '',
-			numParticles = 300,
+        const {
+            canvasId = '',
+            numParticles = 300,
+            particleSize = 5,
 			speed = 0.5,
 			strokeColor = '#fff',
 			bgColor = '#000',
@@ -33,7 +34,8 @@ export class ParticlesFactory {
 		this.speed = speed;
 		this.strokeColor = strokeColor;
         this.bgColor = bgColor;
-        this.particleColor = particleColor
+        this.particleColor = particleColor;
+        this.particleSize = particleSize;
 
 		this.connectDistance = connectDistance;
 		this.mouseDistance = mouseDistance;
@@ -63,7 +65,7 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < this.numParticles; i++) {
 			const { width, height } = this.canvas;
-			const size = 5; // expose this?
+			const size = this.particleSize; // expose this?
 			this.#particles.push(
 				new Particle(
 					Math.random() * (width - 2 * size) + size,

@@ -1,3 +1,4 @@
+import {offscreenCanvas} from './ParticlesFactory.js'
 export function handleEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);
@@ -43,8 +44,8 @@ export function handleEvents(el, containerId) {
 
 	// for resposiveness - redraws canvas on resize
 	function resizeCanvas() {
-		el.canvas.width = el.offscreenCanvas.width = window.innerWidth;
-		el.canvas.height = el.offscreenCanvas.height = window.innerHeight;
+		el.canvas.width = offscreenCanvas.width = window.innerWidth;
+		el.canvas.height = offscreenCanvas.height = window.innerHeight;
 		el.createParticles();
 	}
 
