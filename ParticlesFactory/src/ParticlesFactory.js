@@ -22,13 +22,13 @@ export class ParticlesFactory {
         const {
             canvasId = '',
             numParticles = 300,
-            particleSize = 5,
+            particlesSize = 5,
 			speed = 0.5,
 			strokeColor = '#fff',
 			bgColor = '#000',
 			connectDistance = 100,
             mouseDistance = 100,
-            particleColor = 'red'
+            particlesColor = 'red'
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
@@ -37,8 +37,8 @@ export class ParticlesFactory {
 		this.speed = speed;
 		this.strokeColor = strokeColor;
         this.bgColor = bgColor;
-        this.particleColor = particleColor;
-        this.particleSize = particleSize;
+        this.particlesColor = particlesColor;
+        this.particlesSize = particlesSize;
 
 		this.connectDistance = connectDistance;
 		this.mouseDistance = mouseDistance;
@@ -68,7 +68,7 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < this.numParticles; i++) {
 			const { width, height } = this.canvas;
-			const size = this.particleSize; // expose this?
+			const size = this.particlesSize; // expose this?
 			this.#particles.push(
 				new Particle(
 					Math.random() * (width - 2 * size) + size,
@@ -142,7 +142,7 @@ export class ParticlesFactory {
 
 			particle.update();
 			//TODO call only optional for different color??
-			particle.draw(offCTX, this.particleColor);
+			particle.draw(offCTX, this.particlesColor);
 		}
         // Inside your class method where you want to draw the offscreen canvas onto the main canvas
 this.#ctx.drawImage(offscreenCanvas, 0, 0);

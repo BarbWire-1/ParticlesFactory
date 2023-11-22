@@ -15,8 +15,9 @@ export function handleEvents(el, containerId) {
 		const property = isValidAttribute(e, 'attribute');
 		const value = e.target.value;
 		el[property] = +value || value;
-
-		if (property === 'numParticles' || property === 'speed')
+        if (property === 'numParticles'
+            || property === 'speed'
+            || property === 'particlesSize')
 			el.createParticles();
 	}
 
