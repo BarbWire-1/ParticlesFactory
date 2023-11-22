@@ -42,6 +42,8 @@ export function handleEvents(el, containerId) {
 	container.addEventListener('click', handleButtonClick);
 	container.addEventListener('input', handleInputChange);
 
+
+    // TODO move this to factory (then remove import)  - add a flag for isResponsive
 	// for resposiveness - redraws canvas on resize
 	function resizeCanvas() {
 		el.canvas.width = offscreenCanvas.width = window.innerWidth;

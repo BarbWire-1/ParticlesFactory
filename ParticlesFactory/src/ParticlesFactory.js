@@ -6,6 +6,9 @@
 // TODO2.1  add fillSyle for particleFill
 
 
+// TODO add inputs for new added attributes
+
+
 export const offscreenCanvas = document.createElement('canvas');
 let offCTX = offscreenCanvas.getContext('2d');
 
