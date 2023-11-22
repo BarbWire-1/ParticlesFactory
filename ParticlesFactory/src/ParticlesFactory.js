@@ -21,14 +21,14 @@ export class ParticlesFactory {
 	constructor(options) {
         const {
             canvasId = '',
-            numParticles = 300,
-            particlesSize = 5,
-			speed = 0.5,
-			strokeColor = '#fff',
+            numParticles = 100,
+            particlesSize = 3,
+			speed = 0.2,
+			strokeColor = '#4f4f4f',
 			bgColor = '#000',
-			connectDistance = 100,
+			connectDistance = 150,
             mouseDistance = 100,
-            particlesColor = 'red'
+            particlesColor = '#E1FF00'
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);

@@ -8,14 +8,14 @@ const {
 // Initialisation
 const options = {
   canvasId: "canvas", // required
-    numParticles: 50,
-  particleSize: 6,
-  speed: 0.2,
-  strokeColor: "#fff",
-  fillColor: "#000",
-  connectDistance: 150,
-    mouseDistance: 100,
-  particleColor: 'red'
+//   numParticles: 50, // all following optional
+//   particleSize: 6,
+//   speed: 0.2,
+//   strokeColor: "#4f4f4f",
+//   fillColor: "#000",
+//   connectDistance: 150,
+//   mouseDistance: 100,
+//   particleColor: '#E1FF00'
 };
 
 const myParticles = new ParticlesFactory(options);
