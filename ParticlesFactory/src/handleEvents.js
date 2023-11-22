@@ -43,8 +43,8 @@ export function handleEvents(el, containerId) {
 
 	// for resposiveness - redraws canvas on resize
 	function resizeCanvas() {
-		el.canvas.width = window.innerWidth;
-		el.canvas.height = window.innerHeight;
+		el.canvas.width = el.offscreenCanvas.width = window.innerWidth;
+		el.canvas.height = el.offscreenCanvas.height = window.innerHeight;
 		el.createParticles();
 	}
 

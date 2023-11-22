@@ -6,6 +6,8 @@
 // TODO2.1  add fillSyle for particleFill
 
 
+const offscreenCanvas = document.createElement('canvas');
+let offCTX = offscreenCanvas.getContext('2d');
 
 import { Particle } from './Particle.js';
 export class ParticlesFactory {
@@ -21,7 +23,8 @@ export class ParticlesFactory {
 			strokeColor = '#fff',
 			bgColor = '#000',
 			connectDistance = 100,
-			mouseDistance = 100,
+            mouseDistance = 100,
+            particleColor = 'red'
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
@@ -29,7 +32,8 @@ export class ParticlesFactory {
 		this.numParticles = numParticles;
 		this.speed = speed;
 		this.strokeColor = strokeColor;
-		this.bgColor = bgColor;
+        this.bgColor = bgColor;
+        this.particleColor = particleColor
 
 		this.connectDistance = connectDistance;
 		this.mouseDistance = mouseDistance;
@@ -39,10 +43,19 @@ export class ParticlesFactory {
 
 		this.canvas.addEventListener('pointermove', (e) => {
 			this.#handleMouseMove(e);
-		});
+        });
+
+        // // Create the offscreen canvas and its context
+        // this.offscreenCanvas = document.createElement('canvas');
+        // this.offscreenCtx = this.offscreenCanvas.getContext('2d');
 
 		this.createParticles();
-		this.#startAnimation();
+        this.#startAnimation();
+
+
+
+        offscreenCanvas.width = this.canvas.width;
+        offscreenCanvas.height = this.canvas.height;
 	}
 
 	createParticles() {
@@ -50,7 +63,7 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < this.numParticles; i++) {
 			const { width, height } = this.canvas;
-			const size = 2; // expose this?
+			const size = 5; // expose this?
 			this.#particles.push(
 				new Particle(
 					Math.random() * (width - 2 * size) + size,
@@ -94,9 +107,9 @@ export class ParticlesFactory {
 
 	#startAnimation() {
 		const len = this.#particles.length;
-		this.#ctx.fillStyle = this.bgColor;
-		this.#ctx.lineWidth = 0.5;
-		this.#ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		offCTX.fillStyle = this.bgColor;
+		offCTX.lineWidth = 0.5;
+		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
@@ -114,19 +127,20 @@ export class ParticlesFactory {
 
 				if (isInRadius) {
 					// draw connecting line
-					this.#ctx.beginPath();
-					this.#ctx.moveTo(particle.x, particle.y);
-					this.#ctx.lineTo(otherParticle.x, otherParticle.y);
-					this.#ctx.strokeStyle = this.strokeColor;
-					this.#ctx.stroke();
+					offCTX.beginPath();
+					offCTX.moveTo(particle.x, particle.y);
+					offCTX.lineTo(otherParticle.x, otherParticle.y);
+					offCTX.strokeStyle = this.strokeColor;
+					offCTX.stroke();
 				}
 			}
 
 			particle.update();
 			//TODO call only optional for different color??
-			// particle.draw(this.#ctx, this.strokeColor);
+			particle.draw(offCTX, this.particleColor);
 		}
-
+        // Inside your class method where you want to draw the offscreen canvas onto the main canvas
+this.#ctx.drawImage(offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
 		); // otherwise on proto

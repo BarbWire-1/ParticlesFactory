@@ -9,8 +9,12 @@ export class Particle {
 	}
 
 	draw(ctx, fillColor) {
-		ctx.fillStyle = fillColor;
-		ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.fillStyle = fillColor;
+        // center the particle on point;
+        let cx = this.x - this.size / 2;
+        let cy = this.y - this.size / 2;
+
+		ctx.fillRect(cx, cy, this.size, this.size);
 	}
 
 	collisionDetection() {
