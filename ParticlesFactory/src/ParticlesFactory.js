@@ -24,16 +24,18 @@ export class ParticlesFactory {
     #offscreenCtx
 
 	constructor(options) {
-		const {
-			canvasId = undefined,
-			numParticles = 100,
-			particlesSize = 2,
-			speed = 0.2,
-			strokeColor = '#4f4f4f',
-			bgColor = '#000',
-			connectDistance = 150,
-			mouseDistance = 100,
-			particlesColor = '#E1FF00',
+        const {
+            canvasId = undefined,
+            numParticles = 100,
+            particlesSize = 2,
+            speed = 0.2,
+            strokeColor = '#4f4f4f',
+            bgColor = '#000',
+            connectDistance = 150,
+            mouseDistance = 100,
+            particlesColor = '#E1FF00',
+            //TODO - not sure about this - better provide aspect ratio for resiting
+            isFullScreen = true
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
@@ -50,9 +52,12 @@ export class ParticlesFactory {
 		this.particlesSize = particlesSize;
 		this.connectDistance = connectDistance;
         this.mouseDistance = mouseDistance;
+        // FLAG
+        this.isFullScreen = isFullScreen
         this.#particles = [];// holding particles for re-calculation
         // animationId for start/stop
         this.#animationId = null;
+
 
         // Listeners
 		this.canvas.addEventListener('pointermove', (e) => {
@@ -172,7 +177,8 @@ export class ParticlesFactory {
 		}
 	}
 
-	resizeCanvas() {
+    resizeCanvas() {
+        if (!this.isFullScreen) return;
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
 
