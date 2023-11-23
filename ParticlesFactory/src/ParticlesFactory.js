@@ -152,7 +152,7 @@ export class ParticlesFactory {
 			if (this.particlesSize != 0.1)
 				particle.draw(offCTX, this.particlesColor);
 		}
-		// Inside your class method where you want to draw the offscreen canvas onto the main canvas
+		// draw the completed offscreenCanvas to canvas : only one batched rerender
 		this.#ctx.drawImage(offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
