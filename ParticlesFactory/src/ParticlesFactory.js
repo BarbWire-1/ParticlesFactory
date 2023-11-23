@@ -36,9 +36,9 @@ export class ParticlesFactory {
 	constructor(options) {
         const {
             canvasId = undefined,
-            numParticles = 100,
+            numParticles = 200,
             particlesSize = 2,
-            speed = 0.1,
+            speed = 0.2,
             strokeColor = '#4f4f4f',
             bgColor = '#000',
             connectDistance = 110,
