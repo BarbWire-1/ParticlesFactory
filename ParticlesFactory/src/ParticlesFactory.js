@@ -21,7 +21,15 @@ export class ParticlesFactory {
 	#particles;
     #animationId;
     #offscreenCanvas;
-    #offscreenCtx
+    #offscreenCtx;
+
+    #resizeCanvas = () => {
+        this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
+        this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
+        this.createParticles();
+    };
+
+
 
 	constructor(options) {
         const {
@@ -63,10 +71,13 @@ export class ParticlesFactory {
 		this.canvas.addEventListener('pointermove', (e) => {
 			this.#handleMouseMove(e);
         });
-        window.addEventListener('resize', this.resizeCanvas.bind(this));
+        // use arrowFun to get surrounding context!
+        if (this.isFullScreen) {
+            window.addEventListener('resize', this.#resizeCanvas);
+        }
 
         //INIT CALLS
-        this.resizeCanvas(); //  init fullSize
+        this.#resizeCanvas(); //  init fullSize
 		//this.createParticles();// called in resize!
         this.#startAnimation();// run per default on load
 	}
@@ -177,11 +188,5 @@ export class ParticlesFactory {
 		}
 	}
 
-    resizeCanvas() {
-        if (!this.isFullScreen) return;
-		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
-		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
 
-		this.createParticles();
-	}
 }
