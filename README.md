@@ -38,24 +38,25 @@ To reduce size you can remove unnecessary as not used parts (Particle.js and Par
   import { ParticlesFactory, handleEvents, particlesProxy } from "yourPathTo/ParticlesFactory/index.js";
 
 // Initialisation
+// Initialisation
 const options = {
-  canvasId: "canvas", // required
-  numParticles: 200,
+  canvasId: "canvas", // only required one
+  numParticles: 50,
+  particleSize: 6,
   speed: 0.2,
-  strokeColor: "#fff",
-  bgColor: "#000",
+  strokeColor: "#4f4f4f",
+  fillColor: "#000",
   connectDistance: 150,
   mouseDistance: 100,
+  particleColor: '#E1FF00'
 };
 
 const yourParticles = new ParticlesFactory(options);
 
 // optional for using inputElements  or click-events
-// takes the element and the id of the parentElement holding the inputs
-// (for event-delegation)
 handleEvents(yourParticles, "controlPanelContainer");
 
-// for setting dynamically in JS use the particlesProxy
+// optional for changing properties dynamically in JS
 const proxy = particlesProxy(yourParticles);
 proxy.numParticles = 150;
 ```
