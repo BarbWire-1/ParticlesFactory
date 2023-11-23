@@ -12,6 +12,8 @@
 // TODO add canvas dimensions other than full-screen
 // TODO make responsiveness optional
 
+// TODO logic mistake for NOT drawing particle when set to 0 - need a flag instead for draw or not draw?
+
 // export const offscreenCanvas = document.createElement('canvas');
 // let offCTX = offscreenCanvas.getContext('2d');
 
@@ -36,14 +38,15 @@ export class ParticlesFactory {
             canvasId = undefined,
             numParticles = 100,
             particlesSize = 2,
-            speed = 0.2,
+            speed = 0.1,
             strokeColor = '#4f4f4f',
             bgColor = '#000',
-            connectDistance = 150,
+            connectDistance = 110,
             mouseDistance = 100,
             particlesColor = '#E1FF00',
             //TODO - not sure about this - better provide aspect ratio for resiting
-            isFullScreen = true
+            isFullScreen = true,
+            withParticles = true
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
@@ -61,7 +64,8 @@ export class ParticlesFactory {
 		this.connectDistance = connectDistance;
         this.mouseDistance = mouseDistance;
         // FLAG
-        this.isFullScreen = isFullScreen
+        this.isFullScreen = isFullScreen;
+        this.withParticles = withParticles;
         this.#particles = [];// holding particles for re-calculation
         // animationId for start/stop
         this.#animationId = null;
@@ -164,7 +168,7 @@ export class ParticlesFactory {
 			particle.update();
 			//TODO call only if particleSize
 			// how to allow being set to 0
-			if (this.particlesSize != 0.1)
+			if (this.withParticles)
 				particle.draw(offCTX, this.particlesColor);
 		}
 		// draw the completed offscreenCanvas to canvas : only one batched rerender

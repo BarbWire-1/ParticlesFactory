@@ -8,15 +8,17 @@ const {
 // Initialisation
 const options = {
   canvasId: "canvas", // required
-//   numParticles: 50, // all following optional
-//   particleSize: 6,
-//   speed: 0.2,
-//   strokeColor: "#4f4f4f",
-//   fillColor: "#000",
-//   connectDistance: 150,
-//   mouseDistance: 100,
+    //   numParticles: 50, // all following optional
+    //   particleSize: 6,
+    //   speed: 0.2,
+    //   strokeColor: "#4f4f4f",
+    //   fillColor: "#000",
+    //   connectDistance: 150,
+    //   mouseDistance: 100,
     //   particleColor: '#E1FF00'
-    //isFullScreen: true
+
+    //   isFullScreen: true,// flag to resize and redraw with window
+    //   withParticles: false// flag to draw particles - if set to false lines only!
 };
 
 const myParticles = new ParticlesFactory(options);
