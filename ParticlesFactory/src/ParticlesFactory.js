@@ -9,6 +9,9 @@
 
 // TODO add particles-type and if none - do NOT draw particles only lines
 
+// TODO add canvas dimensions other than full-screen
+// TODO make responsiveness optional
+
 export const offscreenCanvas = document.createElement('canvas');
 let offCTX = offscreenCanvas.getContext('2d');
 
@@ -59,6 +62,10 @@ export class ParticlesFactory {
 
 		offscreenCanvas.width = this.canvas.width;
 		offscreenCanvas.height = this.canvas.height;
+
+		window.addEventListener('resize', this.resizeCanvas.bind(this));
+
+		this.resizeCanvas(); //  init fullSize
 	}
 
 	createParticles() {
@@ -82,8 +89,8 @@ export class ParticlesFactory {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 	}
 
-    #handleMouseMove(event) {
-        if (!this.mouseDistance) return;
+	#handleMouseMove(event) {
+		if (!this.mouseDistance) return;
 		let rect = this.canvas.getBoundingClientRect();
 		const { left, top } = rect;
 		let mouseX = event.clientX - left;
@@ -164,5 +171,12 @@ export class ParticlesFactory {
 		} else {
 			this.#startAnimation();
 		}
+	}
+
+	resizeCanvas() {
+		this.canvas.width = offscreenCanvas.width = window.innerWidth;
+		this.canvas.height = offscreenCanvas.height = window.innerHeight;
+
+		this.createParticles();
 	}
 }
