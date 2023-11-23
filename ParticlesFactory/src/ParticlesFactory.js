@@ -108,11 +108,13 @@ export class ParticlesFactory {
 	}
 
 	#handleMouseMove(event) {
-		if (!this.mouseDistance) return;
-		let rect = this.canvas.getBoundingClientRect();
+        if (!this.mouseDistance) return;
+
+
+		const rect = this.canvas.getBoundingClientRect();
 		const { left, top } = rect;
-		let mouseX = event.clientX - left;
-		let mouseY = event.clientY - top;
+		const mouseX = event.clientX - left;
+		const mouseY = event.clientY - top;
 
 		for (let particle of this.#particles) {
 			const { x, y } = particle;
@@ -122,11 +124,11 @@ export class ParticlesFactory {
 				let dx = mouseX - x;
 				let dy = mouseY - y;
 				// get the vector from mouse to particle pos
-				let length = Math.sqrt(dx * dx + dy * dy);
+				const length = Math.sqrt(dx * dx + dy * dy);
 				dx /= length;
 				dy /= length;
 
-				let moveAmount = 5; // variable to multiply offset
+				const moveAmount = 5; // variable to multiply offset
 
 				particle.x = x + dx * -moveAmount;
 				particle.y = y + dy * -moveAmount;
@@ -140,7 +142,7 @@ export class ParticlesFactory {
 		offCTX.fillStyle = this.bgColor;
 		offCTX.lineWidth = 0.5;
 		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		//const size = this.ParticlesSize == 0 ? 2 : this.ParticlesSize;
+
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
 
@@ -166,8 +168,7 @@ export class ParticlesFactory {
 			}
 
 			particle.update();
-			//TODO call only if particleSize
-			// how to allow being set to 0
+			// draw particle shapes if this.withParticles set to true - default
 			if (this.withParticles)
 				particle.draw(offCTX, this.particlesColor);
 		}
