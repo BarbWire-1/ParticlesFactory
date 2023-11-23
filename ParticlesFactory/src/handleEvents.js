@@ -1,4 +1,4 @@
-import {offscreenCanvas} from './ParticlesFactory.js'
+
 export function handleEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);

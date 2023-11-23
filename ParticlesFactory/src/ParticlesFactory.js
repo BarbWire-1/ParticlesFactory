@@ -12,18 +12,20 @@
 // TODO add canvas dimensions other than full-screen
 // TODO make responsiveness optional
 
-export const offscreenCanvas = document.createElement('canvas');
-let offCTX = offscreenCanvas.getContext('2d');
+// export const offscreenCanvas = document.createElement('canvas');
+// let offCTX = offscreenCanvas.getContext('2d');
 
 import { Particle } from './Particle.js';
 export class ParticlesFactory {
 	#ctx;
 	#particles;
-	#animationId;
+    #animationId;
+    #offscreenCanvas;
+    #offscreenCtx
 
 	constructor(options) {
 		const {
-			canvasId = '',
+			canvasId = undefined,
 			numParticles = 100,
 			particlesSize = 2,
 			speed = 0.2,
@@ -35,37 +37,33 @@ export class ParticlesFactory {
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
-		this.#ctx = this.canvas.getContext('2d');
+        this.#ctx = this.canvas.getContext('2d');
+        // Create the offscreen canvas and its context
+		this.#offscreenCanvas = document.createElement('canvas');
+        this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
+        // attributes
 		this.numParticles = numParticles;
 		this.speed = speed;
 		this.strokeColor = strokeColor;
 		this.bgColor = bgColor;
 		this.particlesColor = particlesColor;
 		this.particlesSize = particlesSize;
-
 		this.connectDistance = connectDistance;
-		this.mouseDistance = mouseDistance;
-		this.#animationId = null;
+        this.mouseDistance = mouseDistance;
+        this.#particles = [];// holding particles for re-calculation
+        // animationId for start/stop
+        this.#animationId = null;
 
-		this.#particles = [];
-
+        // Listeners
 		this.canvas.addEventListener('pointermove', (e) => {
 			this.#handleMouseMove(e);
-		});
+        });
+        window.addEventListener('resize', this.resizeCanvas.bind(this));
 
-		// // Create the offscreen canvas and its context
-		// this.offscreenCanvas = document.createElement('canvas');
-		// this.offscreenCtx = this.offscreenCanvas.getContext('2d');
-
-		this.createParticles();
-		this.#startAnimation();
-
-		offscreenCanvas.width = this.canvas.width;
-		offscreenCanvas.height = this.canvas.height;
-
-		window.addEventListener('resize', this.resizeCanvas.bind(this));
-
-		this.resizeCanvas(); //  init fullSize
+        //INIT CALLS
+        this.resizeCanvas(); //  init fullSize
+		//this.createParticles();// called in resize!
+        this.#startAnimation();// run per default on load
 	}
 
 	createParticles() {
@@ -117,7 +115,8 @@ export class ParticlesFactory {
 	}
 
 	#startAnimation() {
-		const len = this.#particles.length;
+        const len = this.#particles.length;
+        const offCTX = this.#offscreenCtx;
 		offCTX.fillStyle = this.bgColor;
 		offCTX.lineWidth = 0.5;
 		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -153,7 +152,7 @@ export class ParticlesFactory {
 				particle.draw(offCTX, this.particlesColor);
 		}
 		// draw the completed offscreenCanvas to canvas : only one batched rerender
-		this.#ctx.drawImage(offscreenCanvas, 0, 0);
+		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
 		); // otherwise on proto
@@ -174,8 +173,8 @@ export class ParticlesFactory {
 	}
 
 	resizeCanvas() {
-		this.canvas.width = offscreenCanvas.width = window.innerWidth;
-		this.canvas.height = offscreenCanvas.height = window.innerHeight;
+		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
+		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
 
 		this.createParticles();
 	}
