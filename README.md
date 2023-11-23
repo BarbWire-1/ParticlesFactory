@@ -74,6 +74,9 @@ proxy.numParticles = 150;
 NEW (11-23-23)
 * particlesSize
 * particlesColor
+// flags
+* isFullScreen
+* withParticles
 
 
 **METHODS**
