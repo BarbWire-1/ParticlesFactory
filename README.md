@@ -70,6 +70,10 @@ proxy.numParticles = 150;
 * connectDistance
 * mouseDistance
 
+NEW (11-23-23)
+* particlesSize
+* particlesColor
+
 
 **METHODS**
 

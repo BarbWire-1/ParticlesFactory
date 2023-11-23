@@ -18,7 +18,7 @@ export class Particle {
 	}
 
 	collisionDetection() {
-		const { x, y, size } = this;
+        let { x, y, size} = this;
 		const { width, height } = canvas;
 
 		if (x <= size || x >= width - size) {
