@@ -27,7 +27,7 @@ handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
 const proxy = particlesProxy(myParticles);
-proxy.numParticles = 250;
+proxy.numParticles = 100;
 
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background

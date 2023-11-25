@@ -36,12 +36,12 @@ export class ParticlesFactory {
 	constructor(options) {
         const {
             canvasId = undefined,
-            numParticles = 200,
+            numParticles = 100,
             particlesSize = 2,
             speed = 0.2,
             strokeColor = '#4f4f4f',
             bgColor = '#000',
-            connectDistance = 110,
+            connectDistance = 100,
             mouseDistance = 100,
             particlesColor = '#E1FF00',
             //TODO - not sure about this - better provide aspect ratio for resiting
@@ -54,6 +54,7 @@ export class ParticlesFactory {
         // Create the offscreen canvas and its context
 		this.#offscreenCanvas = document.createElement('canvas');
         this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
+
         // attributes
 		this.numParticles = numParticles;
 		this.speed = speed;
@@ -63,7 +64,8 @@ export class ParticlesFactory {
 		this.particlesSize = particlesSize;
 		this.connectDistance = connectDistance;
         this.mouseDistance = mouseDistance;
-        // FLAG
+
+        // FLAGS
         this.isFullScreen = isFullScreen;
         this.withParticles = withParticles;
         this.#particles = [];// holding particles for re-calculation
@@ -81,10 +83,15 @@ export class ParticlesFactory {
         }
 
         //INIT CALLS
-        this.#resizeCanvas(); //  init fullSize
-		//this.createParticles();// called in resize!
-        this.#startAnimation();// run per default on load
-	}
+        if (this.isFullScreen) {
+            this.#resizeCanvas();
+        } else {
+            this.createParticles()
+        }
+        this.#startAnimation();
+    }
+
+
 
 	createParticles() {
 		this.#particles = [];
@@ -184,7 +191,6 @@ export class ParticlesFactory {
 		this.#animationId = null;
 	}
 
-	// Method to toggle animation state
 	toggleAnimation() {
 		if (this.#animationId) {
 			this.#stopAnimation();
