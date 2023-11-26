@@ -16,6 +16,7 @@ export class ParticlesFactory {
 	#offscreenCanvas;
 	#offscreenCtx;
 
+    // TODO instead recal position of Particles!!!
 	#resizeCanvas = () => {
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
@@ -34,7 +35,7 @@ export class ParticlesFactory {
 			strokeColor = '#4f4f4f',
 			mouseDistance = 100,
 
-			//TODO - not sure about this - better provide aspect ratio for resiting
+			//TODO - not sure about this - better provide aspect ratio for resizing?
 			isFullScreen = true,
 			withParticles = true,
 			particlesCollision = true,
@@ -53,7 +54,7 @@ export class ParticlesFactory {
 		this.strokeColor = strokeColor;
 		this.bgColor = bgColor;
 		this.particlesColor = particlesColor;
-		this.particlesSize = particlesSize;
+		this.particlesSize = particlesSize || 2;
 		this.connectDistance = connectDistance;
 		this.mouseDistance = mouseDistance;
 		this.withLines = withLines;

@@ -16,7 +16,7 @@ export class Particle {
 
 		ctx.fillRect(cx, cy, this.size, this.size);
 	}
-
+    // here only boundaries
 	collisionDetection() {
         let { x, y, size} = this;
 		const { width, height } = canvas;
