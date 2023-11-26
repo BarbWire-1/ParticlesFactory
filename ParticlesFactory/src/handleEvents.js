@@ -11,26 +11,26 @@ export function handleEvents(el, containerId) {
 	 */
 
 	function handleInputChange(e) {
-    const property = isValidAttribute(e, 'attribute');
-    let value = e.target.value;
+		const property = isValidAttribute(e, 'attribute');
+		let value = e.target.value;
 
-    if (e.target.type === 'checkbox') {
-        value = e.target.checked;
-    } else {
-        value = +value || value || e.target.checked;
-    }
+		if (e.target.type === 'checkbox') {
+			value = e.target.checked;
+		} else {
+			value = +value || value || e.target.checked;
+		}
 
-    el[property] = value;
+		el[property] = value;
 
-    if (
-        property === 'numParticles' ||
-        property === 'speed' || // TODO instead redraw just update speed of particles?
-        property === 'particlesSize'// this too
-    ) {
-        el.createParticles();
-    }
-    // Additional logic for other properties...
-}
+		if (
+			property === 'numParticles' ||
+			property === 'speed' || // TODO instead redraw just update speed of particles?
+			property === 'particlesSize' // this too
+		) {
+			el.createParticles();
+		}
+		// Additional logic for other properties...
+	}
 
 	function isValidAttribute(e, type) {
 		const dataAttribute = e.target.dataset?.[type]?.split('-');

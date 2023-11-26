@@ -10,9 +10,9 @@
 
 <body>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<div id="canvas-container">
-    <canvas id="canvas"></canvas>
-</div>
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
     <div id="controlPanelContainer">
         <div id="controlPanel" class="controlPanel">
             <div class="controlPanelHeader">
@@ -25,7 +25,8 @@
                     step="50">
 
                 <label for="size">Particles Size:</label>
-                <input data-attribute="particles-particlesSize" type="number" id="size" value="2" min="1" max="10" step="1">
+                <input data-attribute="particles-particlesSize" type="number" id="size" value="2" min="1" max="10"
+                    step="1">
 
                 <label for="speed">Speed:</label>
                 <input data-attribute="particles-speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
@@ -40,8 +41,8 @@
                 <input data-attribute="particles-bgColor" type="color" id="bg" value="#000000">
 
                 <label for="connect">Connect Distance:</label>
-                <input data-attribute="particles-connectDistance" type="number" id="connect" value="100" min="0" max="400"
-                    step="50">
+                <input data-attribute="particles-connectDistance" type="number" id="connect" value="100" min="0"
+                    max="400" step="50">
 
                 <label for="mouse">Mouse Distance:</label>
                 <input data-attribute="particles-mouseDistance" type="number" id="mouse" value="100" min="0" max="400"
@@ -49,15 +50,15 @@
 
                 <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
                 <button id="toggleContent">Toggle Page Content</button>
-<div id="checkbox-container">
-                <label for="particlesFlag">Draw Particles</label>
-                <input data-attribute="particles-withParticles" type="checkbox" checked>
+                <div id="checkbox-container">
+                    <label for="particlesFlag">Draw Particles</label>
+                    <input data-attribute="particles-withParticles" type="checkbox" checked>
 
-                <label for="particlesCollisionFlag">Particles Collision</label>
-                <input data-attribute="particles-particlesCollision" type="checkbox" checked>
+                    <label for="particlesCollisionFlag">Particles Collision</label>
+                    <input data-attribute="particles-particlesCollision" type="checkbox" checked>
 
-                <label for="withLinesFlag">Draw Lines</label>
-                <input data-attribute="particles-withLines" type="checkbox" checked>
+                    <label for="withLinesFlag">Draw Lines</label>
+                    <input data-attribute="particles-withLines" type="checkbox" checked>
                 </div>
             </div>
         </div>

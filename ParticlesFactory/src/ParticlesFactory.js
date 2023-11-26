@@ -1,13 +1,9 @@
-
 // TODO1.1 convert into a factory function?
-
 
 // TODO2 change to baseParticle and extending shapes - particleType
 
-
 // TODO add canvas dimensions other than full-screen
 // TODO make responsiveness optional
-
 
 // export const offscreenCanvas = document.createElement('canvas');
 // let offCTX = offscreenCanvas.getContext('2d');
@@ -16,44 +12,42 @@ import { Particle } from './Particle.js';
 export class ParticlesFactory {
 	#ctx;
 	#particles;
-    #animationId;
-    #offscreenCanvas;
-    #offscreenCtx;
+	#animationId;
+	#offscreenCanvas;
+	#offscreenCtx;
 
-    #resizeCanvas = () => {
-        this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
-        this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
-        this.createParticles();
-    };
-
-
+	#resizeCanvas = () => {
+		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
+		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
+		this.createParticles();
+	};
 
 	constructor(options) {
-        const {
-            canvasId = undefined,
-            bgColor = '#000',
-            numParticles = 100,
-            particlesSize = 2,
-            speed = 0.2,
-            particlesColor = '#E1FF00',
-            connectDistance = 100,
-            strokeColor = '#4f4f4f',
-            mouseDistance = 100,
+		const {
+			canvasId = undefined,
+			bgColor = '#000',
+			numParticles = 100,
+			particlesSize = 2,
+			speed = 0.2,
+			particlesColor = '#E1FF00',
+			connectDistance = 100,
+			strokeColor = '#4f4f4f',
+			mouseDistance = 100,
 
-            //TODO - not sure about this - better provide aspect ratio for resiting
-            isFullScreen = true,
-            withParticles = true,
-            particlesCollision = true,
-            withLines = true,
+			//TODO - not sure about this - better provide aspect ratio for resiting
+			isFullScreen = true,
+			withParticles = true,
+			particlesCollision = true,
+			withLines = true,
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
-        this.#ctx = this.canvas.getContext('2d');
-        // Create the offscreen canvas and its context
+		this.#ctx = this.canvas.getContext('2d');
+		// Create the offscreen canvas and its context
 		this.#offscreenCanvas = document.createElement('canvas');
-        this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
+		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-        // attributes
+		// attributes
 		this.numParticles = numParticles;
 		this.speed = speed;
 		this.strokeColor = strokeColor;
@@ -61,37 +55,34 @@ export class ParticlesFactory {
 		this.particlesColor = particlesColor;
 		this.particlesSize = particlesSize;
 		this.connectDistance = connectDistance;
-        this.mouseDistance = mouseDistance;
-        this.withLines = withLines
+		this.mouseDistance = mouseDistance;
+		this.withLines = withLines;
 
-        // FLAGS
-        this.isFullScreen = isFullScreen;
-        this.withParticles = withParticles;
-        this.particlesCollision = particlesCollision;
-        this.#particles = [];// holding particles for re-calculation
-        // animationId for start/stop
-        this.#animationId = null;
+		// FLAGS
+		this.isFullScreen = isFullScreen;
+		this.withParticles = withParticles;
+		this.particlesCollision = particlesCollision;
+		this.#particles = []; // holding particles for re-calculation
+		// animationId for start/stop
+		this.#animationId = null;
 
-
-        // Listeners
+		// Listeners
 		this.canvas.addEventListener('pointermove', (e) => {
 			this.#handleMouseMove(e);
-        });
-        // use arrowFun to get surrounding context!
-        if (this.isFullScreen) {
-            window.addEventListener('resize', this.#resizeCanvas);
-        }
+		});
+		// use arrowFun to get surrounding context!
+		if (this.isFullScreen) {
+			window.addEventListener('resize', this.#resizeCanvas);
+		}
 
-        //INIT CALLS
-        if (this.isFullScreen) {
-            this.#resizeCanvas();
-        } else {
-            this.createParticles()
-        }
-        this.#startAnimation();
-    }
-
-
+		//INIT CALLS
+		if (this.isFullScreen) {
+			this.#resizeCanvas();
+		} else {
+			this.createParticles();
+		}
+		this.#startAnimation();
+	}
 
 	createParticles() {
 		this.#particles = [];
@@ -115,8 +106,7 @@ export class ParticlesFactory {
 	}
 
 	#handleMouseMove(event) {
-        if (!this.mouseDistance) return;
-
+		if (!this.mouseDistance) return;
 
 		const rect = this.canvas.getBoundingClientRect();
 		const { left, top } = rect;
@@ -141,67 +131,61 @@ export class ParticlesFactory {
 				particle.y = y + dy * -moveAmount;
 			}
 		}
-    }
+	}
 
-    #drawElements2OffscreenCanvas() {
-
-        const offCTX = this.#offscreenCtx;
+	#drawElements2OffscreenCanvas() {
+		const offCTX = this.#offscreenCtx;
 		offCTX.fillStyle = this.bgColor;
 		offCTX.lineWidth = 0.5;
-        offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        const len = this.numParticles;
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[ i ];
+		const len = this.numParticles;
+		for (let i = 0; i < len; i++) {
+			const particle = this.#particles[i];
 
+			for (let j = i + 1; j < len; j++) {
+				// Check Distance Between Particles
+				const otherParticle = this.#particles[j];
+				const distance = this.#getDistance(
+					particle.x,
+					particle.y,
+					otherParticle.x,
+					otherParticle.y
+				);
 
-            for (let j = i + 1; j < len; j++) {
+				// Draw Connecting Lines - optional
+				if (this.withLines) {
+					const isInRadius = distance <= this.connectDistance;
+					if (isInRadius) {
+						offCTX.beginPath();
+						offCTX.moveTo(particle.x, particle.y);
+						offCTX.lineTo(otherParticle.x, otherParticle.y);
+						offCTX.strokeStyle = this.strokeColor;
+						offCTX.stroke();
+					}
+				}
+				// Change Direction On Collision - optional
+				if (
+					this.withParticles &&
+					this.particlesCollision &&
+					Math.abs(distance < particle.size)
+				) {
+					particle.xSpeed *= -1.001;
+					particle.ySpeed *= -1.001;
+					otherParticle.xSpeed *= -1.001;
+					otherParticle.ySpeed *= -1.001;
+				}
+			}
 
-                // Check Distance Between Particles
-                const otherParticle = this.#particles[ j ];
-                const distance = this.#getDistance(
-                    particle.x,
-                    particle.y,
-                    otherParticle.x,
-                    otherParticle.y
-                );
+			particle.update();
 
-                // Draw Connecting Lines - optional
-                if (this.withLines) {
-                    const isInRadius = distance <= this.connectDistance;
-                    if (isInRadius) {
-
-                        offCTX.beginPath();
-                        offCTX.moveTo(particle.x, particle.y);
-                        offCTX.lineTo(otherParticle.x, otherParticle.y);
-                        offCTX.strokeStyle = this.strokeColor;
-                        offCTX.stroke();
-                    };
-                };
-                // Change Direction On Collision - optional
-                if (this.withParticles
-                    && this.particlesCollision
-                    && Math.abs(distance < particle.size)
-                ) {
-                    particle.xSpeed *= -1.001;
-                    particle.ySpeed *= -1.001;
-                    otherParticle.xSpeed *= -1.001;
-                    otherParticle.ySpeed *= -1.001;
-                };
-            };
-
-            particle.update();
-
-            // Draw Particle-Shapes - optional
-			if (this.withParticles)
-				particle.draw(offCTX, this.particlesColor);
-        }
-    }
-
+			// Draw Particle-Shapes - optional
+			if (this.withParticles) particle.draw(offCTX, this.particlesColor);
+		}
+	}
 
 	#startAnimation() {
-
-        this.#drawElements2OffscreenCanvas();
+		this.#drawElements2OffscreenCanvas();
 
 		// draw the offscreenCanvas image to canvas
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
@@ -222,6 +206,4 @@ export class ParticlesFactory {
 			this.#startAnimation();
 		}
 	}
-
-
 }
