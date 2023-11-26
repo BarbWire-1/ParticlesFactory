@@ -146,68 +146,67 @@ export class ParticlesFactory {
 	}
 
 	#drawLines(offCTX, particle, otherParticle) {
-    const distance = this.#getDistance(
-        particle.x,
-        particle.y,
-        otherParticle.x,
-        otherParticle.y
-    );
+		const distance = this.#getDistance(
+			particle.x,
+			particle.y,
+			otherParticle.x,
+			otherParticle.y
+		);
 
-    if (this.withLines && distance <= this.lines.connectDistance) {
-        offCTX.beginPath();
-        offCTX.moveTo(particle.x, particle.y);
-        offCTX.lineTo(otherParticle.x, otherParticle.y);
-        offCTX.strokeStyle = this.lines.strokeStyle;
-        offCTX.stroke();
-    }
-}
+		if (this.withLines && distance <= this.lines.connectDistance) {
+			offCTX.beginPath();
+			offCTX.moveTo(particle.x, particle.y);
+			offCTX.lineTo(otherParticle.x, otherParticle.y);
+			offCTX.strokeStyle = this.lines.strokeStyle;
+			offCTX.stroke();
+		}
+	}
 
-#calculateCollision(particle, otherParticle) {
-    const distance = this.#getDistance(
-        particle.x,
-        particle.y,
-        otherParticle.x,
-        otherParticle.y
-    );
+	#calculateCollision(particle, otherParticle) {
+		const distance = this.#getDistance(
+			particle.x,
+			particle.y,
+			otherParticle.x,
+			otherParticle.y
+		);
 
-    if (
-        this.withParticles &&
-        this.particlesCollision &&
-        Math.abs(distance < particle.size)
-    ) {
-        particle.xSpeed *= -1.001;
-        particle.ySpeed *= -1.001;
-        otherParticle.xSpeed *= -1.001;
-        otherParticle.ySpeed *= -1.001;
-    }
-}
+		if (
+			this.withParticles &&
+			this.particlesCollision &&
+			Math.abs(distance < particle.size)
+		) {
+			particle.xSpeed *= -1.001;
+			particle.ySpeed *= -1.001;
+			otherParticle.xSpeed *= -1.001;
+			otherParticle.ySpeed *= -1.001;
+		}
+	}
 
-#drawElements2OffscreenCanvas() {
-    const offCTX = this.#offscreenCtx;
-    offCTX.fillStyle = this.bgColor;
-    offCTX.lineWidth = 0.5;
-    offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	#drawElements2OffscreenCanvas() {
+		const offCTX = this.#offscreenCtx;
+		offCTX.fillStyle = this.bgColor;
+		offCTX.lineWidth = 0.5;
+		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    for (let i = 0; i < this.numParticles; i++) {
-        const particle = this.#particles[i];
-        particle.update();
+		for (let i = 0; i < this.numParticles; i++) {
+			const particle = this.#particles[i];
+			particle.update();
 
-        for (let j = i + 1; j < this.numParticles; j++) {
-            const otherParticle = this.#particles[j];
-            if (this.withLines)
-                this.#drawLines(offCTX, particle, otherParticle);
-            if (this.particlesCollision)
-                this.#calculateCollision(particle, otherParticle);
-        }
+			for (let j = i + 1; j < this.numParticles; j++) {
+				const otherParticle = this.#particles[j];
+				if (this.withLines)
+					this.#drawLines(offCTX, particle, otherParticle);
+				if (this.particlesCollision)
+					this.#calculateCollision(particle, otherParticle);
+			}
 
-        if (this.withParticles) {
-            particle.draw(offCTX, this.particles.fillStyle);
-        }
-    }
+			if (this.withParticles) {
+				particle.draw(offCTX, this.particles.fillStyle);
+			}
+		}
 
-    this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
-}
-
+		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
+	}
 
 	#startAnimation() {
 		this.#drawElements2OffscreenCanvas();
