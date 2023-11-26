@@ -48,7 +48,11 @@ const options = {
   fillColor: "#000",
   connectDistance: 150,
   mouseDistance: 100,
-  particleColor: '#E1FF00'
+  particleColor: '#E1FF00',
+  isFullScreen: true,
+  withParticles: true,
+  particlesCollision: true,
+  withLines: true
 };
 
 const yourParticles = new ParticlesFactory(options);
