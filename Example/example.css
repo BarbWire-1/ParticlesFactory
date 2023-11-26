@@ -198,3 +198,10 @@ h4 {
 button {
      cursor: pointer;
 }
+
+#checkbox-container {
+    margin-top: 25px;
+}
+#checkbox-container * {
+    margin-top: 20px;
+}

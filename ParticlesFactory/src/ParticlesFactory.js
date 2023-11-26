@@ -1,18 +1,13 @@
-// TODO add more optional variables??
+
 // TODO1.1 convert into a factory function?
-// TODO1.1.1 add offscreencanvas
 
-// TODO2 change to baseParticle and extending shapes
-// TODO2.1  add fillSyle for particleFill
 
-// TODO add inputs for new added attributes
+// TODO2 change to baseParticle and extending shapes - particleType
 
-// TODO add particles-type and if none - do NOT draw particles only lines
 
 // TODO add canvas dimensions other than full-screen
 // TODO make responsiveness optional
 
-// TODO logic mistake for NOT drawing particle when set to 0 - need a flag instead for draw or not draw?
 
 // export const offscreenCanvas = document.createElement('canvas');
 // let offCTX = offscreenCanvas.getContext('2d');
@@ -48,7 +43,8 @@ export class ParticlesFactory {
             //TODO - not sure about this - better provide aspect ratio for resiting
             isFullScreen = true,
             withParticles = true,
-            particlesCollision = true
+            particlesCollision = true,
+            withLines = true,
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
@@ -66,6 +62,7 @@ export class ParticlesFactory {
 		this.particlesSize = particlesSize;
 		this.connectDistance = connectDistance;
         this.mouseDistance = mouseDistance;
+        this.withLines = withLines
 
         // FLAGS
         this.isFullScreen = isFullScreen;
@@ -144,7 +141,8 @@ export class ParticlesFactory {
 				particle.y = y + dy * -moveAmount;
 			}
 		}
-	}
+    }
+
     #drawElements2OffscreenCanvas() {
 
         const offCTX = this.#offscreenCtx;
@@ -169,7 +167,7 @@ export class ParticlesFactory {
                 );
 
                 // Draw Connecting Lines - optional
-                if (this.connectDistance) {
+                if (this.withLines) {
                     const isInRadius = distance <= this.connectDistance;
                     if (isInRadius) {
 

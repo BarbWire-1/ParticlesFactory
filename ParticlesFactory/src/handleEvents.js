@@ -1,4 +1,3 @@
-
 export function handleEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);
@@ -12,14 +11,26 @@ export function handleEvents(el, containerId) {
 	 */
 
 	function handleInputChange(e) {
-		const property = isValidAttribute(e, 'attribute');
-		const value = e.target.value;
-		el[property] = +value || value;
-        if (property === 'numParticles'
-            || property === 'speed'
-            || property === 'particlesSize')
-			el.createParticles();
-	}
+    const property = isValidAttribute(e, 'attribute');
+    let value = e.target.value;
+
+    if (e.target.type === 'checkbox') {
+        value = e.target.checked;
+    } else {
+        value = +value || value || e.target.checked;
+    }
+
+    el[property] = value;
+
+    if (
+        property === 'numParticles' ||
+        property === 'speed' || // TODO instead redraw just update speed of particles?
+        property === 'particlesSize'// this too
+    ) {
+        el.createParticles();
+    }
+    // Additional logic for other properties...
+}
 
 	function isValidAttribute(e, type) {
 		const dataAttribute = e.target.dataset?.[type]?.split('-');
@@ -42,5 +53,4 @@ export function handleEvents(el, containerId) {
 	// EVENT LISTENERS
 	container.addEventListener('click', handleButtonClick);
 	container.addEventListener('input', handleInputChange);
-
 }
