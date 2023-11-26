@@ -49,7 +49,7 @@ export class ParticlesFactory {
 			particles = { fillStyle: '#E1FF00', size: 5 },
 			lines = { connectDistance: 100, strokeStyle: '#4f4f4f' },
 
-            // FLAGS
+            // FLAGS //TODO check whether to remove and check for object in options instead
             isFullScreen = true,
 			withParticles = true,
 			particlesCollision = true,
@@ -104,7 +104,7 @@ export class ParticlesFactory {
 		for (let i = 0; i < this.numParticles; i++) {
 			const { width, height } = this.canvas;
 			const size = this.particles.size;
-			//console.log({ size })// correct
+
 			this.#particles.push(
 				new Particle(
 					Math.random() * (width - 2 * size) + size,
@@ -114,7 +114,7 @@ export class ParticlesFactory {
 				)
 			);
 		}
-		//console.log(this.#particles)// here size is wrong
+
 	}
 
 	#getDistance(x1, y1, x2, y2) {
