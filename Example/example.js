@@ -10,18 +10,17 @@ const options = {
     main:  {
         canvasId: 'canvas',
         bgColor: '#000',
-        numParticles: 500,
-        //particlesSize = 2,
+        numParticles: 100,
         speed: 0.2,
         mouseDistance: 100,
         isFullScreen: true,
     },
-    particles: { fillStyle: '#E1FF00', size: 2 },
-    lines: { connectDistance: 100, strokeStyle:'#4f4f4f' },
+    particles: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
+    lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional
 
-    withParticles: true,
+    withParticles: true,// necessary to draw particles!
     particlesCollision: true,
-    withLines: true,
+    withLines: true,// necessary to draw lines!
 }
 
 
@@ -31,7 +30,7 @@ handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
 const proxy = particlesProxy(myParticles);
-proxy.numParticles = 100;
+//proxy.numParticles = 100;
 
 //proxy.particles.size = 2// CHECK PROXY!!!!!
 

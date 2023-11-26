@@ -40,19 +40,13 @@ export class ParticlesFactory {
 				canvasId: '',
 				bgColor: '#000',
 				numParticles: 100,
-				//particlesSize = 2,
 				speed: 0.2,
 				mouseDistance: 100,
 				isFullScreen: true,
 			},
-			particles = { fillStyle: '#E1FF00', size: 5 },
-			lines = { connectDistance: 100, strokeStyle: '#4f4f4f' },
+			particles = null,
+			lines = null,
 
-			// FLAGS //TODO check whether to remove and check for object in options instead
-			isFullScreen = true,
-			withParticles = true,
-			particlesCollision = true,
-			withLines = true,
 		} = options;
 
 		this.canvas = document.getElementById(main.canvasId);
@@ -60,27 +54,29 @@ export class ParticlesFactory {
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-		this.isFullScreen = isFullScreen;
-		// SHAPES
-		this.withParticles = withParticles;
+        this.isFullScreen = main.isFullScreen;
 
-		if (this.withParticles) {
-			this.particles = {
+
+		// SHAPES
+		if (particles) {
+			this.particles = Object.preventExtensions({
 				fillStyle: particles.fillStyle,
-				size: particles.size || 2,
-			};
+                size: particles.size || 2,
+                draw: particles.draw,
+                collision: particles.collision
+			});
 		}
 
 		// CONNECTING LINES
-		this.withLines = withLines;
-		if (this.withLines) {
-			this.lines = {
+		if (lines) {
+			this.lines = Object.preventExtensions({
 				connectDistance: lines.connectDistance,
-				strokeStyle: lines.strokeStyle,
-			};
+                strokeStyle: lines.strokeStyle,
+                draw: lines.draw
+			});
 		}
 
-		this.particlesCollision = particlesCollision;
+
 		this.numParticles = main.numParticles;
 		this.speed = main.speed;
 		this.mouseDistance = main.mouseDistance;
@@ -102,7 +98,7 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < this.numParticles; i++) {
 			const { width, height } = this.canvas;
-			const size = this.particles.size;
+			const size = this.particles?.size || 2;
 
 			this.#particles.push(
 				new Particle(
@@ -153,7 +149,7 @@ export class ParticlesFactory {
 			otherParticle.y
 		);
 
-		if (this.withLines && distance <= this.lines.connectDistance) {
+		if (this.lines?.draw && distance <= this.lines.connectDistance) {
 			offCTX.beginPath();
 			offCTX.moveTo(particle.x, particle.y);
 			offCTX.lineTo(otherParticle.x, otherParticle.y);
@@ -171,8 +167,8 @@ export class ParticlesFactory {
 		);
 
 		if (
-			this.withParticles &&
-			this.particlesCollision &&
+
+			this.particles?.collision &&
 			Math.abs(distance < particle.size)
 		) {
 			particle.xSpeed *= -1.001;
@@ -194,13 +190,15 @@ export class ParticlesFactory {
 
 			for (let j = i + 1; j < this.numParticles; j++) {
 				const otherParticle = this.#particles[j];
-				if (this.withLines)
+				if (this.lines?.draw)
 					this.#drawLines(offCTX, particle, otherParticle);
-				if (this.particlesCollision)
+                if (this.particles?.collision)
+                    //console.log(this.particles.collision)
 					this.#calculateCollision(particle, otherParticle);
 			}
 
-			if (this.withParticles) {
+            if (this.particles?.draw) {
+                //console.log(this.particles.draw)
 				particle.draw(offCTX, this.particles.fillStyle);
 			}
 		}
