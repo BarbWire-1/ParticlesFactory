@@ -20,66 +20,87 @@ export class ParticlesFactory {
      // TODO instead recal position of Particles!!!
 	#resizeCanvas = () => {
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
-		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
+        this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
+        console.log(this.canvas.width)
 		this.createParticles();
-	};
-
-    constructor(options) {
-        const {
-            canvasId = undefined,
-            bgColor = '#000',
-            numParticles = 100,
-            particlesSize = 2,
-            speed = 0.2,
-            particlesColor = '#E1FF00',
-            connectDistance = 100,
-            strokeColor = '#4f4f4f',
-            mouseDistance = 100,
-            isFullScreen = true,
-            withParticles = true,
-            particlesCollision = true,
-            withLines = true,
-        } = options;
-
-        this.canvas = document.getElementById(canvasId);
-        this.#ctx = this.canvas.getContext('2d');
-        this.#offscreenCanvas = document.createElement('canvas');
-        this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
-
-        this.numParticles = numParticles;
-        this.speed = speed;
-        this.strokeColor = strokeColor;
-        this.bgColor = bgColor;
-        this.particlesColor = particlesColor;
-        this.particlesSize = particlesSize || 2;
-        this.connectDistance = connectDistance;
-        this.mouseDistance = mouseDistance;
-        this.withLines = withLines;
-
-        this.isFullScreen = isFullScreen;
-        this.withParticles = withParticles;
-        this.particlesCollision = particlesCollision;
-        this.#particles = [];
-
+    };
+    #initListeners = () => {
         this.canvas.addEventListener('pointermove', this.#handleMouseMove.bind(this));
         if (this.isFullScreen) {
             window.addEventListener('resize', this.#resizeCanvas.bind(this));
         }
-
-        if (this.isFullScreen) {
-            this.#resizeCanvas();
-        } else {
-            this.createParticles();
-        }
-        this.#startAnimation();
     }
+        constructor(options) {
+            const {
+                canvasId = undefined,
+                bgColor = '#000',
+                numParticles = 100,
+                particlesSize = 2,
+                speed = 0.2,
+                particlesColor = '#E1FF00',
+                connectDistance = 100,
+                strokeColor = '#4f4f4f',
+                mouseDistance = 100,
+                isFullScreen = true,
+                withParticles = true,
+                particlesCollision = true,
+                withLines = true,
+            } = options;
+
+            this.canvas = document.getElementById(canvasId);
+            this.#ctx = this.canvas.getContext('2d');
+            this.#offscreenCanvas = document.createElement('canvas');
+            this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
+
+
+            this.isFullScreen = isFullScreen;
+            this.withParticles = withParticles;
+            if (this.withParticles) {
+                this.particles = {
+                    fillStyle: particlesColor,
+                    size: particlesSize || 2,
+                }
+            }
+            this.withLines = withLines;
+            if (this.withLines) {
+                this.lines = {
+                    connectDistance: connectDistance,
+                    strokeStyle: strokeColor
+                }
+            }
+
+            this.particlesCollision = particlesCollision;
+            this.numParticles = numParticles;
+            this.speed = speed;
+            this.mouseDistance = mouseDistance;
+            this.bgColor = bgColor;
+
+
+
+
+
+
+            this.#particles = [];
+
+
+            this.#initListeners();
+
+            if (this.isFullScreen) {
+                this.#resizeCanvas();
+            } else {
+                this.createParticles();
+            }
+            this.#startAnimation();
+        }
+
 
     createParticles() {
         this.#particles = [];
 
         for (let i = 0; i < this.numParticles; i++) {
             const { width, height } = this.canvas;
-            const size = this.particlesSize;
+            const size = this.particles.size;
+            //console.log({ size })// correct
             this.#particles.push(
                 new Particle(
                     Math.random() * (width - 2 * size) + size,
@@ -89,6 +110,7 @@ export class ParticlesFactory {
                 )
             );
         }
+        //console.log(this.#particles)// here size is wrong
     }
 
     #getDistance(x1, y1, x2, y2) {
@@ -129,7 +151,8 @@ export class ParticlesFactory {
 
         const len = this.numParticles;
         for (let i = 0; i < len; i++) {
-            const particle = this.#particles[i];
+            const particle = this.#particles[ i ];
+
 
             for (let j = i + 1; j < len; j++) {
                 const otherParticle = this.#particles[j];
@@ -141,12 +164,12 @@ export class ParticlesFactory {
                 );
 
                 if (this.withLines) {
-                    const isInRadius = distance <= this.connectDistance;
+                    const isInRadius = distance <= this.lines.connectDistance;
                     if (isInRadius) {
                         offCTX.beginPath();
                         offCTX.moveTo(particle.x, particle.y);
                         offCTX.lineTo(otherParticle.x, otherParticle.y);
-                        offCTX.strokeStyle = this.strokeColor;
+                        offCTX.strokeStyle = this.lines.strokeStyle;
                         offCTX.stroke();
                     }
                 }
@@ -155,6 +178,7 @@ export class ParticlesFactory {
                     this.particlesCollision &&
                     Math.abs(distance < particle.size)
                 ) {
+                    //particle.size = this.particles.size
                     particle.xSpeed *= -1.001;
                     particle.ySpeed *= -1.001;
                     otherParticle.xSpeed *= -1.001;
@@ -164,7 +188,8 @@ export class ParticlesFactory {
 
             particle.update();
 
-            if (this.withParticles) particle.draw(offCTX, this.particlesColor);
+            if (this.withParticles)
+                particle.draw(offCTX, this.particles.fillStyle);
         }
     }
 

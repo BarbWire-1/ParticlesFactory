@@ -29,6 +29,8 @@ handleEvents(myParticles, "controlPanelContainer");
 const proxy = particlesProxy(myParticles);
 proxy.numParticles = 100;
 
+proxy.particles.size = 10
+
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background
 document.getElementById("toggleContent").addEventListener("click", function () {

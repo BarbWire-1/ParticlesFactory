@@ -18,17 +18,26 @@ export function handleEvents(el, containerId) {
 			value = e.target.checked;
 		} else {
 			value = +value || value || e.target.checked;
-		}
+        };
 
-		el[property] = value;
+        if (property.includes('.')) { // get the objects
+            const prop = property.split('.');
+            el[ prop[ 0 ] ][ prop[ 1 ] ] = value
+            console.log(prop)
+        } else {
+            console.log(property)
+            el[property] = value;
+        };
+
 
 		if (
 			property === 'numParticles' ||
 			property === 'speed' || // TODO instead redraw just update speed of particles?
-			property === 'particlesSize' // this too
-		) {
+			property === 'particles.size' // this too
+        ) {
+          console.log(el.particles.size)
 			el.createParticles();
-		}
+        };
 		// Additional logic for other properties...
 	}
 
