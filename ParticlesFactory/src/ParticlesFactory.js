@@ -36,17 +36,19 @@ export class ParticlesFactory {
 	constructor(options) {
         const {
             canvasId = undefined,
+            bgColor = '#000',
             numParticles = 100,
             particlesSize = 2,
             speed = 0.2,
-            strokeColor = '#4f4f4f',
-            bgColor = '#000',
-            connectDistance = 100,
-            mouseDistance = 100,
             particlesColor = '#E1FF00',
+            connectDistance = 100,
+            strokeColor = '#4f4f4f',
+            mouseDistance = 100,
+
             //TODO - not sure about this - better provide aspect ratio for resiting
             isFullScreen = true,
-            withParticles = true
+            withParticles = true,
+            particlesCollision = true
 		} = options;
 
 		this.canvas = document.getElementById(canvasId);
@@ -68,6 +70,7 @@ export class ParticlesFactory {
         // FLAGS
         this.isFullScreen = isFullScreen;
         this.withParticles = withParticles;
+        this.particlesCollision = particlesCollision;
         this.#particles = [];// holding particles for re-calculation
         // animationId for start/stop
         this.#animationId = null;
@@ -142,44 +145,67 @@ export class ParticlesFactory {
 			}
 		}
 	}
+    #drawElements2OffscreenCanvas() {
 
-	#startAnimation() {
-        const len = this.#particles.length;
         const offCTX = this.#offscreenCtx;
 		offCTX.fillStyle = this.bgColor;
 		offCTX.lineWidth = 0.5;
-		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-		for (let i = 0; i < len; i++) {
-			const particle = this.#particles[i];
+        const len = this.numParticles;
+        for (let i = 0; i < len; i++) {
+            const particle = this.#particles[ i ];
 
-			// get the particles inside the set distance and draw connection-lines
-			for (let j = i + 1; j < len; j++) {
-				const otherParticle = this.#particles[j];
-				const isInRadius =
-					this.#getDistance(
-						particle.x,
-						particle.y,
-						otherParticle.x,
-						otherParticle.y
-					) <= this.connectDistance;
 
-				if (isInRadius) {
-					// draw connecting line
-					offCTX.beginPath();
-					offCTX.moveTo(particle.x, particle.y);
-					offCTX.lineTo(otherParticle.x, otherParticle.y);
-					offCTX.strokeStyle = this.strokeColor;
-					offCTX.stroke();
-				}
-			}
+            for (let j = i + 1; j < len; j++) {
 
-			particle.update();
-			// draw particle shapes if this.withParticles set to true - default
+                // Check Distance Between Particles
+                const otherParticle = this.#particles[ j ];
+                const distance = this.#getDistance(
+                    particle.x,
+                    particle.y,
+                    otherParticle.x,
+                    otherParticle.y
+                );
+
+                // Draw Connecting Lines - optional
+                if (this.connectDistance) {
+                    const isInRadius = distance <= this.connectDistance;
+                    if (isInRadius) {
+
+                        offCTX.beginPath();
+                        offCTX.moveTo(particle.x, particle.y);
+                        offCTX.lineTo(otherParticle.x, otherParticle.y);
+                        offCTX.strokeStyle = this.strokeColor;
+                        offCTX.stroke();
+                    };
+                };
+                // Change Direction On Collision - optional
+                if (this.withParticles
+                    && this.particlesCollision
+                    && Math.abs(distance < particle.size)
+                ) {
+                    particle.xSpeed *= -1.001;
+                    particle.ySpeed *= -1.001;
+                    otherParticle.xSpeed *= -1.001;
+                    otherParticle.ySpeed *= -1.001;
+                };
+            };
+
+            particle.update();
+
+            // Draw Particle-Shapes - optional
 			if (this.withParticles)
 				particle.draw(offCTX, this.particlesColor);
-		}
-		// draw the completed offscreenCanvas to canvas : only one batched rerender
+        }
+    }
+
+
+	#startAnimation() {
+
+        this.#drawElements2OffscreenCanvas();
+
+		// draw the offscreenCanvas image to canvas
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
