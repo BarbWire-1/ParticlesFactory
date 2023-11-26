@@ -84,6 +84,7 @@ button {
 
 #controlPanelContainer.open {
      right: 0px;
+     overflow-y: auto;
 }
 #controlPanelContainer.open .controlPanelContent {
      right: 0px;
