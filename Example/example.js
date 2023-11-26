@@ -3,7 +3,7 @@ import *  as particles from "../ParticlesFactory/index.js";
 const {
     ParticlesFactory,
     handleEvents,
-    particlesProxy } = particles;
+    createNestedProxies } = particles;
 
 // Initialisation
 const options = {
@@ -29,14 +29,14 @@ const myParticles = new ParticlesFactory(options);
 handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
-const proxy = particlesProxy(myParticles);
+const proxy = createNestedProxies(myParticles);
 proxy.numParticles = 300;
 
 
 proxy.lines.strokeStyle = "red"// ok
 proxy.particles.fillStyle = 'blue'// ok
-proxy.particles.size = 50;// NOT OK
-//proxy.particles.draw = false;// ok
+proxy.particles.size = 10;// ok
+// proxy.particles.draw = false;// ok
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background
 document.getElementById("toggleContent").addEventListener("click", function () {

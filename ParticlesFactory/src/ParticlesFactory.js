@@ -141,12 +141,14 @@ export class ParticlesFactory {
 		}
 	}
 
-	#drawLines(offCTX, particle, otherParticle) {
+    #drawLines(offCTX, particle, otherParticle) {
+        if (!particle || !otherParticle)
+        return; // Exit early if either particle is undefined or null
 		const distance = this.#getDistance(
-			particle.x,
-			particle.y,
-			otherParticle.x,
-			otherParticle.y
+			particle?.x,
+			particle?.y,
+			otherParticle?.x,
+			otherParticle?.y
 		);
 
 		if (this.lines?.draw && distance <= this.lines.connectDistance) {
@@ -160,16 +162,16 @@ export class ParticlesFactory {
 
 	#calculateCollision(particle, otherParticle) {
 		const distance = this.#getDistance(
-			particle.x,
-			particle.y,
-			otherParticle.x,
-			otherParticle.y
+			particle?.x,
+			particle?.y,
+			otherParticle?.x,
+			otherParticle?.y
 		);
 
 		if (
 
 			this.particles?.collision &&
-			Math.abs(distance < particle.size)
+			Math.abs(distance < particle?.size)
 		) {
 			particle.xSpeed *= -1.001;
 			particle.ySpeed *= -1.001;
@@ -184,9 +186,10 @@ export class ParticlesFactory {
 		offCTX.lineWidth = 0.5;
 		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+        const size = this.particles.size;
 		for (let i = 0; i < this.numParticles; i++) {
 			const particle = this.#particles[i];
-			particle.update();
+			particle?.update();
 
 			for (let j = i + 1; j < this.numParticles; j++) {
 				const otherParticle = this.#particles[j];
@@ -197,7 +200,9 @@ export class ParticlesFactory {
 					this.#calculateCollision(particle, otherParticle);
 			}
 
-            if (this.particles?.draw) {
+            if (this.particles.draw) {
+                if (!particle) return;
+                particle.size = size;// hmmmm...
                 //console.log(this.particles.draw)
 				particle.draw(offCTX, this.particles.fillStyle);
 			}

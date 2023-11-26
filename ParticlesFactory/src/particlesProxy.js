@@ -4,32 +4,40 @@
  * @param {ParticlesFactory} el - ParticlesFactory instance
  * @returns {Proxy} - A proxy object for the ParticlesFactory instance
  */
+// TODO!:!:! Look up recursive proxy!
+export function createNestedProxies(obj, handler = {}) {
+    const proxyCache = new WeakMap();
 
-export function particlesProxy(el) {
-	return new Proxy(el, {
-		/**
-		 *  property assignment and trigger updates for 'numParticles' and 'speed'.
-		 *
-		 * @param {ParticlesFactory} target - ParticlesFactory instance.
-		 * @param {string} property - The property being set.
-		 * @param {*} value - The value being assigned to the property.
-		 * @returns {boolean} - Returns true for successfully set.
-		 */
+    return new Proxy(obj, {
+        get(target, prop, receiver) {
+            const value = Reflect.get(target, prop, receiver);
+            //console.log(value)
+            if (typeof value === 'object' && value !== null) {
+                if (!proxyCache.has(value)) {
+                    const proxy = new Proxy(value, handler);
+                    //console.log(proxy)
+                    proxyCache.set(value, proxy);
+                }
+                return proxyCache.get(value);
+            }
 
-        set(target, property, value) {
-        console.log(Object.keys(target))
-            console.log(target, property, value)
-			target[property] = value;
-            updateInputValue(target, property);
-			if (property === 'numParticles' || property === 'speed' ) {
-				target.createParticles();
-
-			}
-			return true;
+            return value;
         },
-
-	});
+        set(target, prop, value, receiver) {
+            const result = Reflect.set(target, prop, value, receiver);
+            console.log(prop, value, target)
+            if (result) {
+                console.log(`Set ${prop} to ${value} in`, target);
+                updateInputValue(target, prop);
+            }
+            return result;
+        },
+    });
+    console.log(proxyCache)
 }
+
+
+
 
 /**
  * Updates the value of the corresponding input element based on the attribute of the ParticlesFactory instance.
@@ -40,11 +48,18 @@ export function particlesProxy(el) {
  */
 
 function updateInputValue(el, attribute) {
-    console.log( attribute)
-	const input = document.querySelector(
-		`input[data-attribute="particles-${attribute}"]`
-	);
-	if (!input) return;
+    console.log(attribute)
+    const [mainAttr, nestedAttr] = attribute.split('.');
 
-	input.value = el[attribute];
+    const input = document.querySelector(
+        `input[data-attribute="particles-${mainAttr}"][data-nested-attribute="${nestedAttr}"]`
+    );
+
+    if (!input) return;
+
+    if (nestedAttr) {
+        input.value = el[mainAttr][nestedAttr];
+    } else {
+        input.value = el[attribute];
+    }
 }
