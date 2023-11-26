@@ -7,19 +7,23 @@ const {
 
 // Initialisation
 const options = {
-  canvasId: "canvas", // required
-    //   numParticles: 50, // all following optional
-    //   particleSize: 6,
-    //   speed: 0.2,
-    //   strokeColor: "#4f4f4f",
-    //   fillColor: "#000",
-    //   connectDistance: 150,
-    //   mouseDistance: 100,
-    //   particleColor: '#E1FF00'
+    main:  {
+        canvasId: 'canvas',
+        bgColor: '#000',
+        numParticles: 500,
+        //particlesSize = 2,
+        speed: 0.2,
+        mouseDistance: 100,
+        isFullScreen: true,
+    },
+    particles: { fillStyle: '#E1FF00', size: 2 },
+    lines: { connectDistance: 100, strokeStyle:'#4f4f4f' },
 
-    //   isFullScreen: true,// flag to resize and redraw with window
-    //   withParticles: false// flag to draw particles - if set to false lines only!
-};
+    withParticles: true,
+    particlesCollision: true,
+    withLines: true,
+}
+
 
 const myParticles = new ParticlesFactory(options);
 
@@ -29,7 +33,7 @@ handleEvents(myParticles, "controlPanelContainer");
 const proxy = particlesProxy(myParticles);
 proxy.numParticles = 100;
 
-proxy.particles.size = 10
+//proxy.particles.size = 2// CHECK PROXY!!!!!
 
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background

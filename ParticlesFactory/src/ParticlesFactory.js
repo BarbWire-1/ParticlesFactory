@@ -11,202 +11,205 @@
 import { Particle } from './Particle.js';
 
 export class ParticlesFactory {
-    #ctx;
-    #particles;
-    #animationId;
-    #offscreenCanvas;
-    #offscreenCtx;
+	#ctx;
+	#particles;
+	#animationId;
+	#offscreenCanvas;
+	#offscreenCtx;
 
-     // TODO instead recal position of Particles!!!
+	// TODO instead recal position of Particles!!!
 	#resizeCanvas = () => {
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
-        this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
-        console.log(this.canvas.width)
+		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
+
 		this.createParticles();
+	};
+	#initListeners = () => {
+		this.canvas.addEventListener(
+			'pointermove',
+			this.#handleMouseMove.bind(this)
+		);
+		if (this.isFullScreen) {
+			window.addEventListener('resize', this.#resizeCanvas.bind(this));
+		}
     };
-    #initListeners = () => {
-        this.canvas.addEventListener('pointermove', this.#handleMouseMove.bind(this));
-        if (this.isFullScreen) {
-            window.addEventListener('resize', this.#resizeCanvas.bind(this));
-        }
-    }
-        constructor(options) {
-            const {
-                canvasId = undefined,
-                bgColor = '#000',
-                numParticles = 100,
-                particlesSize = 2,
-                speed = 0.2,
-                particlesColor = '#E1FF00',
-                connectDistance = 100,
-                strokeColor = '#4f4f4f',
-                mouseDistance = 100,
-                isFullScreen = true,
-                withParticles = true,
-                particlesCollision = true,
-                withLines = true,
-            } = options;
-
-            this.canvas = document.getElementById(canvasId);
-            this.#ctx = this.canvas.getContext('2d');
-            this.#offscreenCanvas = document.createElement('canvas');
-            this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
 
-            this.isFullScreen = isFullScreen;
-            this.withParticles = withParticles;
-            if (this.withParticles) {
-                this.particles = {
-                    fillStyle: particlesColor,
-                    size: particlesSize || 2,
-                }
-            }
-            this.withLines = withLines;
-            if (this.withLines) {
-                this.lines = {
-                    connectDistance: connectDistance,
-                    strokeStyle: strokeColor
-                }
-            }
+	constructor(options) {
+		const {
+			main = {
+				canvasId: "",
+				bgColor: '#000',
+				numParticles:100,
+				//particlesSize = 2,
+				speed: 0.2,
+				mouseDistance: 100,
+				isFullScreen: true,
+			},
+			particles = { fillStyle: '#E1FF00', size: 5 },
+			lines = { connectDistance: 100, strokeStyle: '#4f4f4f' },
 
-            this.particlesCollision = particlesCollision;
-            this.numParticles = numParticles;
-            this.speed = speed;
-            this.mouseDistance = mouseDistance;
-            this.bgColor = bgColor;
+            // FLAGS
+            isFullScreen = true,
+			withParticles = true,
+			particlesCollision = true,
+			withLines = true,
+		} = options;
 
+		this.canvas = document.getElementById(main.canvasId);
+		this.#ctx = this.canvas.getContext('2d');
+		this.#offscreenCanvas = document.createElement('canvas');
+		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
+        this.isFullScreen = isFullScreen;
+        // SHAPES
+        this.withParticles = withParticles;
 
-
-
-
-            this.#particles = [];
-
-
-            this.#initListeners();
-
-            if (this.isFullScreen) {
-                this.#resizeCanvas();
-            } else {
-                this.createParticles();
-            }
-            this.#startAnimation();
+		if (this.withParticles) {
+			this.particles = {
+				fillStyle: particles.fillStyle,
+				size: particles.size || 2,
+			};
         }
 
+        // CONNECTING LINES
+		this.withLines = withLines;
+		if (this.withLines) {
+			this.lines = {
+				connectDistance: lines.connectDistance,
+				strokeStyle: lines.strokeStyle,
+			};
+		}
 
-    createParticles() {
-        this.#particles = [];
+		this.particlesCollision = particlesCollision;
+		this.numParticles = main.numParticles;
+		this.speed = main.speed;
+		this.mouseDistance = main.mouseDistance;
+		this.bgColor = main.bgColor;
+		this.#particles = [];
 
-        for (let i = 0; i < this.numParticles; i++) {
-            const { width, height } = this.canvas;
-            const size = this.particles.size;
-            //console.log({ size })// correct
-            this.#particles.push(
-                new Particle(
-                    Math.random() * (width - 2 * size) + size,
-                    Math.random() * (height - 2 * size) + size,
-                    size,
-                    this.speed
-                )
-            );
-        }
-        //console.log(this.#particles)// here size is wrong
-    }
+		this.#initListeners();
 
-    #getDistance(x1, y1, x2, y2) {
-        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-    }
+		if (this.isFullScreen) {
+			this.#resizeCanvas();
+		} else {
+			this.createParticles();
+		}
+		this.#startAnimation();
+	}
 
-    #handleMouseMove(event) {
-        if (!this.mouseDistance) return;
+	createParticles() {
+		this.#particles = [];
 
-        const rect = this.canvas.getBoundingClientRect();
-        const { left, top } = rect;
-        const mouseX = event.clientX - left;
-        const mouseY = event.clientY - top;
+		for (let i = 0; i < this.numParticles; i++) {
+			const { width, height } = this.canvas;
+			const size = this.particles.size;
+			//console.log({ size })// correct
+			this.#particles.push(
+				new Particle(
+					Math.random() * (width - 2 * size) + size,
+					Math.random() * (height - 2 * size) + size,
+					size,
+					this.speed
+				)
+			);
+		}
+		//console.log(this.#particles)// here size is wrong
+	}
 
-        for (let particle of this.#particles) {
-            const { x, y } = particle;
-            let distance = this.#getDistance(x, y, mouseX, mouseY);
+	#getDistance(x1, y1, x2, y2) {
+		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+	}
 
-            if (distance && distance < this.mouseDistance) {
-                let dx = mouseX - x;
-                let dy = mouseY - y;
-                const length = Math.sqrt(dx * dx + dy * dy);
-                dx /= length;
-                dy /= length;
+	#handleMouseMove(event) {
+		if (!this.mouseDistance) return;
 
-                const moveAmount = 5;
-                particle.x = x + dx * -moveAmount;
-                particle.y = y + dy * -moveAmount;
-            }
-        }
-    }
+		const rect = this.canvas.getBoundingClientRect();
+		const { left, top } = rect;
+		const mouseX = event.clientX - left;
+		const mouseY = event.clientY - top;
 
-    #drawElements2OffscreenCanvas() {
-        const offCTX = this.#offscreenCtx;
-        offCTX.fillStyle = this.bgColor;
-        offCTX.lineWidth = 0.5;
-        offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		for (let particle of this.#particles) {
+			const { x, y } = particle;
+			let distance = this.#getDistance(x, y, mouseX, mouseY);
 
-        const len = this.numParticles;
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[ i ];
+			if (distance && distance < this.mouseDistance) {
+				let dx = mouseX - x;
+				let dy = mouseY - y;
+				const length = Math.sqrt(dx * dx + dy * dy);
+				dx /= length;
+				dy /= length;
 
+				const moveAmount = 5;
+				particle.x = x + dx * -moveAmount;
+				particle.y = y + dy * -moveAmount;
+			}
+		}
+	}
 
-            for (let j = i + 1; j < len; j++) {
-                const otherParticle = this.#particles[j];
-                const distance = this.#getDistance(
-                    particle.x,
-                    particle.y,
-                    otherParticle.x,
-                    otherParticle.y
-                );
+	#drawElements2OffscreenCanvas() {
+		const offCTX = this.#offscreenCtx;
+		offCTX.fillStyle = this.bgColor;
+		offCTX.lineWidth = 0.5;
+		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-                if (this.withLines) {
-                    const isInRadius = distance <= this.lines.connectDistance;
-                    if (isInRadius) {
-                        offCTX.beginPath();
-                        offCTX.moveTo(particle.x, particle.y);
-                        offCTX.lineTo(otherParticle.x, otherParticle.y);
-                        offCTX.strokeStyle = this.lines.strokeStyle;
-                        offCTX.stroke();
-                    }
-                }
-                if (
-                    this.withParticles &&
-                    this.particlesCollision &&
-                    Math.abs(distance < particle.size)
-                ) {
-                    //particle.size = this.particles.size
-                    particle.xSpeed *= -1.001;
-                    particle.ySpeed *= -1.001;
-                    otherParticle.xSpeed *= -1.001;
-                    otherParticle.ySpeed *= -1.001;
-                }
-            }
+		const len = this.numParticles;
+		for (let i = 0; i < len; i++) {
+			const particle = this.#particles[i];
 
-            particle.update();
+			for (let j = i + 1; j < len; j++) {
+				const otherParticle = this.#particles[j];
+				const distance = this.#getDistance(
+					particle.x,
+					particle.y,
+					otherParticle.x,
+					otherParticle.y
+				);
 
-            if (this.withParticles)
-                particle.draw(offCTX, this.particles.fillStyle);
-        }
-    }
+				if (this.withLines) {
+					const isInRadius = distance <= this.lines.connectDistance;
+					if (isInRadius) {
+						offCTX.beginPath();
+						offCTX.moveTo(particle.x, particle.y);
+						offCTX.lineTo(otherParticle.x, otherParticle.y);
+						offCTX.strokeStyle = this.lines.strokeStyle;
+						offCTX.stroke();
+					}
+				}
+				if (
+					this.withParticles &&
+					this.particlesCollision &&
+					Math.abs(distance < particle.size)
+				) {
+					//particle.size = this.particles.size
+					particle.xSpeed *= -1.001;
+					particle.ySpeed *= -1.001;
+					otherParticle.xSpeed *= -1.001;
+					otherParticle.ySpeed *= -1.001;
+				}
+			}
 
-    #startAnimation() {
-        this.#drawElements2OffscreenCanvas();
-        this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
-        this.#animationId = requestAnimationFrame(this.#startAnimation.bind(this));
-    }
+			particle.update();
 
-    #stopAnimation() {
-        cancelAnimationFrame(this.#animationId);
-        this.#animationId = null;
-    }
+			if (this.withParticles)
+				particle.draw(offCTX, this.particles.fillStyle);
+		}
+	}
 
-    toggleAnimation() {
+	#startAnimation() {
+		this.#drawElements2OffscreenCanvas();
+		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
+		this.#animationId = requestAnimationFrame(
+			this.#startAnimation.bind(this)
+		);
+	}
 
+	#stopAnimation() {
+		cancelAnimationFrame(this.#animationId);
+		this.#animationId = null;
+	}
 
+	toggleAnimation() {
 		if (this.#animationId) {
 			this.#stopAnimation();
 		} else {
