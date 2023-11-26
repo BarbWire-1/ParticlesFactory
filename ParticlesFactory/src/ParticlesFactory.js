@@ -32,15 +32,14 @@ export class ParticlesFactory {
 		if (this.isFullScreen) {
 			window.addEventListener('resize', this.#resizeCanvas.bind(this));
 		}
-    };
-
+	};
 
 	constructor(options) {
 		const {
 			main = {
-				canvasId: "",
+				canvasId: '',
 				bgColor: '#000',
-				numParticles:100,
+				numParticles: 100,
 				//particlesSize = 2,
 				speed: 0.2,
 				mouseDistance: 100,
@@ -49,8 +48,8 @@ export class ParticlesFactory {
 			particles = { fillStyle: '#E1FF00', size: 5 },
 			lines = { connectDistance: 100, strokeStyle: '#4f4f4f' },
 
-            // FLAGS //TODO check whether to remove and check for object in options instead
-            isFullScreen = true,
+			// FLAGS //TODO check whether to remove and check for object in options instead
+			isFullScreen = true,
 			withParticles = true,
 			particlesCollision = true,
 			withLines = true,
@@ -61,18 +60,18 @@ export class ParticlesFactory {
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-        this.isFullScreen = isFullScreen;
-        // SHAPES
-        this.withParticles = withParticles;
+		this.isFullScreen = isFullScreen;
+		// SHAPES
+		this.withParticles = withParticles;
 
 		if (this.withParticles) {
 			this.particles = {
 				fillStyle: particles.fillStyle,
 				size: particles.size || 2,
 			};
-        }
+		}
 
-        // CONNECTING LINES
+		// CONNECTING LINES
 		this.withLines = withLines;
 		if (this.withLines) {
 			this.lines = {
@@ -114,7 +113,6 @@ export class ParticlesFactory {
 				)
 			);
 		}
-
 	}
 
 	#getDistance(x1, y1, x2, y2) {
