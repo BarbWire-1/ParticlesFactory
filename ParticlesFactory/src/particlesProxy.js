@@ -16,15 +16,18 @@ export function particlesProxy(el) {
 		 * @returns {boolean} - Returns true for successfully set.
 		 */
 
-		set(target, property, value) {
+        set(target, property, value) {
+        console.log(Object.keys(target))
+            console.log(target, property, value)
 			target[property] = value;
-
-			if (property === 'numParticles' || property === 'speed') {
+            updateInputValue(target, property);
+			if (property === 'numParticles' || property === 'speed' ) {
 				target.createParticles();
-				updateInputValue(target, property);
+
 			}
 			return true;
-		},
+        },
+
 	});
 }
 
@@ -37,6 +40,7 @@ export function particlesProxy(el) {
  */
 
 function updateInputValue(el, attribute) {
+    console.log( attribute)
 	const input = document.querySelector(
 		`input[data-attribute="particles-${attribute}"]`
 	);

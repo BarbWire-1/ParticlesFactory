@@ -30,10 +30,13 @@ handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
 const proxy = particlesProxy(myParticles);
-//proxy.numParticles = 100;
+proxy.numParticles = 300;
 
-//proxy.particles.size = 2// CHECK PROXY!!!!!
 
+proxy.lines.strokeStyle = "red"// ok
+proxy.particles.fillStyle = 'blue'// ok
+proxy.particles.size = 50;// NOT OK
+//proxy.particles.draw = false;// ok
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background
 document.getElementById("toggleContent").addEventListener("click", function () {
