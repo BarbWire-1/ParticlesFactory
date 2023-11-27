@@ -3,7 +3,7 @@ import *  as particles from "../ParticlesFactory/index.js";
 const {
     ParticlesFactory,
     handleEvents,
-    createNestedProxies } = particles;
+    particlesProxy } = particles;
 
 // Initialisation
 const options = {
@@ -29,8 +29,8 @@ const myParticles = new ParticlesFactory(options);
 handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
-const proxy = createNestedProxies(myParticles);
-proxy.numParticles = 300;
+const proxy = particlesProxy(myParticles);
+proxy.numParticles = 30;
 
 
 proxy.lines.strokeStyle = "red"// ok

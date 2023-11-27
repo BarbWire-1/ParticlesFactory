@@ -5,61 +5,52 @@
  * @returns {Proxy} - A proxy object for the ParticlesFactory instance
  */
 // TODO!:!:! Look up recursive proxy!
-export function createNestedProxies(obj, handler = {}) {
-    const proxyCache = new WeakMap();
+const proxies = new WeakMap();// store new proxies to check for and re-use
+export const particlesProxy = (target, path = "") => {
+     if (proxies.has(target)) {
+          //console.log(`has target: ${JSON.stringify(target)}`)
+          //const storedProxy = proxies.get(target); // to check for existing proxies
+          //console.log({storedProxy}); // needs to be destructured!!!!!!! else {}
+          return proxies.get(target); // reuse existing proxy
+     }
 
-    return new Proxy(obj, {
-        get(target, prop, receiver) {
-            const value = Reflect.get(target, prop, receiver);
-            //console.log(value)
-            if (typeof value === 'object' && value !== null) {
-                if (!proxyCache.has(value)) {
-                    const proxy = new Proxy(value, handler);
-                    //console.log(proxy)
-                    proxyCache.set(value, proxy);
-                }
-                return proxyCache.get(value);
-            }
+     const handler = {
+          get(target, prop) {
+               const value = target[prop];
+               if (typeof value === "object" && value !== null) {
+                    const childPath = path ? `${path}.${prop}` : prop;
+                    return particlesProxy(value, childPath);
+               }
+               //console.log(`Accessing property '${prop}'`);
+               return value;
+          },
+          set(target, prop, value) {
+               //console.log(`Setting property '${prop}' to '${value}'`);
+               target[prop] = value;
+               const fullPath = path ? `${path}.${prop}` : prop;
+              bindInputElement(fullPath, value);
+              console.log(fullPath)
+              if(fullPath === 'numParticles') target.createParticles()
+               return true;
+          }
+     };
 
-            return value;
-        },
-        set(target, prop, value, receiver) {
-            const result = Reflect.set(target, prop, value, receiver);
-            console.log(prop, value, target)
-            if (result) {
-                console.log(`Set ${prop} to ${value} in`, target);
-                updateInputValue(target, prop);
-            }
-            return result;
-        },
-    });
-    console.log(proxyCache)
-}
+     const proxy = new Proxy(target, handler);
+     //console.log({ proxy });
+     proxies.set(target, proxy); // store newly created proxies in proxies
 
+     return proxy;
+};
 
+function bindInputElement(path, value) {
+    //path = path.slice(1)
+     const inputElement = document.querySelector(
+          `[data-attribute="particles-${path}"]`
+     );
+     if (inputElement && value) {
+         inputElement.value = value;
 
-
-/**
- * Updates the value of the corresponding input element based on the attribute of the ParticlesFactory instance.
- *
- * @param {ParticlesFactory} el - ParticlesFactory instance.
- * @param {string} attribute - attributeName to be updated.
- * @returns {void}
- */
-
-function updateInputValue(el, attribute) {
-    console.log(attribute)
-    const [mainAttr, nestedAttr] = attribute.split('.');
-
-    const input = document.querySelector(
-        `input[data-attribute="particles-${mainAttr}"][data-nested-attribute="${nestedAttr}"]`
-    );
-
-    if (!input) return;
-
-    if (nestedAttr) {
-        input.value = el[mainAttr][nestedAttr];
-    } else {
-        input.value = el[attribute];
-    }
-}
+     } else {
+          console.log(`No input found for ${path}`);
+     }
+};
