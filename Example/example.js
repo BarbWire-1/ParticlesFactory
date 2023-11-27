@@ -30,12 +30,12 @@ handleEvents(myParticles, "controlPanelContainer");
 
 // for setting dynamically in JS use the particlesProxy
 const proxy = particlesProxy(myParticles);
-proxy.numParticles = 30;
-
-
-proxy.lines.strokeStyle = "#ff0000"// ok
-proxy.particles.fillStyle = 'blue'// ok
-proxy.particles.size = 5;// ok
+// proxy.numParticles = 30;
+//
+//
+// proxy.lines.strokeStyle = "#ff0000"// ok
+// proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
+// proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background

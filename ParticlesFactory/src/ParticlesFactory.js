@@ -1,4 +1,4 @@
-// TODO1.1 encapsulate optional settings in objects if set => merge into options
+//TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
 
 // TODO2 change to baseParticle and extending shapes - particleType
 
