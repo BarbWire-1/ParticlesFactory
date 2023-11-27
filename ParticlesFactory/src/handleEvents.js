@@ -3,13 +3,6 @@ export function handleEvents(el, containerId) {
 	const container = document.getElementById(containerId);
 
 	// EVENT - CALLBACKS
-	/**
-	 *
-	 * @param {*} el The particles instance
-	 * @param {*} attribute The value of the data-attribute of the target input element
-	 * @param {*} value The recieved value to apply to the el's attribute of same name
-	 */
-
     function handleInputChange(e) {
         const property = isValidAttribute(e, 'attribute');
         let value = e.target.value;
@@ -17,32 +10,36 @@ export function handleEvents(el, containerId) {
         if (e.target.type === 'checkbox') {
             value = e.target.checked;
         } else {
-            value = +value || value || e.target.checked;
+            value = +value || value ;
         };
 
         if (property.includes('.')) { // get the objects
-            const prop = property.split('.');
-            el[ prop[ 0 ] ][ prop[ 1 ] ] = value
-            //console.log(prop)
+            const path = property.split('.');
+            el[ path[ 0 ] ][ path[ 1 ] ] = value;
+
         } else {
-            //console.log(property)
             el[ property ] = value;
         };
 
 
         if (
-            property === 'numParticles' ||
-            property === 'speed' || // TODO instead redraw just update speed of particles?
+            property === 'main.numParticles' ||
+            property === 'main.speed' || // TODO instead redraw just update speed of particles?
             property === 'particles.size' // this too
         ) {
-            
+
             el.createParticles();
         };
 
     }
-	function isValidAttribute(e, type) {
-		const dataAttribute = e.target.dataset?.[type]?.split('-');
-		if (!dataAttribute || dataAttribute[0] !== 'particles') return;
+
+
+    function isValidAttribute(e, type) {
+
+        const dataAttribute = e.target.dataset?.[ type ]?.split('-');
+        // search for input with corresponding data-attribute
+        if (!dataAttribute || dataAttribute[ 0 ] !== 'particles') return;
+        // path to attribute
 		return dataAttribute[1];
 	}
 

@@ -21,7 +21,7 @@
             </div>
             <div class="controlPanelContent">
                 <label for="num">Number of Particles:</label>
-                <input data-attribute="particles-numParticles" type="number" id="num" value="200" min="50" max="10000"
+                <input data-attribute="particles-main.numParticles" type="number" id="num" value="200" min="50" max="10000"
                     step="50">
 
                 <label for="size">Particles Size:</label>
@@ -29,7 +29,7 @@
                     step="1">
 
                 <label for="speed">Speed:</label>
-                <input data-attribute="particles-speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
+                <input data-attribute="particles-main.speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
 
                 <label for="pColor">Particles Color:</label>
                 <input data-attribute="particles-particles.fillStyle" type="color" id="particle" value='#E1FF00'>
@@ -38,14 +38,14 @@
                 <input data-attribute="particles-lines.strokeStyle" type="color" id="stroke" value="#4f4f4f">
 
                 <label for="bg">Fill Color:</label>
-                <input data-attribute="particles-bgColor" type="color" id="bg" value="#000000">
+                <input data-attribute="particles-main.fillStyle" type="color" id="bg" value="#000000">
 
                 <label for="connect">Connect Distance:</label>
                 <input data-attribute="particles-lines.connectDistance" type="number" id="connect" value="100" min="0"
                     max="400" step="50">
 
                 <label for="mouse">Mouse Distance:</label>
-                <input data-attribute="particles-mouseDistance" type="number" id="mouse" value="100" min="0" max="400"
+                <input data-attribute="particles-main.mouseDistance" type="number" id="mouse" value="100" min="0" max="400"
                     step="50">
 
                 <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>

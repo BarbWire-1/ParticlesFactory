@@ -29,63 +29,62 @@ export class ParticlesFactory {
 			'pointermove',
 			this.#handleMouseMove.bind(this)
 		);
-		if (this.isFullScreen) {
+		if (this.main.isFullScreen) {
 			window.addEventListener('resize', this.#resizeCanvas.bind(this));
 		}
 	};
 
 	constructor(options) {
-		const {
-			main = {
-				canvasId: '',
-				bgColor: '#000',
-				numParticles: 100,
-				speed: 0.2,
-				mouseDistance: 100,
-				isFullScreen: true,
-			},
-			particles = null,
-			lines = null,
+		this.main = {
+			canvasId: '',
+			fillStyle: '#000',
+			numParticles: 100,
+			speed: 0.2,
+			mouseDistance: 100,
+			isFullScreen: true,
+		};
 
-		} = options;
+		if (options) {
+			if (options.main) {
+				this.main = Object.preventExtensions({
+					...this.main,
+					...options.main,
+				});
+			}
+			if (options.particles) {
+				this.particles = Object.preventExtensions({
+					fillStyle: options.particles.fillStyle,
+					size: options.particles.size || 2,
+					draw: options.particles.draw,
+					collision: options.particles.collision,
+				});
+			}
+			if (options.lines) {
+				this.lines = Object.preventExtensions({
+					connectDistance: options.lines.connectDistance,
+					strokeStyle: options.lines.strokeStyle,
+					draw: options.lines.draw,
+				});
+			}
+		}
 
-		this.canvas = document.getElementById(main.canvasId);
+		if (!this.particles && !this.lines) {
+			throw new Error(
+				'you need to define at least either particles or lines to create a Particles instance.'
+			);
+		}
+
+		this.canvas = document.getElementById(this.main.canvasId);
 		this.#ctx = this.canvas.getContext('2d');
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-        this.isFullScreen = main.isFullScreen;
-
-
-		// SHAPES
-		if (particles) {
-			this.particles = Object.preventExtensions({
-				fillStyle: particles.fillStyle,
-                size: particles.size || 2,
-                draw: particles.draw,
-                collision: particles.collision
-			});
-		}
-
-		// CONNECTING LINES
-		if (lines) {
-			this.lines = Object.preventExtensions({
-				connectDistance: lines.connectDistance,
-                strokeStyle: lines.strokeStyle,
-                draw: lines.draw
-			});
-		}
-
-
-		this.numParticles = main.numParticles;
-		this.speed = main.speed;
-		this.mouseDistance = main.mouseDistance;
-		this.bgColor = main.bgColor;
 		this.#particles = [];
 
+		// INITIALISATION
 		this.#initListeners();
 
-		if (this.isFullScreen) {
+		if (this.main.isFullScreen) {
 			this.#resizeCanvas();
 		} else {
 			this.createParticles();
@@ -96,7 +95,7 @@ export class ParticlesFactory {
 	createParticles() {
 		this.#particles = [];
 
-		for (let i = 0; i < this.numParticles; i++) {
+		for (let i = 0; i < this.main.numParticles; i++) {
 			const { width, height } = this.canvas;
 			const size = this.particles?.size || 2;
 
@@ -105,7 +104,7 @@ export class ParticlesFactory {
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
 					size,
-					this.speed
+					this.main.speed
 				)
 			);
 		}
@@ -116,7 +115,7 @@ export class ParticlesFactory {
 	}
 
 	#handleMouseMove(event) {
-		if (!this.mouseDistance) return;
+		if (!this.main.mouseDistance) return;
 
 		const rect = this.canvas.getBoundingClientRect();
 		const { left, top } = rect;
@@ -127,7 +126,7 @@ export class ParticlesFactory {
 			const { x, y } = particle;
 			let distance = this.#getDistance(x, y, mouseX, mouseY);
 
-			if (distance && distance < this.mouseDistance) {
+			if (distance && distance < this.main.mouseDistance) {
 				let dx = mouseX - x;
 				let dy = mouseY - y;
 				const length = Math.sqrt(dx * dx + dy * dy);
@@ -141,14 +140,13 @@ export class ParticlesFactory {
 		}
 	}
 
-    #drawLines(offCTX, particle, otherParticle) {
-        if (!particle || !otherParticle)
-        return; // Exit early if either particle is undefined or null
+	#drawLines(offCTX, particle, otherParticle) {
+		if (!particle || !otherParticle) return; // Exit early if either particle is undefined or null
 		const distance = this.#getDistance(
-			particle?.x,
-			particle?.y,
-			otherParticle?.x,
-			otherParticle?.y
+			particle.x,
+			particle.y,
+			otherParticle.x,
+			otherParticle.y
 		);
 
 		if (this.lines?.draw && distance <= this.lines.connectDistance) {
@@ -162,17 +160,13 @@ export class ParticlesFactory {
 
 	#calculateCollision(particle, otherParticle) {
 		const distance = this.#getDistance(
-			particle?.x,
-			particle?.y,
+			particle.x,
+			particle.y,
 			otherParticle?.x,
 			otherParticle?.y
 		);
 
-		if (
-
-			this.particles?.collision &&
-			Math.abs(distance < particle?.size)
-		) {
+		if (this.particles?.collision && Math.abs(distance < particle?.size)) {
 			particle.xSpeed *= -1.001;
 			particle.ySpeed *= -1.001;
 			otherParticle.xSpeed *= -1.001;
@@ -182,28 +176,28 @@ export class ParticlesFactory {
 
 	#drawElements2OffscreenCanvas() {
 		const offCTX = this.#offscreenCtx;
-		offCTX.fillStyle = this.bgColor;
+		offCTX.fillStyle = this.main.fillStyle;
 		offCTX.lineWidth = 0.5;
 		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        const size = this.particles.size;
-		for (let i = 0; i < this.numParticles; i++) {
+		const size = this.particles.size;
+		const len = this.main.numParticles;
+
+		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
 			particle?.update();
 
-			for (let j = i + 1; j < this.numParticles; j++) {
+			for (let j = i + 1; j < len; j++) {
 				const otherParticle = this.#particles[j];
 				if (this.lines?.draw)
 					this.#drawLines(offCTX, particle, otherParticle);
-                if (this.particles?.collision)
-                    //console.log(this.particles.collision)
+				if (this.particles?.collision)
 					this.#calculateCollision(particle, otherParticle);
 			}
 
-            if (this.particles.draw) {
-                if (!particle) return;
-                particle.size = size;// hmmmm...
-                //console.log(this.particles.draw)
+			if (this.particles.draw) {
+				if (!particle) return;
+				particle.size = size;
 				particle.draw(offCTX, this.particles.fillStyle);
 			}
 		}
@@ -212,6 +206,7 @@ export class ParticlesFactory {
 	}
 
 	#startAnimation() {
+		
 		this.#drawElements2OffscreenCanvas();
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
