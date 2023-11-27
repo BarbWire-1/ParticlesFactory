@@ -35,7 +35,7 @@ proxy.numParticles = 30;
 
 proxy.lines.strokeStyle = "red"// ok
 proxy.particles.fillStyle = 'blue'// ok
-proxy.particles.size = 10;// ok
+proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok
 //--------------------------------------------------------------------------------------------------
 // unrelated, just to demonstrate how to use particlesFactory as background

@@ -47,8 +47,11 @@ function bindInputElement(path, value) {
      const inputElement = document.querySelector(
           `[data-attribute="particles-${path}"]`
      );
-     if (inputElement && value) {
-         inputElement.value = value;
+    console.log(inputElement)
+    if (inputElement && value) {
+        inputElement.value = value ;
+        console.log(typeof value, value)
+   
 
      } else {
           console.log(`No input found for ${path}`);
