@@ -33,7 +33,7 @@ const proxy = particlesProxy(myParticles);
 proxy.numParticles = 30;
 
 
-proxy.lines.strokeStyle = "red"// ok
+proxy.lines.strokeStyle = "#ff0000"// ok
 proxy.particles.fillStyle = 'blue'// ok
 proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok
