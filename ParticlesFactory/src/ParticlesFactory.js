@@ -233,11 +233,11 @@ export class ParticlesFactory {
 	}
 
     #addParticles(difference) {
-        console.log(`add ${difference} particles`)
+        //console.log(`add ${difference} particles`)
 		this.#createParticles(difference);
 	}
     #removeParticles(currentCount, difference) {
-        console.log(difference)
+        //console.log(difference)
         this.#particles.splice(currentCount - difference, difference);
         this.numParticles = this.#particles.length;
 	}

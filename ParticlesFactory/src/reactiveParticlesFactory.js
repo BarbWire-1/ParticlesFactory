@@ -5,21 +5,24 @@ import { ParticlesFactory } from "./ParticlesFactory.js";
 
   export class ReactiveParticlesFactory extends ParticlesFactory {
     #particles;
-    #createParticles;
+      #createParticles;
 
-    constructor() {
-      super();
+
+    constructor(options) {
+        super(options);
+        this.#particles = this._getParticles;
+        this.#createParticles = this._getCreateParticles
 
     }
 
-    updateSpeed(value = el.main.speed) {
+    updateSpeed(value = this.main.speed) {
       this.#particles.forEach((p) => p.updateSpeed(value));
     }
 
-    updatePosition() {
-      this.#particles.forEach((p) =>
-        p.updatePosition(el.canvas, window.innerWidth, window.innerHeight)
-      );
+    updateSpeed(value = this.main.speed) {
+        const particles = this._getParticles(); // Access #particles using protected method
+        particles.forEach((p) => p.updateSpeed(value));
+        this._setParticles(particles); // Update #particles using protected method
     }
 
     updateNumParticles(newValue) {
@@ -32,7 +35,7 @@ import { ParticlesFactory } from "./ParticlesFactory.js";
         this.removeParticles(currentCount, -difference);
       }
 
-      el.main.numParticles = this.#particles.length;
+      this.main.numParticles = this.#particles.length;
     }
 
     addParticles(difference) {
@@ -43,6 +46,6 @@ import { ParticlesFactory } from "./ParticlesFactory.js";
     removeParticles(currentCount, difference) {
       console.log(difference);
       this.#particles.splice(currentCount - difference, difference);
-      el.main.numParticles = this.#particles.length;
+      this.main.numParticles = this.#particles.length;
     }
   }
