@@ -2,10 +2,10 @@ export class Particle {
 	constructor(x, y, size, speed) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
-		// rondomize speed and direction
-		this.xSpeed = speed * (Math.random() * 2 - 1);
-		this.ySpeed = speed * (Math.random() * 2 - 1);
+        this.size = size;
+
+        this.updateSpeed(speed)
+
 	}
 
 	draw(ctx, fillColor) {
@@ -37,5 +37,30 @@ export class Particle {
 		this.collisionDetection();
 		this.x += this.xSpeed;
 	    this.y += this.ySpeed;
-	}
+    }
+
+    updateSpeed(speed) {
+
+            // rondomize speed and direction
+            this.xSpeed = speed * (Math.random() * 2 - 1);
+            this.ySpeed = speed * (Math.random() * 2 - 1);
+
+    }
+
+    updatePosition(canvas, newWidth, newHeight) {
+        const currentWidth = canvas.width;
+        const currentHeight = canvas.height;
+
+        if (newWidth !== currentWidth) {
+
+                this.x =  this.x / currentWidth * newWidth;
+            }
+
+        if (newHeight !== currentHeight) {
+
+                this.y= this.y / currentHeight * newHeight;
+            }
+
+
+    }
 }

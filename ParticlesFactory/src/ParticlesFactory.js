@@ -21,7 +21,7 @@ export class ParticlesFactory {
 
     #resizeCanvas = () => {
         if(this.main.reposition)
-        this.#updateParticlesPosition(window.innerWidth, window.innerHeight);
+        this.#updatePosition();
 
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
@@ -117,45 +117,24 @@ export class ParticlesFactory {
 	}
 
     updateSpeed() {
-        this.#particles.map(p => {
-            // rondomize speed and direction
-		p.xSpeed = this.main.speed * (Math.random() * 2 - 1);
-		p.ySpeed = this.main.speed * (Math.random() * 2 - 1);
-        })
+        this.#particles.map(p => p.updateSpeed(this.main.speed));
+    }
+    #updatePosition() {
+        this.#particles.map(p => p.updatePosition(this.canvas, window.innerWidth, window.innerHeight))
     }
 
 
     updateNumParticles(newValue) {
         const currentCount = this.#particles.length;
         let difference = newValue - currentCount;
-        if (newValue && difference) {
-            if (difference > 0) {
-                this.#addParticles(difference);
-            } else {
-                difference *= -1
-                this.#removeParticles(currentCount, difference)
 
-            }
-        }
-    }
+        newValue && difference && difference > 0 ?
+            this.#addParticles(difference)
+            : this.#removeParticles(currentCount, -difference);
 
-    #updateParticlesPosition(newWidth, newHeight) {
-        const currentWidth = this.canvas.width;
-        const currentHeight = this.canvas.height;
 
-        if (newWidth !== currentWidth) {
-            this.#particles.map(p => {
-                p.x =  p.x / currentWidth * newWidth;
-            })
-        }
-        if (newHeight !== currentHeight) {
-            this.#particles.map(p => {
-                p.y= p.y / currentHeight * newHeight;
-            })
-        }
 
     }
-
 
     #addParticles(difference) {
         this.#createParticles(difference);
