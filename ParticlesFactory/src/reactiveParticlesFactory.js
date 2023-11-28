@@ -12,7 +12,8 @@ import { Particle } from "./Particle.js";
 
     constructor(options) {
         super(options);
-        this.#particles = []
+        this.#particles = [];
+
 
 
     }
@@ -40,7 +41,7 @@ import { Particle } from "./Particle.js";
 
     #addParticles(difference) {
       console.log(`add ${difference} particles`)
-      this.#createParticles(difference);
+      this.createParticles(difference);// is not a function (???)
     }
 
     #removeParticles(currentCount, difference) {
@@ -53,26 +54,7 @@ import { Particle } from "./Particle.js";
 
 
 
-      // initial creation
-    #createParticles(count = this.main.numParticles) {
-         console.log("count from #createParticles: " + count)
-        // console.log(this.main.numParticles)
-		for (let i = 0; i < count; i++) {
-			const { width, height } = this.canvas;
-			const size = this.particles?.size || 2;
 
-			this.#particles.push(
-				new Particle(
-					Math.random() * (width - 2 * size) + size,
-					Math.random() * (height - 2 * size) + size,
-					size,
-					this.main.speed
-				)
-            );
-
-            console.log(this.#particles)// created but not drawn!
-		}
-	}
   }
 
 
@@ -98,4 +80,4 @@ class Child extends Parent {
 }
 
 const child = new Child();
-child.childMethod(); // This will invoke publicMethod, which indirectly accesses #privateMethod - but it is EXPOSED 
+child.childMethod(); // This will invoke publicMethod, which indirectly accesses #privateMethod - but it is EXPOSED
