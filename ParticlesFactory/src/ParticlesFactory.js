@@ -17,7 +17,7 @@ export class ParticlesFactory {
 	#offscreenCanvas;
 	#offscreenCtx;
 
-	// TODO instead recal position of Particles!!!
+	// TODO instead recalc position of Particles??
 	#resizeCanvas = () => {
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
@@ -70,7 +70,7 @@ export class ParticlesFactory {
 
 		if (!this.particles && !this.lines) {
 			throw new Error(
-				'you need to define at least either particles or lines to create a Particles instance.'
+				'You need to define at least either a particles- or a lines-object.'
 			);
 		}
 
@@ -110,9 +110,16 @@ export class ParticlesFactory {
 		}
 	}
 
-	#getDistance(x1, y1, x2, y2) {
+	#getVector(x1, y1, x2, y2) {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-	}
+    }
+    #getDistance(particle, otherParticle) {
+        return this.#getVector(particle.x,
+			particle.y,
+			otherParticle.x,
+            otherParticle.y
+        )
+    }
 
 	#handleMouseMove(event) {
 		if (!this.main.mouseDistance) return;
@@ -124,7 +131,7 @@ export class ParticlesFactory {
 
 		for (let particle of this.#particles) {
 			const { x, y } = particle;
-			let distance = this.#getDistance(x, y, mouseX, mouseY);
+			let distance = this.#getVector(x, y, mouseX, mouseY);
 
 			if (distance && distance < this.main.mouseDistance) {
 				let dx = mouseX - x;
@@ -140,14 +147,9 @@ export class ParticlesFactory {
 		}
 	}
 
-	#drawLines(offCTX, particle, otherParticle) {
+	#drawLines(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle) return; // Exit early if either particle is undefined or null
-		const distance = this.#getDistance(
-			particle.x,
-			particle.y,
-			otherParticle.x,
-			otherParticle.y
-		);
+
 
 		if (this.lines?.draw && distance <= this.lines.connectDistance) {
 			offCTX.beginPath();
@@ -158,13 +160,8 @@ export class ParticlesFactory {
 		}
 	}
 
-	#calculateCollision(particle, otherParticle) {
-		const distance = this.#getDistance(
-			particle.x,
-			particle.y,
-			otherParticle?.x,
-			otherParticle?.y
-		);
+	#calculateCollision(particle, otherParticle, distance) {
+
 
 		if (this.particles?.collision && Math.abs(distance < particle?.size)) {
 			particle.xSpeed *= -1.001;
@@ -185,14 +182,17 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
-			particle?.update();
+            particle?.update();
+
 
 			for (let j = i + 1; j < len; j++) {
-				const otherParticle = this.#particles[j];
+                const otherParticle = this.#particles[ j ];
+                const distance = this.#getDistance(particle, otherParticle);
+
 				if (this.lines?.draw)
-					this.#drawLines(offCTX, particle, otherParticle);
+					this.#drawLines(offCTX, particle, otherParticle, distance);
 				if (this.particles?.collision)
-					this.#calculateCollision(particle, otherParticle);
+					this.#calculateCollision(particle, otherParticle, distance);
 			}
 
 			if (this.particles.draw) {
@@ -206,7 +206,7 @@ export class ParticlesFactory {
 	}
 
 	#startAnimation() {
-		
+
 		this.#drawElements2OffscreenCanvas();
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
