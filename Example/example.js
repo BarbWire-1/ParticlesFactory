@@ -5,6 +5,8 @@ const {
     handleEvents,
     particlesProxy } = particles;
 
+    import { ReactiveParticlesFactory } from "../ParticlesFactory/src/reactiveParticlesFactory.js";
+
 // Initialisation
 const options = {
    main:  {
