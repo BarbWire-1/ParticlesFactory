@@ -7,7 +7,7 @@ const {
 
 // Initialisation
 const options = {
-   style:  {
+   main:  {
         canvasId: 'canvas',
         bgColor: '#000',
         numParticles: 100,
@@ -16,8 +16,8 @@ const options = {
         isFullScreen: true,
         reposition: true// whether to recalculate x,y of particles on resize
     },
-    particles,//: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
-    lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional
+    particles: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional - with defaults if only "particles"
+    lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional - with defaults if only "lines"
 
 }
 
@@ -26,7 +26,7 @@ const myParticles = new ParticlesFactory(options);
 
 handleEvents(myParticles, "controlPanelContainer");
 
-// for setting dynamically in JS use the particlesProxy
+// for setting dynamically in JS to update corresponding input use the proxy
 const proxy = particlesProxy(myParticles);
 // proxy.numParticles = 30;
 //
@@ -54,3 +54,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const button = document.querySelector("#test-button");
     button.addEventListener("click", changeText);
 });
+
+
+myParticles.updateNumParticles(400); // TODO rather add a getter setter for main.numParticles??
+
+console.log(myParticles
+)
