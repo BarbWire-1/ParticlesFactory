@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-myParticles.updateNumParticles(400); // TODO rather add a getter setter for main.numParticles??
-
-console.log(myParticles
-)
+myParticles.updateNumParticles(200); // TODO rather add a getter setter for main.numParticles??
+myParticles.updateSpeed(1);
+//myParticles.particles.size = 20;

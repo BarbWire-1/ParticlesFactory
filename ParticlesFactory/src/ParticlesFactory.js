@@ -113,8 +113,8 @@ export class ParticlesFactory {
 
 	// initial creation
     #createParticles(count = this.main.numParticles) {
-        console.log("count from #createParticles: " + count)
-        console.log(this.main.numParticles)
+        // console.log("count from #createParticles: " + count)
+        // console.log(this.main.numParticles)
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.canvas;
 			const size = this.particles?.size || 2;
@@ -212,8 +212,8 @@ export class ParticlesFactory {
 	}
 
 	// update on changes
-	updateSpeed() {
-		this.#particles.map((p) => p.updateSpeed(this.main.speed));
+	updateSpeed(value = this.main.speed) {
+		this.#particles.map((p) => p.updateSpeed(value));
 	}
 	#updatePosition() {
 		this.#particles.map((p) =>
