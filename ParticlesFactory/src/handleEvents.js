@@ -27,7 +27,7 @@ export function handleEvents(el, containerId) {
 
         ) {
 
-            el.createParticles();
+            el.updateNumParticles(value);
         } else if (property === 'main.speed') {
             el.updateSpeed()
         };

@@ -22,7 +22,7 @@ export class ParticlesFactory {
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
 
-		this.createParticles(this.main.numParticles);
+		this.createParticles();
 	};
 	#initListeners = () => {
 		this.canvas.addEventListener(
@@ -87,13 +87,12 @@ export class ParticlesFactory {
 		if (this.main.isFullScreen) {
 			this.#resizeCanvas();
 		} else {
-			this.createParticles(this.main.numParticles);
+			this.createParticles();
 		}
 		this.#startAnimation();
 	}
 
-	createParticles(count) {
-		this.#particles = [];
+	createParticles(count = this.main.numParticles) {
 
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.canvas;
@@ -117,9 +116,32 @@ export class ParticlesFactory {
 		p.ySpeed = this.main.speed * (Math.random() * 2 - 1);
         })
     }
+
+
+    updateNumParticles(newValue) {
+        const currentCount = this.#particles.length;
+        let difference = newValue - currentCount;
+        if (newValue && difference) {
+            if (difference > 0) {
+                this.#addParticles(difference);
+            } else {
+                difference *= -1
+                this.#removeParticles(currentCount, difference)
+
+            }
+        }
+    }
+    #addParticles(difference) {
+        this.createParticles(difference);
+    }
+    #removeParticles(currentCount, difference) {
+            this.#particles.splice(currentCount - difference, difference)
+    }
+
 	#getVector(x1, y1, x2, y2) {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     }
+
     #getDistance(particle, otherParticle) {
         return this.#getVector(particle.x,
 			particle.y,
