@@ -14,13 +14,11 @@ const options = {
         speed: 0.2,
         mouseDistance: 100,
         isFullScreen: true,
+        reposition: true// whether to recalculate x,y of particles on resize
     },
     particles,//: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
     lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional
 
-    withParticles: true,// necessary to draw particles!
-    particlesCollision: true,
-    withLines: true,// necessary to draw lines!
 }
 
 

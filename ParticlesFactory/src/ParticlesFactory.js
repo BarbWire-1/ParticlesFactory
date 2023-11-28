@@ -21,6 +21,7 @@ export class ParticlesFactory {
 
 	// TODO instead recalc position of Particles??
     #resizeCanvas = () => {
+        if(this.main.reposition)
         this.#updateParticlesPosition(window.innerWidth, window.innerHeight);
 
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
@@ -47,7 +48,8 @@ export class ParticlesFactory {
 			numParticles: 100,
 			speed: 0.2,
 			mouseDistance: 100,
-			isFullScreen: true,
+            isFullScreen: true,
+            reposition: false
 		};
 
 		if (options) {
