@@ -22,7 +22,7 @@ export class ParticlesFactory {
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
 
-		this.createParticles();
+		this.#createParticles();
 	};
 	#initListeners = () => {
 		this.canvas.addEventListener(
@@ -87,12 +87,12 @@ export class ParticlesFactory {
 		if (this.main.isFullScreen) {
 			this.#resizeCanvas();
 		} else {
-			this.createParticles();
+			this.#createParticles();
 		}
 		this.#startAnimation();
 	}
 
-	createParticles(count = this.main.numParticles) {
+	#createParticles(count = this.main.numParticles) {
 
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.canvas;
@@ -132,7 +132,7 @@ export class ParticlesFactory {
         }
     }
     #addParticles(difference) {
-        this.createParticles(difference);
+        this.#createParticles(difference);
     }
     #removeParticles(currentCount, difference) {
             this.#particles.splice(currentCount - difference, difference)

@@ -3,44 +3,38 @@ export function handleEvents(el, containerId) {
 	const container = document.getElementById(containerId);
 
 	// EVENT - CALLBACKS
-    function handleInputChange(e) {
-        const property = isValidAttribute(e, 'attribute');
-        let value = e.target.value;
+	function handleInputChange(e) {
+		const property = isValidAttribute(e, 'attribute');
 
-        if (e.target.type === 'checkbox') {
-            value = e.target.checked;
-        } else {
-            value = +value || value ;
-        };
+		let value = e.target.value;
 
-        if (property.includes('.')) { // get the objects
-            const path = property.split('.');
+		if (e.target.type === 'checkbox') {
+			value = e.target.checked;
+		} else {
+			value = +value || value;
+		}
+		// attributes which require recalculations
+		const updates = {
+			numParticles:() => el.updateNumParticles(value),
+			speed:()=> el.updateSpeed(),
+		};
+		if (property.includes('.')) {
+			// get the objects
+			const path = property.split('.');
             el[ path[ 0 ] ][ path[ 1 ] ] = value;
 
-        } else {
-            el[ property ] = value;
-        };
+			if (updates[path[1]]) updates[path[1]]();
 
+		} else {
+			el[property] = value;
+		}
+	}
 
-        if (
-            property === 'main.numParticles'
-
-        ) {
-
-            el.updateNumParticles(value);
-        } else if (property === 'main.speed') {
-            el.updateSpeed()
-        };
-
-    }
-
-
-    function isValidAttribute(e, type) {
-
-        const dataAttribute = e.target.dataset?.[ type ]?.split('-');
-        // search for input with corresponding data-attribute
-        if (!dataAttribute || dataAttribute[ 0 ] !== 'particles') return;
-        // path to attribute
+	function isValidAttribute(e, type) {
+		const dataAttribute = e.target.dataset?.[type]?.split('-');
+		// search for input with corresponding data-attribute
+		if (!dataAttribute || dataAttribute[0] !== 'particles') return;
+		// path to attribute
 		return dataAttribute[1];
 	}
 
