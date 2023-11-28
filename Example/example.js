@@ -15,7 +15,7 @@ const options = {
         mouseDistance: 100,
         isFullScreen: true,
     },
-    particles: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
+    particles,//: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
     lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional
 
     withParticles: true,// necessary to draw particles!

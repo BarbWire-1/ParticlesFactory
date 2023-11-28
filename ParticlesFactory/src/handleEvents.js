@@ -1,3 +1,5 @@
+//TODO add el-name to path in data-attributes?
+
 export function handleEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);
@@ -17,9 +19,10 @@ export function handleEvents(el, containerId) {
 		const updates = {
 			numParticles:() => el.updateNumParticles(value),
 			speed:()=> el.updateSpeed(),
-		};
+        };
+
 		if (property.includes('.')) {
-			// get the objects
+
 			const path = property.split('.');
             el[ path[ 0 ] ][ path[ 1 ] ] = value;
 

@@ -5,6 +5,8 @@
 // TODO add canvas dimensions other than full-screen
 // TODO make responsiveness optional
 
+// TODO add a max-speed??
+
 // export const offscreenCanvas = document.createElement('canvas');
 // let offCTX = offscreenCanvas.getContext('2d');
 
@@ -18,11 +20,15 @@ export class ParticlesFactory {
 	#offscreenCtx;
 
 	// TODO instead recalc position of Particles??
-	#resizeCanvas = () => {
+    #resizeCanvas = () => {
+        this.#updateParticlesPosition(window.innerWidth, window.innerHeight);
+
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
 
-		this.#createParticles();
+        this.#createParticles();
+
+
 	};
 	#initListeners = () => {
 		this.canvas.addEventListener(
@@ -53,17 +59,17 @@ export class ParticlesFactory {
 			}
 			if (options.particles) {
 				this.particles = Object.preventExtensions({
-					fillStyle: options.particles.fillStyle,
+					fillStyle: options.particles.fillStyle || '#ff0000',
 					size: options.particles.size || 2,
-					draw: options.particles.draw,
-					collision: options.particles.collision,
+					draw: options.particles.draw || true,
+					collision: options.particles.collision || false,
 				});
 			}
 			if (options.lines) {
 				this.lines = Object.preventExtensions({
-					connectDistance: options.lines.connectDistance,
-					strokeStyle: options.lines.strokeStyle,
-					draw: options.lines.draw,
+					connectDistance: options.lines.connectDistance || 100,
+					strokeStyle: options.lines.strokeStyle || '#ffffff',
+					draw: options.lines.draw || true,
 				});
 			}
 		}
@@ -131,6 +137,25 @@ export class ParticlesFactory {
             }
         }
     }
+
+    #updateParticlesPosition(newWidth, newHeight) {
+        const currentWidth = this.canvas.width;
+        const currentHeight = this.canvas.height;
+
+        if (newWidth !== currentWidth) {
+            this.#particles.map(p => {
+                p.x =  p.x / currentWidth * newWidth;
+            })
+        }
+        if (newHeight !== currentHeight) {
+            this.#particles.map(p => {
+                p.y= p.y / currentHeight * newHeight;
+            })
+        }
+
+    }
+
+
     #addParticles(difference) {
         this.#createParticles(difference);
     }
