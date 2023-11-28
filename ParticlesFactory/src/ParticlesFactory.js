@@ -27,7 +27,8 @@ export class ParticlesFactory {
 				speed: 0.2,
 				mouseDistance: 100,
 				isFullScreen: true,
-				reposition: false,
+                reposition: false,
+                //isReactive: false
 			},
 			particles: {
 				fillStyle: '#ff0000',
@@ -211,36 +212,40 @@ export class ParticlesFactory {
 		}
 	}
 
-	// update on changes
-	updateSpeed(value = this.main.speed) {
-		this.#particles.map((p) => p.updateSpeed(value));
-	}
-	#updatePosition() {
-		this.#particles.map((p) =>
-			p.updatePosition(this.canvas, window.innerWidth, window.innerHeight)
-		);
-	}
+    // update on changes
 
-	updateNumParticles(newValue) {
-		const currentCount = this.#particles.length;
-		let difference = newValue - currentCount;
+    updateSpeed(value = this.main.speed) {
+            //if (!this.main.isReactive) return;
+            this.#particles.map((p) => p.updateSpeed(value));
+        }
+    #updatePosition() {
+            //if (!this.main.isReactive) return;
+            this.#particles.map((p) =>
+                p.updatePosition(this.canvas, window.innerWidth, window.innerHeight)
+            );
+        }
 
-		newValue && difference && difference > 0
-			? this.#addParticles(difference)
-            : this.#removeParticles(currentCount, -difference);
+    updateNumParticles(newValue) {
+        //if (!this.main.isReactive) return;
+            const currentCount = this.#particles.length;
+            let difference = newValue - currentCount;
 
-        this.main.numParticles = currentCount + difference
-	}
+            newValue && difference && difference > 0
+                ? this.#addParticles(difference)
+                : this.#removeParticles(currentCount, -difference);
 
-    #addParticles(difference) {
-        //console.log(`add ${difference} particles`)
-		this.#createParticles(difference);
-	}
-    #removeParticles(currentCount, difference) {
-        //console.log(difference)
-        this.#particles.splice(currentCount - difference, difference);
-        this.numParticles = this.#particles.length;
-	}
+            this.main.numParticles = currentCount + difference
+        }
+
+        #addParticles(difference) {
+            //console.log(`add ${difference} particles`)
+            this.#createParticles(difference);
+        }
+        #removeParticles(currentCount, difference) {
+            //console.log(difference)
+            this.#particles.splice(currentCount - difference, difference);
+            this.numParticles = this.#particles.length;
+        }
 
 
 
