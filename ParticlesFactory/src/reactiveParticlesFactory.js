@@ -1,17 +1,18 @@
 import { ParticlesFactory } from "./ParticlesFactory.js";
 
-
+//TODO how to achieve access to #createParticles?
+// add a getter in parentClass?
 
 
   export class ReactiveParticlesFactory extends ParticlesFactory {
     #particles;
-      #createParticles;
+    #createParticles;
 
 
     constructor(options) {
         super(options);
-        this.#particles = this._getParticles;
-        this.#createParticles = this._getCreateParticles
+        this.#particles = []
+
 
     }
 
@@ -19,11 +20,7 @@ import { ParticlesFactory } from "./ParticlesFactory.js";
       this.#particles.forEach((p) => p.updateSpeed(value));
     }
 
-    updateSpeed(value = this.main.speed) {
-        const particles = this._getParticles(); // Access #particles using protected method
-        particles.forEach((p) => p.updateSpeed(value));
-        this._setParticles(particles); // Update #particles using protected method
-    }
+
 
     updateNumParticles(newValue) {
       const currentCount = this.#particles.length;
