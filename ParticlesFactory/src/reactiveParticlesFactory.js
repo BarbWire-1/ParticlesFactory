@@ -3,7 +3,7 @@ import { Particle } from "./Particle.js";
 
 //TODO how to achieve access to #createParticles?
 // add a getter in parentClass?
-
+// really HATE the system of (not)inheritance in here !!!!!!!!!!!!!
 
   export class ReactiveParticlesFactory extends ParticlesFactory {
     #particles;
