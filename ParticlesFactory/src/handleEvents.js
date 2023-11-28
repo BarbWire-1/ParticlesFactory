@@ -23,12 +23,13 @@ export function handleEvents(el, containerId) {
 
 
         if (
-            property === 'main.numParticles' ||
-            property === 'main.speed' || // TODO instead redraw just update speed of particles?
-            property === 'particles.size' // this too
+            property === 'main.numParticles'
+
         ) {
 
             el.createParticles();
+        } else if (property === 'main.speed') {
+            el.updateSpeed()
         };
 
     }
