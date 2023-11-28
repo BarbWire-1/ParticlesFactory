@@ -3,7 +3,6 @@
 // TODO2 change to baseParticle and extending shapes - particleType
 
 // TODO add canvas dimensions other than full-screen
-// TODO make responsiveness optional
 
 // TODO add a max-speed??
 
@@ -19,7 +18,7 @@ export class ParticlesFactory {
 	#offscreenCanvas;
 	#offscreenCtx;
 
-	// TODO instead recalc position of Particles??
+
     #resizeCanvas = () => {
         if(this.main.reposition)
         this.#updateParticlesPosition(window.innerWidth, window.innerHeight);
@@ -53,10 +52,10 @@ export class ParticlesFactory {
 		};
 
 		if (options) {
-			if (options.main) {
+			if (options.style) {
 				this.main = Object.preventExtensions({
 					...this.main,
-					...options.main,
+					...options.style,
 				});
 			}
 			if (options.particles) {
@@ -233,7 +232,7 @@ export class ParticlesFactory {
 		offCTX.lineWidth = 0.5;
 		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-		const size = this.particles.size;
+		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
 
 		for (let i = 0; i < len; i++) {
@@ -251,7 +250,7 @@ export class ParticlesFactory {
 					this.#calculateCollision(particle, otherParticle, distance);
 			}
 
-			if (this.particles.draw) {
+			if (this.particles?.draw) {
 				if (!particle) return;
 				particle.size = size;
 				particle.draw(offCTX, this.particles.fillStyle);

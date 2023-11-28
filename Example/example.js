@@ -7,7 +7,7 @@ const {
 
 // Initialisation
 const options = {
-    main:  {
+   style:  {
         canvasId: 'canvas',
         bgColor: '#000',
         numParticles: 100,
@@ -16,7 +16,7 @@ const options = {
         isFullScreen: true,
         reposition: true// whether to recalculate x,y of particles on resize
     },
-    particles,//: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
+    //particles,//: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional
     lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional
 
 }
