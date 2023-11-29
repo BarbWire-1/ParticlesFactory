@@ -1,5 +1,5 @@
 export class Particle {
-	constructor(x, y, size, speed) {
+	constructor(x, y, size, speed, fillStyle) {
 		this.x = x;
 		this.y = y;
         this.size = size;
@@ -9,13 +9,22 @@ export class Particle {
 	}
 
 	draw(ctx, fillColor) {
-        ctx.fillStyle = fillColor;
-        // center the particle on point;
-        let cx = this.x - this.size / 2;
-        let cy = this.y - this.size / 2;
+    // Store the current fillStyle
+    //const originalFillStyle = ctx.fillStyle;
 
-		ctx.fillRect(cx, cy, this.size, this.size);
-	}
+    // Set the fillStyle for the particle rectangle
+    ctx.fillStyle = fillColor;
+
+    // Center the particle on point
+    let cx = this.x - this.size / 2;
+    let cy = this.y - this.size / 2;
+
+    ctx.fillRect(cx, cy, this.size, this.size);
+
+    // Restore the original fillStyle
+    //ctx.fillStyle = originalFillStyle;
+}
+
     // here only boundaries
 	collisionDetection() {
         let { x, y, size} = this;

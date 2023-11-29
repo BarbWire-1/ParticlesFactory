@@ -24,7 +24,7 @@ export const particlesProxy = (target, path = '', parent = null) => {
             bindInputElement(fullPath, value);
 
             if (fullPath === 'main.numParticles' && parent && typeof parent.updateNumParticles === 'function') {
-                parent.updateNumParticles(value); 
+                parent.updateNumParticles(value);
             }
             return true;
         },
@@ -41,7 +41,7 @@ function bindInputElement(path, value) {
 	const inputElement = document.querySelector(
 		`[data-attribute="particles-${path}"]`
 	);
-	console.log(inputElement);
+	//console.log(inputElement);
 	if (inputElement && value) {
 		inputElement.value = value;
 		//console.log(typeof value, value);

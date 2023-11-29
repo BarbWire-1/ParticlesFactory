@@ -21,10 +21,14 @@ export class ParticlesFactory {
 	#offscreenCtx;
 
 	constructor(options) {
-		const config = {
+        const config = {
+            canvas: {
+                id: undefined,
+                width: undefined,
+                height: undefined,
+                fillStyle: '#000'
+            },
 			main: {
-				canvasId: '',
-				fillStyle: '#000',
 				numParticles: 100,
 				speed: 0.2,
 				mouseDistance: 100,
@@ -55,7 +59,7 @@ export class ParticlesFactory {
 						...options[key],
 					});
 				}
-			}
+            }
 		}
 
 		if (!this.particles && !this.lines) {
@@ -64,16 +68,17 @@ export class ParticlesFactory {
 			);
 		}
 
-		this.canvas = document.getElementById(this.main.canvasId);
+		this.canvasEl = document.getElementById(this.canvas.id);
 
-		this.#ctx = this.canvas.getContext('2d');
+        this.#ctx = this.canvasEl.getContext('2d');
+        //this.#ctx.fillStyle = this.canvas.fillStyle;
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
         if (!this.isFullScreen) {
-            this.#offscreenCanvas.width = this.canvas.width = 500;
-            this.#offscreenCanvas.height = this.canvas.height = 500;
-            console.log(this.#offscreenCanvas.width, this.canvas.height)
+            this.#offscreenCanvas.width = this.canvasEl.width;
+            this.#offscreenCanvas.height = this.canvasEl.height;
+            //console.log(this.#offscreenCanvas.width, this.canvasEl.height)// 300 150
         }
 		this.#particles = [];
 
@@ -91,13 +96,13 @@ export class ParticlesFactory {
         if (!this.main.isFullScreen) return;
 		if (this.main.isResponsive) this.#updatePosition();
 
-		this.#offscreenCanvas.width =  this.canvas.width= window.innerWidth;
-		this.#offscreenCanvas.height =this.canvas.height =  window.innerHeight;
+		this.#offscreenCanvas.width =  this.canvasEl.width= window.innerWidth;
+		this.#offscreenCanvas.height =this.canvasEl.height =  window.innerHeight;
 
 		this.#createParticles();
 	};
 	#initListeners = () => {
-		this.canvas.addEventListener(
+		this.canvasEl.addEventListener(
 			'pointermove',
 			this.#handleMouseMove.bind(this)
 		);
@@ -126,7 +131,7 @@ export class ParticlesFactory {
 		// console.log("count from #createParticles: " + count)
 		// console.log(this.main.numParticles)
 		for (let i = 0; i < count; i++) {
-			const { width, height } = this.canvas;
+			const { width, height } = this.canvasEl;
 			const size = this.particles?.size || 2;
 
 			this.#particles.push(
@@ -134,17 +139,21 @@ export class ParticlesFactory {
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
 					size,
-					this.main.speed
+                    this.main.speed,
+                    this.particles.fillStyle
 				)
 			);
 		}
 	}
 	// drawing
 	#drawElements2OffscreenCanvas() {
-		const offCTX = this.#offscreenCtx;
-		offCTX.fillStyle = this.main.fillStyle;
-		offCTX.lineWidth = 0.5;
-		offCTX.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    const offCTX = this.#offscreenCtx;
+
+    //console.log(this.canvas.fillStyle); // undefined!
+
+    offCTX.fillStyle = this.canvas.fillStyle ; // '#000000'
+    offCTX.lineWidth = 0.5;
+    offCTX.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 
 		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
@@ -193,7 +202,7 @@ export class ParticlesFactory {
 	#handleMouseMove(event) {
 		if (!this.main.mouseDistance) return;
 
-		const rect = this.canvas.getBoundingClientRect();
+		const rect = this.canvasEl.getBoundingClientRect();
 		const { left, top } = rect;
 		const mouseX = event.clientX - left;
 		const mouseY = event.clientY - top;
@@ -225,7 +234,7 @@ export class ParticlesFactory {
 	#updatePosition() {
 		//if (!this.main.isReactive) return;
 		this.#particles.map((p) =>
-			p.updatePosition(this.canvas, window.innerWidth, window.innerHeight)
+			p.updatePosition(this.canvasEl, window.innerWidth, window.innerHeight)
 		);
 	}
 
