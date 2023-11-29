@@ -2,34 +2,26 @@ export class Particle {
 	constructor(x, y, size, speed, fillStyle) {
 		this.x = x;
 		this.y = y;
-        this.size = size;
+		this.size = size;
 
-        this.updateSpeed(speed)
-
+		this.updateSpeed(speed);
 	}
 
 	draw(ctx, fillColor) {
-    // Store the current fillStyle
-    //const originalFillStyle = ctx.fillStyle;
+		ctx.fillStyle = fillColor;
 
-    // Set the fillStyle for the particle rectangle
-    ctx.fillStyle = fillColor;
+		// Center the particle on point
+		let cx = this.x - this.size / 2;
+		let cy = this.y - this.size / 2;
 
-    // Center the particle on point
-    let cx = this.x - this.size / 2;
-    let cy = this.y - this.size / 2;
+		ctx.fillRect(cx, cy, this.size, this.size);
+	}
 
-    ctx.fillRect(cx, cy, this.size, this.size);
-
-    // Restore the original fillStyle
-    //ctx.fillStyle = originalFillStyle;
-}
-
-    // here only boundaries
+	// here only boundaries
 	collisionDetection() {
-        let { x, y, size} = this;
+		let { x, y, size } = this;
 		const { width, height } = canvas;
-
+        size /= 2; // adjust to correct prev translating to center
 		if (x <= size || x >= width - size) {
 			this.x = x <= size ? size : width - size;
 			this.xSpeed *= -1;
@@ -39,9 +31,9 @@ export class Particle {
 			this.y = y <= size ? size : height - size;
 			this.ySpeed *= -1;
 		}
-    }
-    particlesCollision(particle, otherParticle, distance) {
-        //console.log(this.size)
+	}
+	particlesCollision(particle, otherParticle, distance) {
+		//console.log(this.size)
 		if (Math.abs(distance < this.size)) {
 			particle.xSpeed *= -1.001;
 			particle.ySpeed *= -1.001;
@@ -50,36 +42,29 @@ export class Particle {
 		}
 	}
 
-
-    update() {
-        this.size = this.size;
+	update() {
+		this.size = this.size;
 		this.collisionDetection();
 		this.x += this.xSpeed;
-	    this.y += this.ySpeed;
-    }
+		this.y += this.ySpeed;
+	}
 
-    updateSpeed(speed) {
+	updateSpeed(speed) {
+		// rondomize speed and direction
+		this.xSpeed = speed * (Math.random() * 2 - 1);
+		this.ySpeed = speed * (Math.random() * 2 - 1);
+	}
 
-            // rondomize speed and direction
-            this.xSpeed = speed * (Math.random() * 2 - 1);
-            this.ySpeed = speed * (Math.random() * 2 - 1);
+	updatePosition(canvas, newWidth, newHeight) {
+		const currentWidth = canvas.width;
+		const currentHeight = canvas.height;
 
-    }
+		if (newWidth !== currentWidth) {
+			this.x = (this.x / currentWidth) * newWidth;
+		}
 
-    updatePosition(canvas, newWidth, newHeight) {
-        const currentWidth = canvas.width;
-        const currentHeight = canvas.height;
-
-        if (newWidth !== currentWidth) {
-
-                this.x =  this.x / currentWidth * newWidth;
-            }
-
-        if (newHeight !== currentHeight) {
-
-                this.y= this.y / currentHeight * newHeight;
-            }
-
-
-    }
+		if (newHeight !== currentHeight) {
+			this.y = (this.y / currentHeight) * newHeight;
+		}
+	}
 }

@@ -22,7 +22,7 @@ export const particlesProxy = (target, path = '', parent = null) => {
             target[prop] = value;
             const fullPath = path ? `${path}.${prop}` : prop;
             bindInputElement(fullPath, value);
-
+            console.log(fullPath)
             if (fullPath === 'main.numParticles' && parent && typeof parent.updateNumParticles === 'function') {
                 parent.updateNumParticles(value);
             }

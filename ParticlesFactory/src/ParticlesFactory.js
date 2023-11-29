@@ -6,6 +6,9 @@
 
 // TODO add a max-speed??
 
+
+//TODO1.1.1 why don't particles correct get recalculated when change from fullSize to fix dimension?
+
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
 // export const offscreenCanvas = document.createElement('canvas');
@@ -21,19 +24,19 @@ export class ParticlesFactory {
 	#offscreenCtx;
 
 	constructor(options) {
-        const config = {
-            canvas: {
-                id: undefined,
-                width: undefined,
-                height: undefined,
-                fillStyle: '#000'
-            },
+		const config = {
+			canvas: {
+				id: undefined,
+				width: 500,
+				height: 500,
+				fillStyle: '#000',
+			},
 			main: {
 				numParticles: 100,
 				speed: 0.2,
 				mouseDistance: 100,
 				isFullScreen: true,
-				isResponsive: false,
+				isResponsive: true,
 			},
 			particles: {
 				fillStyle: '#ff0000',
@@ -59,7 +62,7 @@ export class ParticlesFactory {
 						...options[key],
 					});
 				}
-            }
+			}
 		}
 
 		if (!this.particles && !this.lines) {
@@ -70,16 +73,16 @@ export class ParticlesFactory {
 
 		this.canvasEl = document.getElementById(this.canvas.id);
 
-        this.#ctx = this.canvasEl.getContext('2d');
-        //this.#ctx.fillStyle = this.canvas.fillStyle;
+		this.#ctx = this.canvasEl.getContext('2d');
+		//this.#ctx.fillStyle = this.canvas.fillStyle;
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-        if (!this.isFullScreen) {
-            this.#offscreenCanvas.width = this.canvasEl.width;
-            this.#offscreenCanvas.height = this.canvasEl.height;
-            //console.log(this.#offscreenCanvas.width, this.canvasEl.height)// 300 150
-        }
+		// if (!this.isFullScreen) {
+		// 	this.#offscreenCanvas.width = this.canvasEl.width;
+		// 	this.#offscreenCanvas.height = this.canvasEl.height;
+		// 	//console.log(this.#offscreenCanvas.width, this.canvasEl.height)// 300 150
+		// }
 		this.#particles = [];
 
 		// INITIALISATION
@@ -92,15 +95,30 @@ export class ParticlesFactory {
 		this.#startAnimation();
 	}
 
-    #resizeCanvas = () => {
-        if (!this.main.isFullScreen) return;
-		if (this.main.isResponsive) this.#updatePosition();
+	#resizeCanvas = () => {
+        if (!this.main.isFullScreen) {
 
-		this.#offscreenCanvas.width =  this.canvasEl.width= window.innerWidth;
-		this.#offscreenCanvas.height =this.canvasEl.height =  window.innerHeight;
+			console.log(this.canvasEl.width);
+            this.#offscreenCanvas.width = this.canvasEl.width = this.canvas.width;
+            this.#offscreenCanvas.height = this.canvasEl.height = this.canvas.height;
+            //if (this.main.isResponsive) this.#updatePosition();
+            return;
+		}
+		if (this.main.isResponsive) this.#updatePosition();
+		this.#offscreenCanvas.width = this.canvasEl.width = window.innerWidth;
+		this.#offscreenCanvas.height = this.canvasEl.height =
+			window.innerHeight;
 
 		this.#createParticles();
-	};
+    };
+
+    #reduceSize() {
+         {
+			this.#offscreenCanvas.width = this.canvasEl.width;
+			this.#offscreenCanvas.height = this.canvasEl.height;
+			//console.log(this.#offscreenCanvas.width, this.canvasEl.height)// 300 150
+		}
+    }
 	#initListeners = () => {
 		this.canvasEl.addEventListener(
 			'pointermove',
@@ -139,21 +157,22 @@ export class ParticlesFactory {
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
 					size,
-                    this.main.speed,
-                    this.particles.fillStyle
+					this.main.speed,
+					this.particles.fillStyle
 				)
 			);
 		}
 	}
 	// drawing
-	#drawElements2OffscreenCanvas() {
-    const offCTX = this.#offscreenCtx;
+    #drawElements2OffscreenCanvas() {
+        if (!this.isFullScreen) this.#reduceSize()
+		const offCTX = this.#offscreenCtx;
 
-    //console.log(this.canvas.fillStyle); // undefined!
+		//console.log(this.canvas.fillStyle); // undefined!
 
-    offCTX.fillStyle = this.canvas.fillStyle ; // '#000000'
-    offCTX.lineWidth = 0.5;
-    offCTX.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+		offCTX.fillStyle = this.canvas.fillStyle; // '#000000'
+		offCTX.lineWidth = 0.5;
+		offCTX.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 
 		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
@@ -231,10 +250,18 @@ export class ParticlesFactory {
 		//if (!this.main.isReactive) return;
 		this.#particles.map((p) => p.updateSpeed(value));
 	}
-	#updatePosition() {
+    #updatePosition() {
+        const {width, height}= this.main.isFullScreen ?
+            { width: window.innerWidth, height: window.innerHeight }
+            : {width: this.canvas.width, height: this.canvas.height}
+
 		//if (!this.main.isReactive) return;
 		this.#particles.map((p) =>
-			p.updatePosition(this.canvasEl, window.innerWidth, window.innerHeight)
+			p.updatePosition(
+				this.canvasEl,
+				width,
+				height
+			)
 		);
 	}
 
