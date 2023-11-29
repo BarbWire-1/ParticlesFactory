@@ -21,7 +21,7 @@ export class ParticlesFactory {
 	#offscreenCtx;
 
 	constructor(options) {
-		const defaults = {
+		const config = {
 			main: {
 				canvasId: '',
 				fillStyle: '#000',
@@ -29,8 +29,7 @@ export class ParticlesFactory {
 				speed: 0.2,
 				mouseDistance: 100,
 				isFullScreen: true,
-                isResponsive: false,
-                //isReactive: false
+				isResponsive: false,
 			},
 			particles: {
 				fillStyle: '#ff0000',
@@ -52,7 +51,7 @@ export class ParticlesFactory {
 			for (const key in options) {
 				if (key) {
 					this[key] = Object.preventExtensions({
-						...defaults[key],
+						...config[key],
 						...options[key],
 					});
 				}
@@ -66,10 +65,16 @@ export class ParticlesFactory {
 		}
 
 		this.canvas = document.getElementById(this.main.canvasId);
+
 		this.#ctx = this.canvas.getContext('2d');
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
+        if (!this.isFullScreen) {
+            this.#offscreenCanvas.width = this.canvas.width = 500;
+            this.#offscreenCanvas.height = this.canvas.height = 500;
+            console.log(this.#offscreenCanvas.width, this.canvas.height)
+        }
 		this.#particles = [];
 
 		// INITIALISATION
@@ -82,11 +87,12 @@ export class ParticlesFactory {
 		this.#startAnimation();
 	}
 
-	#resizeCanvas = () => {
+    #resizeCanvas = () => {
+        if (!this.main.isFullScreen) return;
 		if (this.main.isResponsive) this.#updatePosition();
 
-		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
-		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
+		this.#offscreenCanvas.width =  this.canvas.width= window.innerWidth;
+		this.#offscreenCanvas.height =this.canvas.height =  window.innerHeight;
 
 		this.#createParticles();
 	};
@@ -95,6 +101,7 @@ export class ParticlesFactory {
 			'pointermove',
 			this.#handleMouseMove.bind(this)
 		);
+
 		if (this.main.isFullScreen) {
 			window.addEventListener('resize', this.#resizeCanvas.bind(this));
 		}
@@ -104,8 +111,8 @@ export class ParticlesFactory {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 	}
 
-    #getDistance(particle, otherParticle) {
-        if (!particle || !otherParticle) return;
+	#getDistance(particle, otherParticle) {
+		if (!particle || !otherParticle) return;
 		return this.#getVector(
 			particle.x,
 			particle.y,
@@ -115,9 +122,9 @@ export class ParticlesFactory {
 	}
 
 	// initial creation
-    #createParticles(count = this.main.numParticles) {
-        // console.log("count from #createParticles: " + count)
-        // console.log(this.main.numParticles)
+	#createParticles(count = this.main.numParticles) {
+		// console.log("count from #createParticles: " + count)
+		// console.log(this.main.numParticles)
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.canvas;
 			const size = this.particles?.size || 2;
@@ -153,7 +160,11 @@ export class ParticlesFactory {
 				if (this.lines?.draw)
 					this.#drawLines(offCTX, particle, otherParticle, distance);
 				if (this.particles?.collision)
-                    particle.particlesCollision(particle, otherParticle, distance);
+					particle.particlesCollision(
+						particle,
+						otherParticle,
+						distance
+					);
 			}
 
 			if (this.particles?.draw) {
@@ -176,9 +187,9 @@ export class ParticlesFactory {
 			offCTX.strokeStyle = this.lines.strokeStyle;
 			offCTX.stroke();
 		}
-    }
+	}
 
-    // behaviour
+	// behaviour
 	#handleMouseMove(event) {
 		if (!this.main.mouseDistance) return;
 
@@ -205,43 +216,38 @@ export class ParticlesFactory {
 		}
 	}
 
+	// update on changes
 
-    // update on changes
+	updateSpeed(value = this.main.speed) {
+		//if (!this.main.isReactive) return;
+		this.#particles.map((p) => p.updateSpeed(value));
+	}
+	#updatePosition() {
+		//if (!this.main.isReactive) return;
+		this.#particles.map((p) =>
+			p.updatePosition(this.canvas, window.innerWidth, window.innerHeight)
+		);
+	}
 
-    updateSpeed(value = this.main.speed) {
-            //if (!this.main.isReactive) return;
-            this.#particles.map((p) => p.updateSpeed(value));
-        }
-    #updatePosition() {
-            //if (!this.main.isReactive) return;
-            this.#particles.map((p) =>
-                p.updatePosition(this.canvas, window.innerWidth, window.innerHeight)
-            );
-        }
+	updateNumParticles(newValue) {
+		//if (!this.main.isReactive) return;
+		const currentCount = this.#particles.length;
+		let difference = newValue - currentCount;
 
-    updateNumParticles(newValue) {
-        //if (!this.main.isReactive) return;
-            const currentCount = this.#particles.length;
-            let difference = newValue - currentCount;
+		newValue && difference && difference > 0
+			? this.#addParticles(difference)
+			: this.#removeParticles(currentCount, -difference);
 
-            newValue && difference && difference > 0
-                ? this.#addParticles(difference)
-                : this.#removeParticles(currentCount, -difference);
+		this.main.numParticles = currentCount + difference;
+	}
 
-            this.main.numParticles = currentCount + difference
-        }
-
-        #addParticles(difference) {
-            //console.log(`add ${difference} particles`)
-            this.#createParticles(difference);
-        }
-        #removeParticles(currentCount, difference) {
-            //console.log(difference)
-            this.#particles.splice(currentCount - difference, difference);
-            this.numParticles = this.#particles.length;
-        }
-
-
+	#addParticles(difference) {
+		this.#createParticles(difference);
+	}
+	#removeParticles(currentCount, difference) {
+		this.#particles.splice(currentCount - difference, difference);
+		this.numParticles = this.#particles.length;
+	}
 
 	// animation
 	#startAnimation() {

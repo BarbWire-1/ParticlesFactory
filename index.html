@@ -11,7 +11,8 @@
 <body>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <div id="canvas-container">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" ></canvas>
+        <canvas id="canvas" width="500" height="500"></canvas>
     </div>
     <div id="controlPanelContainer">
         <div id="controlPanel" class="controlPanel">
@@ -20,32 +21,32 @@
                         style="color: white">Settings </span>▶</button>
             </div>
             <div class="controlPanelContent">
-                <label for="num">Number of Particles:</label>
-                <input data-attribute="particles-main.numParticles" type="number" id="num" value="200" min="50" max="10000"
+                <label for="numParticles">Number of Particles:</label>
+                <input id="numParticles" data-attribute="particles-main.numParticles" type="number" id="num" value="200" min="50" max="10000"
                     step="50">
 
-                <label for="size">Particles Size:</label>
-                <input data-attribute="particles-particles.size" type="number" id="size" value="2" min="1" max="10"
+                <label for="particlesSize">Particles Size:</label>
+                <input id="particlesSize" data-attribute="particles-particles.size" type="number" id="size" value="2" min="1" max="10"
                     step="1">
 
                 <label for="speed">Speed:</label>
-                <input data-attribute="particles-main.speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
+                <input id="speed" data-attribute="particles-main.speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
 
-                <label for="pColor">Particles Color:</label>
-                <input data-attribute="particles-particles.fillStyle" type="color" id="particle" value='#E1FF00'>
+                <label for="particlesFillStyle">Particles Color:</label>
+                <input id="particlesFillStyle" data-attribute="particles-particles.fillStyle" type="color" id="particle" value='#E1FF00'>
 
-                <label for="stroke">Stroke Color:</label>
-                <input data-attribute="particles-lines.strokeStyle" type="color" id="stroke" value="#4f4f4f">
+                <label for="linesStrokeStyle">Stroke Color:</label>
+                <input id="linesStrokeStyle" data-attribute="particles-lines.strokeStyle" type="color" id="stroke" value="#4f4f4f">
 
-                <label for="bg">Fill Color:</label>
-                <input data-attribute="particles-main.fillStyle" type="color" id="bg" value="#000000">
+                <label for="bgFillStyle">Fill Color:</label>
+                <input id="bgFillStyle" data-attribute="particles-main.fillStyle" type="color" id="bg" value="#000000">
 
-                <label for="connect">Connect Distance:</label>
-                <input data-attribute="particles-lines.connectDistance" type="number" id="connect" value="100" min="0"
+                <label for="connectDistance">Connect Distance:</label>
+                <input id="connectDistance" data-attribute="particles-lines.connectDistance" type="number" id="connect" value="100" min="0"
                     max="400" step="50">
 
-                <label for="mouse">Mouse Distance:</label>
-                <input data-attribute="particles-main.mouseDistance" type="number" id="mouse" value="100" min="0" max="400"
+                <label for="mouseReactive">Mouse Distance:</label>
+                <input id="mouseReactive" data-attribute="particles-main.mouseDistance" type="number" id="mouse" value="100" min="0" max="400"
                     step="50">
 
                 <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
@@ -53,16 +54,19 @@
 
                 <div id="checkbox-container">
                     <label for="particlesFlag">Draw Particles</label>
-                    <input data-attribute="particles-particles.draw" type="checkbox" checked>
+                    <input id="particlesFlag" data-attribute="particles-particles.draw" type="checkbox" checked>
 
                     <label for="particlesCollisionFlag">Particles Collision</label>
-                    <input data-attribute="particles-particles.collision" type="checkbox" checked>
+                    <input id="particlesCollisionFlag" data-attribute="particles-particles.collision" type="checkbox" checked>
 
                     <label for="withLinesFlag">Draw Lines</label>
-                    <input data-attribute="particles-lines.draw" type="checkbox" checked>
+                    <input id="withLinesFlag" data-attribute="particles-lines.draw" type="checkbox" checked>
 
-                    <label for="withLinesFlag">Responsive</label>
-                    <input data-attribute="particles-main.isResponsive" type="checkbox" checked>
+                    <label for="isResponsiveFlag">Responsive</label>
+                    <input id="isResponsiveFlag" data-attribute="particles-main.isResponsive" type="checkbox" checked><br>
+
+                    <label for="isFullScreenFlag">Full Screen</label>
+                    <input id="isFullScreenFlag" data-attribute="particles-main.isFullScreen" type="checkbox" checked>
                 </div>
             </div>
         </div>

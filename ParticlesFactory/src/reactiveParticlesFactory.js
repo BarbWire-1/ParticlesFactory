@@ -18,9 +18,8 @@ export class ReactiveParticlesFactory extends ParticlesFactory {
 	}
 
 	updateNumParticles(newValue) {
-		console.log({ newValue });
+
 		const currentCount = this.#particles.length;
-		console.log({ currentCount });
 		const difference = newValue - currentCount;
 
 		if (newValue && difference && difference > 0) {

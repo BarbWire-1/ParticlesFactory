@@ -1,24 +1,24 @@
 
-import *  as particles from "../ParticlesFactory/index.js";
-const {
+import {
     ParticlesFactory,
     handleEvents,
-    particlesProxy } = particles;
+    particlesProxy }  from "../ParticlesFactory/index.js";
 
-    import { ReactiveParticlesFactory } from "../ParticlesFactory/src/reactiveParticlesFactory.js";
+
+
 
 // Initialisation
 const options = {
    main:  {
         canvasId: 'canvas',
         bgColor: '#000',
-        numParticles: 100,
+        numParticles: 200,
         speed: 0.2,
         mouseDistance: 100,
-        isFullScreen: true,
-        reposition: true// whether to recalculate x,y of particles on resize
+        isFullScreen: false,
+        isResponsive: false// whether to recalculate x,y of particles on resize
     },
-    particles: { fillStyle: '#E1FF00', size: 2 , draw: true, collision: true},// optional - with defaults if only "particles"
+    particles: { fillStyle: '#E1FF00', size: 5 , draw: true, collision: true},// optional - with defaults if only "particles"
     lines: { connectDistance: 100, strokeStyle:'#4f4f4f', draw: true },// optional - with defaults if only "lines"
 
 }
@@ -35,6 +35,8 @@ const proxy = particlesProxy(myParticles);
 //
 // proxy.lines.strokeStyle = "#ff0000"// ok
 // proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
+proxy.particles.fillStyle = '#0000ff';
+proxy.lines.strokeStyle ='#8F5219'
 // proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok
 //--------------------------------------------------------------------------------------------------
@@ -58,6 +60,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-myParticles.updateNumParticles(200); // TODO rather add a getter setter for main.numParticles??
-myParticles.updateSpeed(1);
-//myParticles.particles.size = 20;
+// myParticles.updateNumParticles(500)
+// myParticles.updateSpeed(1);
+// myParticles.particles.size = 20;
+// proxy.main.numParticles = 500;
+
+//myParticles.canvas.width = myParticles.canvas.height = 500
