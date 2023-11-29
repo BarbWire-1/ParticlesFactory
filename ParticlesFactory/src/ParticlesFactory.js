@@ -6,6 +6,8 @@
 
 // TODO add a max-speed??
 
+// private methods don't get inherited to child-classes - so that idea doesn't work :(
+
 // export const offscreenCanvas = document.createElement('canvas');
 // let offCTX = offscreenCanvas.getContext('2d');
 
@@ -27,7 +29,7 @@ export class ParticlesFactory {
 				speed: 0.2,
 				mouseDistance: 100,
 				isFullScreen: true,
-                reposition: false,
+                isResponsive: false,
                 //isReactive: false
 			},
 			particles: {
@@ -81,7 +83,7 @@ export class ParticlesFactory {
 	}
 
 	#resizeCanvas = () => {
-		if (this.main.reposition) this.#updatePosition();
+		if (this.main.isResponsive) this.#updatePosition();
 
 		this.canvas.width = this.#offscreenCanvas.width = window.innerWidth;
 		this.canvas.height = this.#offscreenCanvas.height = window.innerHeight;
@@ -151,7 +153,7 @@ export class ParticlesFactory {
 				if (this.lines?.draw)
 					this.#drawLines(offCTX, particle, otherParticle, distance);
 				if (this.particles?.collision)
-					this.#particlesCollision(particle, otherParticle, distance);
+                    particle.particlesCollision(particle, otherParticle, distance);
 			}
 
 			if (this.particles?.draw) {
@@ -203,14 +205,6 @@ export class ParticlesFactory {
 		}
 	}
 
-	#particlesCollision(particle, otherParticle, distance) {
-		if (this.particles?.collision && Math.abs(distance < particle?.size)) {
-			particle.xSpeed *= -1.001;
-			particle.ySpeed *= -1.001;
-			otherParticle.xSpeed *= -1.001;
-			otherParticle.ySpeed *= -1.001;
-		}
-	}
 
     // update on changes
 

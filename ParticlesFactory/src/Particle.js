@@ -30,7 +30,17 @@ export class Particle {
 			this.y = y <= size ? size : height - size;
 			this.ySpeed *= -1;
 		}
+    }
+    particlesCollision(particle, otherParticle, distance) {
+        //console.log(this.size)
+		if (Math.abs(distance < this.size)) {
+			particle.xSpeed *= -1.001;
+			particle.ySpeed *= -1.001;
+			otherParticle.xSpeed *= -1.001;
+			otherParticle.ySpeed *= -1.001;
+		}
 	}
+
 
     update() {
         this.size = this.size;

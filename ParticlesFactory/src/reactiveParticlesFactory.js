@@ -65,4 +65,4 @@ class Child extends Parent {
 }
 
 const child = new Child();
-child.childMethod(); // This will invoke publicMethod, which indirectly accesses #privateMethod - but it is EXPOSED
+//child.childMethod(); // This will invoke publicMethod, which indirectly accesses #privateMethod - but it is EXPOSED
