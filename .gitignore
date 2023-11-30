@@ -7,3 +7,4 @@ minify.js
 
 .refactoring
 reactiveParticlesFactory.js
+*.odg
