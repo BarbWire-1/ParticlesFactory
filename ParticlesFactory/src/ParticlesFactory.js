@@ -8,7 +8,7 @@
 
 
 //TODO1.1.1 why don't particles correct get recalculated when change from fullSize to fix dimension?
-
+//TODO1.1.1.1 check entire logic of resizing and recalculating particles. decouple and get in animation by flag (???)
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
 // export const offscreenCanvas = document.createElement('canvas');
@@ -98,10 +98,10 @@ export class ParticlesFactory {
 	#resizeCanvas = () => {
         if (!this.main.isFullScreen) {
 
-			console.log(this.canvasEl.width);
+			//console.log(this.canvasEl.width);
             this.#offscreenCanvas.width = this.canvasEl.width = this.canvas.width;
             this.#offscreenCanvas.height = this.canvasEl.height = this.canvas.height;
-            //if (this.main.isResponsive) this.#updatePosition();
+            if (this.main.isResponsive) this.#updatePosition();
             return;
 		}
 		if (this.main.isResponsive) this.#updatePosition();
@@ -179,7 +179,7 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
-			particle?.update();
+			particle?.update(this.particles.draw);
 
 			for (let j = i + 1; j < len; j++) {
 				const otherParticle = this.#particles[j];
@@ -197,7 +197,7 @@ export class ParticlesFactory {
 
 			if (this.particles?.draw) {
 				if (!particle) return;
-				particle.size = size;
+				particle.size = size
 				particle.draw(offCTX, this.particles.fillStyle);
 			}
 		}
@@ -254,7 +254,7 @@ export class ParticlesFactory {
         const {width, height}= this.main.isFullScreen ?
             { width: window.innerWidth, height: window.innerHeight }
             : {width: this.canvas.width, height: this.canvas.height}
-
+console.log(width, height)
 		//if (!this.main.isReactive) return;
 		this.#particles.map((p) =>
 			p.updatePosition(

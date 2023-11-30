@@ -18,10 +18,11 @@ export class Particle {
 	}
 
 	// here only boundaries
-	collisionDetection() {
+	collisionDetection(drawParticles) {
 		let { x, y, size } = this;
-		const { width, height } = canvas;
-        size /= 2; // adjust to correct prev translating to center
+        const { width, height } = canvas;
+        // adjust to correct prev translating of particles to center when drawn or to 0 if not
+        drawParticles ? size /= 2 : size = 0;
 		if (x <= size || x >= width - size) {
 			this.x = x <= size ? size : width - size;
 			this.xSpeed *= -1;
@@ -42,9 +43,9 @@ export class Particle {
 		}
 	}
 
-	update() {
+	update(drawParticles) {
 		this.size = this.size;
-		this.collisionDetection();
+		this.collisionDetection(drawParticles);
 		this.x += this.xSpeed;
 		this.y += this.ySpeed;
 	}
@@ -60,7 +61,8 @@ export class Particle {
 		const currentHeight = canvas.height;
 
 		if (newWidth !== currentWidth) {
-			this.x = (this.x / currentWidth) * newWidth;
+            this.x = (this.x / currentWidth) * newWidth;
+            //console.log(currentWidth, newWidth)
 		}
 
 		if (newHeight !== currentHeight) {
