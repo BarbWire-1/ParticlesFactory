@@ -97,14 +97,14 @@ export class ParticlesFactory {
 
 	#resizeCanvas = () => {
         if (!this.main.isFullScreen) {
-
+ if (this.main.isResponsive) this.#updatePosition();
 			//console.log(this.canvasEl.width);
             this.#offscreenCanvas.width = this.canvasEl.width = this.canvas.width;
             this.#offscreenCanvas.height = this.canvasEl.height = this.canvas.height;
-            if (this.main.isResponsive) this.#updatePosition();
+
             return;
 		}
-		if (this.main.isResponsive) this.#updatePosition();
+if (this.main.isResponsive) this.#updatePosition();
 		this.#offscreenCanvas.width = this.canvasEl.width = window.innerWidth;
 		this.#offscreenCanvas.height = this.canvasEl.height =
 			window.innerHeight;
@@ -112,13 +112,7 @@ export class ParticlesFactory {
 		this.#createParticles();
     };
 
-    #reduceSize() {
-         {
-			this.#offscreenCanvas.width = this.canvasEl.width;
-			this.#offscreenCanvas.height = this.canvasEl.height;
-			//console.log(this.#offscreenCanvas.width, this.canvasEl.height)// 300 150
-		}
-    }
+
 	#initListeners = () => {
 		this.canvasEl.addEventListener(
 			'pointermove',
@@ -165,7 +159,7 @@ export class ParticlesFactory {
 	}
 	// drawing
     #drawElements2OffscreenCanvas() {
-        if (!this.isFullScreen) this.#reduceSize()
+        this.#resizeCanvas();
 		const offCTX = this.#offscreenCtx;
 
 		//console.log(this.canvas.fillStyle); // undefined!
@@ -254,7 +248,7 @@ export class ParticlesFactory {
         const {width, height}= this.main.isFullScreen ?
             { width: window.innerWidth, height: window.innerHeight }
             : {width: this.canvas.width, height: this.canvas.height}
-console.log(width, height)
+//console.log(width, height)
 		//if (!this.main.isReactive) return;
 		this.#particles.map((p) =>
 			p.updatePosition(
