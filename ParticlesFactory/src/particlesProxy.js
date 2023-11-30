@@ -24,7 +24,13 @@ export const particlesProxy = (target, path = '', parent = null) => {
             bindInputElement(fullPath, value);
             console.log(fullPath)
             if (fullPath === 'main.numParticles' && parent && typeof parent.updateNumParticles === 'function') {
-                parent.updateNumParticles(value);
+                console.log(parent +'should update')
+               parent.updateNumParticles(value);
+            }
+
+            if (fullPath === 'main.isFullScreen' && parent && typeof parent.resizeCanvas === 'function') {
+                console.log('Should resize')
+                parent.resizeCanvas();
             }
             return true;
         },
@@ -37,9 +43,11 @@ export const particlesProxy = (target, path = '', parent = null) => {
 
 
 function bindInputElement(path, value) {
+     console.log(path)
 	//path = path.slice(1)
 	const inputElement = document.querySelector(
-		`[data-attribute="particles-${path}"]`
+        `[data-attribute="particles-${path}"]`
+
 	);
 	//console.log(inputElement);
 	if (inputElement && value) {

@@ -6,7 +6,6 @@
 
 // TODO add a max-speed??
 
-
 //TODO1.1.1 why don't particles correct get recalculated when change from fullSize to fix dimension?
 //TODO1.1.1.1 check entire logic of resizing and recalculating particles. decouple and get in animation by flag (???)
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
@@ -71,47 +70,42 @@ export class ParticlesFactory {
 			);
 		}
 
-		this.canvasEl = document.getElementById(this.canvas.id);
-
-		this.#ctx = this.canvasEl.getContext('2d');
-		//this.#ctx.fillStyle = this.canvas.fillStyle;
-		this.#offscreenCanvas = document.createElement('canvas');
-		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
-
-		// if (!this.isFullScreen) {
-		// 	this.#offscreenCanvas.width = this.canvasEl.width;
-		// 	this.#offscreenCanvas.height = this.canvasEl.height;
-		// 	//console.log(this.#offscreenCanvas.width, this.canvasEl.height)// 300 150
-		// }
 		this.#particles = [];
 
 		// INITIALISATION
+		this.#setupCanvas();
 		this.#initListeners();
-		if (this.main.isFullScreen) {
-			this.#resizeCanvas();
-		} else {
-			this.#createParticles();
-		}
+		this.#initialiseParticles();
 		this.#startAnimation();
 	}
 
-	#resizeCanvas = () => {
-        if (!this.main.isFullScreen) {
- if (this.main.isResponsive) this.#updatePosition();
-			//console.log(this.canvasEl.width);
-            this.#offscreenCanvas.width = this.canvasEl.width = this.canvas.width;
-            this.#offscreenCanvas.height = this.canvasEl.height = this.canvas.height;
+	#setupCanvas() {
+		this.canvasEl = document.getElementById(this.canvas.id);
+		this.#ctx = this.canvasEl.getContext('2d');
+		this.#offscreenCanvas = document.createElement('canvas');
+		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-            return;
+		if (this.main.isFullScreen) {
+			this.resizeCanvas();
 		}
-if (this.main.isResponsive) this.#updatePosition();
-		this.#offscreenCanvas.width = this.canvasEl.width = window.innerWidth;
-		this.#offscreenCanvas.height = this.canvasEl.height =
-			window.innerHeight;
-
+	}
+	#initialiseParticles() {
 		this.#createParticles();
-    };
+	}
 
+	resizeCanvas = () => {
+		const { isResponsive, isFullScreen } = this.main;
+
+		if (isResponsive) {
+			this.#updatePosition();
+		}
+
+		const width = isFullScreen ? window.innerWidth : this.canvas.width;
+		const height = isFullScreen ? window.innerHeight : this.canvas.height;
+
+		this.#offscreenCanvas.width = this.canvasEl.width = width;
+		this.#offscreenCanvas.height = this.canvasEl.height = height;
+	};
 
 	#initListeners = () => {
 		this.canvasEl.addEventListener(
@@ -120,7 +114,7 @@ if (this.main.isResponsive) this.#updatePosition();
 		);
 
 		if (this.main.isFullScreen) {
-			window.addEventListener('resize', this.#resizeCanvas.bind(this));
+			window.addEventListener('resize', this.resizeCanvas.bind(this));
 		}
 	};
 	// helpers
@@ -158,8 +152,8 @@ if (this.main.isResponsive) this.#updatePosition();
 		}
 	}
 	// drawing
-    #drawElements2OffscreenCanvas() {
-        this.#resizeCanvas();
+	#drawElements2OffscreenCanvas() {
+		//this.resizeCanvas();
 		const offCTX = this.#offscreenCtx;
 
 		//console.log(this.canvas.fillStyle); // undefined!
@@ -191,7 +185,7 @@ if (this.main.isResponsive) this.#updatePosition();
 
 			if (this.particles?.draw) {
 				if (!particle) return;
-				particle.size = size
+				particle.size = size;
 				particle.draw(offCTX, this.particles.fillStyle);
 			}
 		}
@@ -244,18 +238,17 @@ if (this.main.isResponsive) this.#updatePosition();
 		//if (!this.main.isReactive) return;
 		this.#particles.map((p) => p.updateSpeed(value));
 	}
-    #updatePosition() {
-        const {width, height}= this.main.isFullScreen ?
-            { width: window.innerWidth, height: window.innerHeight }
-            : {width: this.canvas.width, height: this.canvas.height}
-//console.log(width, height)
-		//if (!this.main.isReactive) return;
+	#updatePosition() {
+		const { isFullScreen } = this.main;
+		const canvasWidth = isFullScreen
+			? window.innerWidth
+			: this.canvas.width;
+		const canvasHeight = isFullScreen
+			? window.innerHeight
+			: this.canvas.height;
+
 		this.#particles.map((p) =>
-			p.updatePosition(
-				this.canvasEl,
-				width,
-				height
-			)
+			p.updatePosition(this.canvasEl, canvasWidth, canvasHeight)
 		);
 	}
 
