@@ -8,8 +8,8 @@ import {
 const options = {
 	canvas: {
 		id: 'canvas',
-		// width: 500,
-		// height: 500,
+		 width: 500,
+		 height: 500,
 		// fillStyle: '#000',
 	},
 	main: {
@@ -64,3 +64,4 @@ document.addEventListener('DOMContentLoaded', function () {
 // proxy.main.numParticles = 500;
 
 //myParticles.canvas.width = myParticles.canvas.height = 500
+proxy.main.isFullScreen = false

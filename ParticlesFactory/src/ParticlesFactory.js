@@ -75,7 +75,7 @@ export class ParticlesFactory {
 		// INITIALISATION
 		this.#setupCanvas();
 		this.#initListeners();
-		this.#initialiseParticles();
+		this.#createParticles();
 		this.#startAnimation();
 	}
 
@@ -85,15 +85,13 @@ export class ParticlesFactory {
 		this.#offscreenCanvas = document.createElement('canvas');
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
-		if (this.main.isFullScreen) {
-			this.resizeCanvas();
-		}
-	}
-	#initialiseParticles() {
-		this.#createParticles();
+
+			this.getCanvasSize();
+
 	}
 
-	resizeCanvas = () => {
+
+	getCanvasSize = () => {
 		const { isResponsive, isFullScreen } = this.main;
 
 		if (isResponsive) {
@@ -114,7 +112,7 @@ export class ParticlesFactory {
 		);
 
 		if (this.main.isFullScreen) {
-			window.addEventListener('resize', this.resizeCanvas.bind(this));
+			window.addEventListener('resize', this.getCanvasSize.bind(this));
 		}
 	};
 	// helpers
@@ -153,28 +151,30 @@ export class ParticlesFactory {
 	}
 	// drawing
 	#drawElements2OffscreenCanvas() {
-		//this.resizeCanvas();
 		const offCTX = this.#offscreenCtx;
 
-		//console.log(this.canvas.fillStyle); // undefined!
-
-		offCTX.fillStyle = this.canvas.fillStyle; // '#000000'
+		offCTX.fillStyle = this.canvas.fillStyle;
 		offCTX.lineWidth = 0.5;
 		offCTX.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 
 		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
 
-		for (let i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
+            // calculate all particles
 			const particle = this.#particles[i];
 			particle?.update(this.particles.draw);
 
+            // get distance between particles
 			for (let j = i + 1; j < len; j++) {
 				const otherParticle = this.#particles[j];
-				const distance = this.#getDistance(particle, otherParticle);
+                const distance = this.#getDistance(particle, otherParticle);
 
+                // draw lines - optional
 				if (this.lines?.draw)
-					this.#drawLines(offCTX, particle, otherParticle, distance);
+                    this.#drawLines(offCTX, particle, otherParticle, distance);
+
+                // check for collision and react  - optional
 				if (this.particles?.collision)
 					particle.particlesCollision(
 						particle,
@@ -182,20 +182,21 @@ export class ParticlesFactory {
 						distance
 					);
 			}
-
+            // draw particles - optional
 			if (this.particles?.draw) {
 				if (!particle) return;
 				particle.size = size;
 				particle.draw(offCTX, this.particles.fillStyle);
 			}
 		}
-
+        // render the offScreen canvas as image to canvasEl
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
 	#drawLines(offCTX, particle, otherParticle, distance) {
-		if (!particle || !otherParticle) return; // Exit early if either particle is undefined or null
+		if (!particle || !otherParticle) return;
 
+        // set coords of connection -lines if in set connectionDistance
 		if (this.lines?.draw && distance <= this.lines.connectDistance) {
 			offCTX.beginPath();
 			offCTX.moveTo(particle.x, particle.y);
@@ -209,15 +210,18 @@ export class ParticlesFactory {
 	#handleMouseMove(event) {
 		if (!this.main.mouseDistance) return;
 
+        // get relative mouse-position
 		const rect = this.canvasEl.getBoundingClientRect();
 		const { left, top } = rect;
 		const mouseX = event.clientX - left;
 		const mouseY = event.clientY - top;
 
+        // check relative position of particles to mouse pos
 		for (let particle of this.#particles) {
 			const { x, y } = particle;
 			let distance = this.#getVector(x, y, mouseX, mouseY);
-
+            // move particles away along their previous vector
+            // without turning direction!
 			if (distance && distance < this.main.mouseDistance) {
 				let dx = mouseX - x;
 				let dy = mouseY - y;
@@ -233,11 +237,11 @@ export class ParticlesFactory {
 	}
 
 	// update on changes
-
 	updateSpeed(value = this.main.speed) {
-		//if (!this.main.isReactive) return;
 		this.#particles.map((p) => p.updateSpeed(value));
-	}
+    }
+    // pass new canvasSize
+    // to update for responsive relative re-positioning of particles
 	#updatePosition() {
 		const { isFullScreen } = this.main;
 		const canvasWidth = isFullScreen
@@ -252,6 +256,8 @@ export class ParticlesFactory {
 		);
 	}
 
+    // update instead of recreate by getting the difference old/new
+    // create add or remove
 	updateNumParticles(newValue) {
 		//if (!this.main.isReactive) return;
 		const currentCount = this.#particles.length;

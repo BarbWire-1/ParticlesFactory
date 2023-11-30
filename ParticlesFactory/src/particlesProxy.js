@@ -1,10 +1,12 @@
 
 // TODO!!! colorPicker only shows new color when using hexCode (on proxy)
+
+// calling methods on parent not working!!!
 const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 
 // path and parent as parameters to have access through all levels
-export const particlesProxy = (target, path = '', parent = null) => {
+export const particlesProxy = (target, path = '', parent = target) => {
     if (proxies.has(target)) {
         return proxies.get(target); // reuse existing proxy
     }
@@ -19,6 +21,8 @@ export const particlesProxy = (target, path = '', parent = null) => {
             return value;
         },
         set(target, prop, value) {
+
+            console.log(parent)
             target[prop] = value;
             const fullPath = path ? `${path}.${prop}` : prop;
             bindInputElement(fullPath, value);
@@ -28,7 +32,7 @@ export const particlesProxy = (target, path = '', parent = null) => {
                parent.updateNumParticles(value);
             }
 
-            if (fullPath === 'main.isFullScreen' && parent && typeof parent.resizeCanvas === 'function') {
+            if (fullPath === 'main.isFullScreen' ) {
                 console.log('Should resize')
                 parent.resizeCanvas();
             }
