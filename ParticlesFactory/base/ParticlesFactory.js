@@ -178,7 +178,7 @@ export class ParticlesFactory {
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
 
-			this.#handleMouseMove(particle);
+
 			particle.update(this.particles.draw);// boolean/flag
 			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);// pass to inner loop
 
@@ -190,11 +190,12 @@ export class ParticlesFactory {
 					this.particles.fillStyle,
 					this.particles.opacity
 				);
-			}
+            }
+            this.#handleMouseMove(particle);
 		}
 		this.#renderOffscreenCanvas();
 	}
-
+// TODO crashed mousemove - Only apply when MOVING
 	#handleMouseMove(particle) {
 		if (this.#mouseX && this.main.mouseDistance) {
 			particle.handleMouseMove(
