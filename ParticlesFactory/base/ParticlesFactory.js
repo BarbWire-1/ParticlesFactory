@@ -22,9 +22,9 @@ export class ParticlesFactory {
 	#offscreenCanvas;
 	#offscreenCtx;
 	#mouseX;
-    #mouseY;
-    #width;
-    #height;
+	#mouseY;
+	#width;
+	#height;
 
 	constructor(options) {
 		const config = {
@@ -78,9 +78,9 @@ export class ParticlesFactory {
 
 		this.#particles = [];
 		this.#mouseX = undefined;
-        this.#mouseY = undefined;
-        this.#width = undefined;
-        this.#height = undefined;
+		this.#mouseY = undefined;
+		this.#width = undefined;
+		this.#height = undefined;
 
 		// INITIALISATION
 		this.#setupCanvas();
@@ -166,8 +166,6 @@ export class ParticlesFactory {
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#drawElements2OffscreenCanvas() {
-	
-
 		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
 
