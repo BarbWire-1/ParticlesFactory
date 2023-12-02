@@ -96,7 +96,7 @@ export class ParticlesFactory {
 	getCanvasSize = () => {
 		const { isResponsive, isFullScreen } = this.main;
 
-		isResponsive && this.#updatePosition();
+		isResponsive && this.#adjustParticleCoords();
 
 		this.#width = isFullScreen ? window.innerWidth : this.canvas.width;
 		this.#height = isFullScreen ? window.innerHeight : this.canvas.height;
@@ -240,15 +240,11 @@ export class ParticlesFactory {
 			offCTX.globalAlpha = this.lines.opacity;
 			offCTX.stroke();
 		}
-	}
-
-	// update on changes
-	updateSpeed() {
-		this.#particles.map((p) => p.updateSpeed(this.main.speed));
-	}
-	// pass new canvasSize
-	// to update for responsive relative re-positioning of particles
-	#updatePosition() {
+    }
+    // pass new canvasSize
+    // to update for responsive relative re-positioning of particles
+    //
+	#adjustParticleCoords() {
 		const { isFullScreen } = this.main;
 
 		// TODO: this check is redundant!!!!
@@ -261,9 +257,15 @@ export class ParticlesFactory {
 			: this.canvas.height;
 
 		this.#particles.map((p) =>
-			p.updatePosition(this.canvasEl, canvasWidth, canvasHeight)
+			p.updatePosition(canvasWidth, canvasHeight)
 		);
 	}
+
+	// update on changes
+	updateSpeed() {
+		this.#particles.map((p) => p.updateSpeed(this.main.speed));
+	}
+
 
 	// update instead of recreate by getting the difference old/new
 	// create add or remove
@@ -278,16 +280,17 @@ export class ParticlesFactory {
 
 		this.main.numParticles = currentCount + difference;
 	}
-
 	#addParticles(difference) {
 		this.#createParticles(difference);
 	}
 	#removeParticles(currentCount, difference) {
 		this.#particles.splice(currentCount - difference, difference);
 		this.numParticles = this.#particles.length;
-	}
+    }
 
-	// animation
+
+
+	// ANIMATION
 	#startAnimation() {
 		this.#drawElements2OffscreenCanvas();
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
