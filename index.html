@@ -22,9 +22,9 @@
                         style="color: white">Settings </span>▶</button>
             </div>
 
-            <div class="controlPanelContent">
+            <div id="inputSection" class="controlPanelContent">
 
-                <h3 data-action="particles-toggleVisibility">▶ Main</h3>
+                <h3 data-action="particles-toggleVisibility">▶ main</h3>
                 <div class="inputContainer">
                     <label for="numParticles">Number of Particles:</label>
                     <input id="numParticles" data-attribute="particles-main.numParticles" type="number" value="200"
@@ -54,7 +54,7 @@
                 </div>
                 <hr>
 
-                <h3 data-action="particles-toggleVisibility">▶ Particles</h3>
+                <h3 data-action="particles-toggleVisibility">▶ particles</h3>
                 <div class="inputContainer">
                     <label for="particlesSize">Particles Size:</label>
                     <input id="particlesSize" data-attribute="particles-particles.size" type="number" value="2" min="1"
@@ -80,7 +80,7 @@
                 </div>
                 <hr>
 
-                <h3 data-action="particles-toggleVisibility">▶ Lines</h3>
+                <h3 data-action="particles-toggleVisibility">▶ lines</h3>
                 <div class="inputContainer">
                     <label for="connectDistance">Connect Distance:</label>
                     <input id="connectDistance" data-attribute="particles-lines.connectDistance" type="number"
@@ -105,10 +105,13 @@
 
                 </div>
                 <hr>
-                <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
-                <button id="toggleContent">Toggle Page Content</button>
 
 
+
+            </div>
+            <div class="button-container">
+            <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
+            <button id="toggleContent">Toggle Page Content</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,154 @@
+
+// Function to create and append elements based on properties
+function createElementsFromProperties() {
+	const properties = Object.getOwnPropertyNames(myParticles);
+
+	const fragment = document.createDocumentFragment();
+
+	properties.forEach((prop) => {
+		if (
+			!prop.startsWith('canvas') &&
+			typeof myParticles[prop] !== 'function'
+		) {
+			const sectionHeader = document.createElement('h3');
+			sectionHeader.setAttribute(
+				'data-action',
+				'particles-toggleVisibility'
+			);
+			sectionHeader.textContent = `▶ ${prop}`;
+			fragment.appendChild(sectionHeader);
+
+			const inputContainer = document.createElement('div');
+			inputContainer.classList.add('inputContainer');
+
+			const propValue = myParticles[prop];
+			if (typeof propValue === 'object') {
+				for (const innerProp in propValue) {
+					const value = propValue[innerProp];
+					const labelSettings = {
+						for: innerProp,
+						textContent:
+							typeof value !== 'boolean'
+								? `${innerProp}:`
+								: innerProp,
+					};
+					const inputSettings = {
+						id: innerProp,
+						'data-attribute': `particles-${prop}.${innerProp}`,
+						type:
+							typeof value === 'boolean'
+								? 'checkbox'
+								: typeof value === 'string' &&
+								  value.startsWith('#')
+								? 'color'
+								: 'number',
+						value: value,
+						...(typeof value !== 'boolean' && {
+							min: '0',
+							max: '100',
+						}), // Only apply min/max for number inputs
+						...(typeof value === 'boolean' && { checked: value }), // Check the checkbox if it's a boolean value
+					};
+
+					const label = document.createElement('label');
+					Object.keys(labelSettings).forEach((key) => {
+						label[key] = labelSettings[key];
+					});
+					inputContainer.appendChild(label);
+
+					if (typeof value === 'boolean') {
+						const checkboxContainer = document.createElement('div');
+						checkboxContainer.classList.add('checkbox-container');
+
+						const input = document.createElement('input');
+						Object.keys(inputSettings).forEach((key) => {
+							input[key] = inputSettings[key];
+						});
+						checkboxContainer.appendChild(input);
+						inputContainer.appendChild(checkboxContainer);
+					} else {
+						const input = document.createElement('input');
+						Object.keys(inputSettings).forEach((key) => {
+							input[key] = inputSettings[key];
+						});
+						inputContainer.appendChild(input);
+
+						if (typeof value !== 'boolean') {
+							const lineBreak = document.createElement('br');
+							inputContainer.appendChild(lineBreak);
+						}
+					}
+				}
+			}
+
+			fragment.appendChild(inputContainer);
+
+			const hr = document.createElement('hr');
+			fragment.appendChild(hr);
+		}
+	});
+
+	// Return the created HTML content as a string
+	return fragment;
+}
+
+// Append the generated HTML to a target element
+const targetElement = document.getElementById('inputSection');
+console.log(targetElement);
+if (targetElement) {
+	const elementsFragment = createElementsFromProperties();
+	targetElement.appendChild(elementsFragment);
+}
+//second variant using innerHTML
+//TEST -create inputs dynamically
+// get all props not starting with canvas... then create the input-structure
+function generateHTMLFromProperties() {
+	const properties = Object.getOwnPropertyNames(myParticles);
+
+	let generatedHTML = '';
+
+	properties.forEach((prop) => {
+		if (
+			!prop.startsWith('canvas') &&
+			typeof myParticles[prop] !== 'function'
+		) {
+			generatedHTML += `<h3 data-action="particles-toggleVisibility">▶ ${prop}</h3>`;
+			generatedHTML += '<div class="inputContainer">';
+
+			const propValue = myParticles[prop];
+			if (typeof propValue === 'object') {
+				for (const innerProp in propValue) {
+					const value = propValue[innerProp];
+					if (typeof value !== 'boolean') {
+						generatedHTML += `<label for="${innerProp}">${innerProp}:</label>`;
+					}
+
+					if (typeof value === 'boolean') {
+						generatedHTML += `<div class="checkbox-container">
+                                <label for="${innerProp}">${innerProp}</label>
+                                <input id="${innerProp}" data-attribute="particles-${prop}.${innerProp}" type="checkbox" ${
+									value ? 'checked' : ''
+								}>
+                              </div>`;
+					} else if (
+						typeof value === 'string' &&
+						value.startsWith('#')
+					) {
+						generatedHTML += `<input id="${innerProp}" data-attribute="particles-${prop}.${innerProp}" type="color" value="${value}">`;
+					} else {
+						generatedHTML += `<input id="${innerProp}" data-attribute="particles-${prop}.${innerProp}" type="number" value="${value}" min="0" max="100">`;
+					}
+
+					if (typeof value !== 'boolean') {
+						generatedHTML += '<br>';
+					}
+				}
+			}
+
+			generatedHTML += '</div>';
+			generatedHTML += '<hr>';
+		}
+	});
+
+	return generatedHTML;
+}

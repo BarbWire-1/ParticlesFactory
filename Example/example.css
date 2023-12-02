@@ -112,7 +112,9 @@ input[type="color"]::-webkit-color-swatch-wrapper {
      position: relative;
 }
 
-.controlPanelContent button {
+.button-container button {
+    width: 90%;
+    left: 5%;
      margin-top: 30px;
      position: relative;
      font-size: 1.1em;
@@ -122,7 +124,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
      transition: background 0.3s ease, color 0.3s ease;
 }
 
-.controlPanelContent button:hover {
+.button-container button:hover {
      background: #f95050; /* New background color on hover */
      color: white;
 }
