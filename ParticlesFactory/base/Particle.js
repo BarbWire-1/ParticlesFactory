@@ -5,7 +5,8 @@ export class Particle {
         this.canvas = canvas;
 		this.x = x;
 		this.y = y;
-		this.size = size;
+        this.size = size;
+        this.speed = speed
 
 		this.updateSpeed(speed);
 	}
@@ -41,11 +42,10 @@ export class Particle {
 
 		if (Math.abs(distance) < this.size) {
 			[particle, otherParticle].forEach((p) => {
-                // p.xSpeed *= -1.001;
-                // p.ySpeed *= -1.001;
+                 p.xSpeed *= -1.001;
+                 p.ySpeed *= -1.001;
 
-                p.xSpeed = (p.xSpeed * -1.001) % (3 * this.spped);
-                p.ySpeed = (p.ySpeed * -1.001) % (3 * this.speed);
+
 			});
 		}
 	}
