@@ -100,7 +100,9 @@ button {
 
 input [type="color"] {
      padding: 0;
-     margin: 0;
+    margin-top: 10px;
+     margin-bottom: 10px;
+
 }
 /* Hide the default color picker dropdown arrow */
 input[type="color"]::-webkit-color-swatch-wrapper {
@@ -111,7 +113,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 .controlPanelContent button {
-     margin-top: 50px;
+     margin-top: 30px;
      position: relative;
      font-size: 1.1em;
      height: 40px;
@@ -128,6 +130,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
      margin-top: 10px;
 }
 
+
 a {
      color: white;
      position: absolute;
@@ -137,6 +140,9 @@ a {
      font-size: 16px;
      z-index: 100;
 }
+/* .controlPanelContent input[type="checkbox"] {
+  box-shadow: none;
+} */
 /*-------------------------------------------------------------------------------------------------*/
 #content-container {
      position: absolute;
@@ -202,9 +208,12 @@ button {
      cursor: pointer;
 }
 
-#checkbox-container {
+/* .checkbox-container {
     margin-top: 25px;
-}
-#checkbox-container * {
+} */
+.checkbox-container * {
     margin-top: 20px;
+}
+hr {
+    margin-bottom: 15px;
 }

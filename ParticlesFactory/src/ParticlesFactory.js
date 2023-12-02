@@ -30,12 +30,13 @@ export class ParticlesFactory {
         id: undefined,
         width: 500,
         height: 500,
-        fillStyle: "#000",
+
       },
       main: {
         numParticles: 100,
         speed: 0.2,
         mouseDistance: 100,
+        fillStyle: "#000",
         isFullScreen: true,
         isResponsive: true,
       },
@@ -165,7 +166,11 @@ export class ParticlesFactory {
     this.getCanvasSize();
 
     const size = this.particles?.size || 2;
-    const len = this.main.numParticles;
+      const len = this.main.numParticles;
+
+      // Clear canvas by drawing the background rectangle
+  this.#offscreenCtx.fillStyle = this.main.fillStyle;
+  this.#offscreenCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 
     for (let i = 0; i < len; i++) {
       const particle = this.#particles[i];
