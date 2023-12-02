@@ -179,8 +179,8 @@ export class ParticlesFactory {
 			const particle = this.#particles[i];
 
 			this.#handleMouseMove(particle);
-			particle.update(this.particles.draw);
-			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);
+			particle.update(this.particles.draw);// boolean/flag
+			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);// pass to inner loop
 
 			if (this.particles?.draw) {
 				if (!particle) return;
@@ -243,7 +243,6 @@ export class ParticlesFactory {
     }
     // pass new canvasSize
     // to update for responsive relative re-positioning of particles
-    //
 	#adjustParticleCoords() {
 		const { isFullScreen } = this.main;
 
@@ -268,9 +267,9 @@ export class ParticlesFactory {
 
 
 	// update instead of recreate by getting the difference old/new
-	// create add or remove
+	// create and add or remove
 	updateNumParticles(newValue) {
-		//if (!this.main.isReactive) return;
+
 		const currentCount = this.#particles.length;
 		let difference = newValue - currentCount;
 
