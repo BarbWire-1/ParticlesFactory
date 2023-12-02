@@ -1,12 +1,12 @@
 // gets the canvas passed in calling methods from the consuming class
 
 export class Particle {
-    constructor (canvas, x, y, size, speed) {
-        this.canvas = canvas;
+	constructor(canvas, x, y, size, speed) {
+		this.canvas = canvas;
 		this.x = x;
 		this.y = y;
-        this.size = size;
-        this.speed = speed
+		this.size = size;
+		this.speed = speed;
 
 		this.updateSpeed(speed);
 	}
@@ -38,14 +38,11 @@ export class Particle {
 			this.ySpeed *= -1;
 		}
 	}
-    particlesCollision(particle, otherParticle, distance) {
-
+	particlesCollision(particle, otherParticle, distance) {
 		if (Math.abs(distance) < this.size) {
 			[particle, otherParticle].forEach((p) => {
-                 p.xSpeed *= -1.001;
-                 p.ySpeed *= -1.001;
-
-
+				p.xSpeed *= -1.001;
+				p.ySpeed *= -1.001;
 			});
 		}
 	}
@@ -69,7 +66,6 @@ export class Particle {
 
 		if (newWidth !== currentWidth) {
 			this.x = (this.x / currentWidth) * newWidth;
-			//console.log(currentWidth, newWidth)
 		}
 
 		if (newHeight !== currentHeight) {

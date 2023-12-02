@@ -1,17 +1,12 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
 
 // TODO2 change to baseParticle and extending shapes - particleType
-
-// TODO add canvas dimensions other than full-screen
-
 // TODO add a max-speed??
 
-//TODO1.1.1 why don't particles correct get recalculated when change from fullSize to fix dimension?
-//TODO1.1.1.1 check entire logic of resizing and recalculating particles. decouple and get in animation by flag (???)
+
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
-// export const offscreenCanvas = document.createElement('canvas');
-// let offCTX = offscreenCanvas.getContext('2d');
+
 
 import { Particle } from './Particle.js';
 
@@ -122,7 +117,7 @@ export class ParticlesFactory {
 	};
 
 	#getMousePosition(event) {
-		//console.log(event)
+
 		const rect = this.canvasEl.getBoundingClientRect();
 		const { left, top } = rect;
 		this.#mouseX = event.clientX - left;
@@ -145,8 +140,7 @@ export class ParticlesFactory {
 
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
-		// console.log("count from #createParticles: " + count)
-		// console.log(this.main.numParticles)
+
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.#offscreenCanvas;
 			const size = this.particles?.size || 2;
@@ -169,7 +163,7 @@ export class ParticlesFactory {
 		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
 
-		// Clear canvas by drawing the background rectangle
+		// draw background rectangle
 		this.#offscreenCtx.fillStyle = this.main.fillStyle;
 		this.#offscreenCtx.fillRect(
 			0,
@@ -178,6 +172,9 @@ export class ParticlesFactory {
 			this.canvasEl.height
 		);
 
+        // handle all behaviour of particle.
+        // get x,y
+        // optional draw particle and/or draw lines
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
 
@@ -207,7 +204,7 @@ export class ParticlesFactory {
 			);
 		}
 	}
-
+    // inner loop to get otherParticle
 	#handleLinesAndCollision(particle, startIndex, len) {
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
@@ -220,7 +217,7 @@ export class ParticlesFactory {
 				distance
 			);
 
-			if (this.particles?.collision) {
+			if (this.particles?.collision) {// flag
 				particle.particlesCollision(particle, otherParticle, distance);
 			}
 		}
@@ -246,8 +243,8 @@ export class ParticlesFactory {
 	}
 
 	// update on changes
-	updateSpeed(value = this.main.speed) {
-		this.#particles.map((p) => p.updateSpeed(value));
+	updateSpeed() {
+		this.#particles.map((p) => p.updateSpeed(this.main.speed));
 	}
 	// pass new canvasSize
 	// to update for responsive relative re-positioning of particles
