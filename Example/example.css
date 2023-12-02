@@ -216,6 +216,7 @@ button {
 }
 hr {
     margin-bottom: 15px;
+    box-shadow: 2px 2px 2px black;
 }
 label {
     font-size: 0.8em

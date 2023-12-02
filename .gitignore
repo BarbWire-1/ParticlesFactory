@@ -1,10 +1,14 @@
-//.vscode
-*.txt
+.vscode
 .DS_Store
+
+//working on...
 .shapes
-
-minify.js
-
 .refactoring
 reactiveParticlesFactory.js
+
+// private documentation
+*.txt
 *.odg
+
+.ideas
+minify.js

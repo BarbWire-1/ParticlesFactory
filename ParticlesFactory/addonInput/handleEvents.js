@@ -49,9 +49,9 @@ export function handleEvents(el, containerId) {
 	}
 
     function handleButtonClick(e) {
-        console.log(e.target)
+        //console.log(e.target)
         const dataAction = isValidAttribute(e, 'action') ;
-  
+
 		// for control-sidebar in example - could be customised, perhaps pass from main???
 		const clickAction = {
 			togglePanel: () => container.classList.toggle('open'),
