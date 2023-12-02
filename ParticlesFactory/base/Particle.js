@@ -41,8 +41,11 @@ export class Particle {
 
 		if (Math.abs(distance) < this.size) {
 			[particle, otherParticle].forEach((p) => {
-				p.xSpeed *= -1.001;
-				p.ySpeed *= -1.001;
+                // p.xSpeed *= -1.001;
+                // p.ySpeed *= -1.001;
+
+                p.xSpeed = (p.xSpeed * -1.001) % (3 * this.spped);
+                p.ySpeed = (p.ySpeed * -1.001) % (3 * this.speed);
 			});
 		}
 	}
