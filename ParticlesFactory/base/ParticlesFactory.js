@@ -66,15 +66,15 @@ export class ParticlesFactory {
 						...config[key],
 						...options[key],
 					});
-                };
-            };
-        };
+				}
+			}
+		}
 
 		if (!this.particles && !this.lines) {
 			throw new Error(
 				'You need to define at least either a particles- or a lines-object.'
 			);
-        };
+		}
 
 		this.#particles = [];
 		this.#mouseX = undefined;
@@ -118,8 +118,8 @@ export class ParticlesFactory {
 
 		if (this.main.isFullScreen) {
 			window.addEventListener('resize', this.getCanvasSize.bind(this));
-        };
-    };
+		}
+	};
 
 	#getMousePosition(event) {
 		//console.log(event)
@@ -160,7 +160,7 @@ export class ParticlesFactory {
 					this.particles.fillStyle
 				)
 			);
-        };
+		}
 	}
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
@@ -177,25 +177,23 @@ export class ParticlesFactory {
 			this.canvasEl.height
 		);
 
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[ i ];
+		for (let i = 0; i < len; i++) {
+			const particle = this.#particles[i];
 
-            this.#handleMouseMove(particle);
-            particle.update(this.canvasEl, this.particles.draw);
-            this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);
+			this.#handleMouseMove(particle);
+			particle.update(this.canvasEl, this.particles.draw);
+			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);
 
-
-            if (this.particles?.draw) {
-                if (!particle) return;
-                particle.size = size;
-                particle.draw(
-                    this.#offscreenCtx,
-                    this.particles.fillStyle,
-                    this.particles.opacity
-                );
-            }
-
-        }
+			if (this.particles?.draw) {
+				if (!particle) return;
+				particle.size = size;
+				particle.draw(
+					this.#offscreenCtx,
+					this.particles.fillStyle,
+					this.particles.opacity
+				);
+			}
+		}
 		this.#renderOffscreenCanvas();
 	}
 
@@ -232,8 +230,8 @@ export class ParticlesFactory {
 	}
 
 	#drawLines(offCTX, particle, otherParticle, distance) {
-		if (!particle || !otherParticle || !this.lines?.draw ) return;
-        const isCloseEnough = distance <= this.lines.connectDistance;
+		if (!particle || !otherParticle || !this.lines?.draw) return;
+		const isCloseEnough = distance <= this.lines.connectDistance;
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
 			offCTX.beginPath();
@@ -253,10 +251,10 @@ export class ParticlesFactory {
 	// pass new canvasSize
 	// to update for responsive relative re-positioning of particles
 	#updatePosition() {
-        const { isFullScreen } = this.main;
+		const { isFullScreen } = this.main;
 
-        // TODO: this check is redundant!!!!
-        // need to change sequence to remove it here?
+		// TODO: this check is redundant!!!!
+		// need to change sequence to remove it here?
 		const canvasWidth = isFullScreen
 			? window.innerWidth
 			: this.canvas.width;
