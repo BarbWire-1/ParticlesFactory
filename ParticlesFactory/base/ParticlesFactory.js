@@ -148,11 +148,12 @@ export class ParticlesFactory {
 		// console.log("count from #createParticles: " + count)
 		// console.log(this.main.numParticles)
 		for (let i = 0; i < count; i++) {
-			const { width, height } = this.canvasEl;
+			const { width, height } = this.#offscreenCanvas;
 			const size = this.particles?.size || 2;
 
-			this.#particles.push(
-				new Particle(
+            this.#particles.push(
+                new Particle(
+                    this.#offscreenCanvas,
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
 					size,
@@ -181,7 +182,7 @@ export class ParticlesFactory {
 			const particle = this.#particles[i];
 
 			this.#handleMouseMove(particle);
-			particle.update(this.canvasEl, this.particles.draw);
+			particle.update(this.particles.draw);
 			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);
 
 			if (this.particles?.draw) {

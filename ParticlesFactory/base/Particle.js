@@ -1,7 +1,8 @@
 // gets the canvas passed in calling methods from the consuming class
 
 export class Particle {
-	constructor(x, y, size, speed) {
+    constructor (canvas, x, y, size, speed) {
+        this.canvas = canvas;
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -21,9 +22,9 @@ export class Particle {
 	}
 
 	// here only boundaries
-	keepInBoundaries(canvas, drawParticles) {
+	keepInBoundaries(drawParticles) {
 		let { x, y, size } = this;
-		const { width, height } = canvas;
+		const { width, height } = this.canvas;
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
 		drawParticles ? (size /= 2) : (size = 0);
 		if (x <= size || x >= width - size) {
@@ -36,19 +37,19 @@ export class Particle {
 			this.ySpeed *= -1;
 		}
 	}
-	particlesCollision(particle, otherParticle, distance) {
-		//console.log(this.size)
-		if (Math.abs(distance < this.size)) {
-			particle.xSpeed *= -1.001;
-			particle.ySpeed *= -1.001;
-			otherParticle.xSpeed *= -1.001;
-			otherParticle.ySpeed *= -1.001;
+    particlesCollision(particle, otherParticle, distance) {
+
+		if (Math.abs(distance) < this.size) {
+			[particle, otherParticle].forEach((p) => {
+				p.xSpeed *= -1.001;
+				p.ySpeed *= -1.001;
+			});
 		}
 	}
 
-	update(canvas, drawParticles) {
+	update(drawParticles) {
 		this.size = this.size;
-		this.keepInBoundaries(canvas, drawParticles);
+		this.keepInBoundaries(drawParticles);
 		this.x += this.xSpeed;
 		this.y += this.ySpeed;
 	}
@@ -59,9 +60,9 @@ export class Particle {
 		this.ySpeed = speed * (Math.random() * 2 - 1);
 	}
 
-	updatePosition(canvas, newWidth, newHeight) {
-		const currentWidth = canvas.width;
-		const currentHeight = canvas.height;
+	updatePosition(newWidth, newHeight) {
+		const currentWidth = this.canvas.width;
+		const currentHeight = this.canvas.height;
 
 		if (newWidth !== currentWidth) {
 			this.x = (this.x / currentWidth) * newWidth;
@@ -90,7 +91,7 @@ export class Particle {
 			dx /= length;
 			dy /= length;
 
-			const moveAmount = 5;
+			const moveAmount = 3;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;
 		}

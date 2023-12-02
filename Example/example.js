@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // proxy.main.numParticles = 500;
 
 //myParticles.canvas.width = myParticles.canvas.height = 500
-proxy.main.isFullScreen = false
+//myParticles.main.isFullScreen = false
 
 
 // PROXY  and HANDLEINPUT ONLY necessary if using inputs
