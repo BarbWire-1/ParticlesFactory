@@ -81,7 +81,7 @@ export class Particle {
 	}
 
 	handleMouseMove(mouseX, mouseY, mouseDistance) {
-		//if (!mouseX || !mouseDistance) return;
+		if (!mouseX || !mouseDistance) return;
 		const { x, y } = this;
 		let distance = this.#getVector(x, y, mouseX, mouseY);
 
@@ -92,7 +92,7 @@ export class Particle {
 			dx /= length;
 			dy /= length;
 
-			const moveAmount = 5;
+			const moveAmount = 1;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;
 		}
