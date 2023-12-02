@@ -22,7 +22,9 @@ export class ParticlesFactory {
 	#offscreenCanvas;
 	#offscreenCtx;
 	#mouseX;
-	#mouseY;
+    #mouseY;
+    #width;
+    #height;
 
 	constructor(options) {
 		const config = {
@@ -76,7 +78,9 @@ export class ParticlesFactory {
 
 		this.#particles = [];
 		this.#mouseX = undefined;
-		this.#mouseY = undefined;
+        this.#mouseY = undefined;
+        this.#width = undefined;
+        this.#height = undefined;
 
 		// INITIALISATION
 		this.#setupCanvas();
@@ -101,11 +105,11 @@ export class ParticlesFactory {
 			this.#updatePosition();
 		}
 
-		const width = isFullScreen ? window.innerWidth : this.canvas.width;
-		const height = isFullScreen ? window.innerHeight : this.canvas.height;
+		this.#width = isFullScreen ? window.innerWidth : this.canvas.width;
+		this.#height = isFullScreen ? window.innerHeight : this.canvas.height;
 
-		this.#offscreenCanvas.width = this.canvasEl.width = width;
-		this.#offscreenCanvas.height = this.canvasEl.height = height;
+		this.#offscreenCanvas.width = this.canvasEl.width = this.#width;
+		this.#offscreenCanvas.height = this.canvasEl.height = this.#height;
 	};
 
 	#initListeners = () => {
@@ -162,7 +166,7 @@ export class ParticlesFactory {
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#drawElements2OffscreenCanvas() {
-		this.getCanvasSize();
+	
 
 		const size = this.particles?.size || 2;
 		const len = this.main.numParticles;
