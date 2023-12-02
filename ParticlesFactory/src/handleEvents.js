@@ -34,7 +34,10 @@ export function handleEvents(el, containerId) {
 		} else {
 			el[property] = value;
 		}
-	}
+    }
+
+
+
 
     function isValidAttribute(e, type) {
 
@@ -45,12 +48,15 @@ export function handleEvents(el, containerId) {
 		return path;
 	}
 
-	function handleButtonClick(e) {
-		const dataAction = isValidAttribute(e, 'action');
+    function handleButtonClick(e) {
+        console.log(e.target)
+        const dataAction = isValidAttribute(e, 'action') ;
+  
 		// for control-sidebar in example - could be customised, perhaps pass from main???
 		const clickAction = {
 			togglePanel: () => container.classList.toggle('open'),
-			toggleAnimation: () => el.toggleAnimation(),
+            toggleAnimation: () => el.toggleAnimation(),
+            toggleVisibility: () => e.target.nextElementSibling.classList.toggle('collapsed')
 			// add more callbacks here if needed
 		};
 

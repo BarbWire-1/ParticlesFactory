@@ -16,82 +16,99 @@
     </div>
     <div id="controlPanelContainer">
         <div id="controlPanel" class="controlPanel">
+
             <div class="controlPanelHeader">
                 <button id="togglePanel" data-action="particles-togglePanel" class="toggleButton"><span
                         style="color: white">Settings </span>▶</button>
             </div>
+
             <div class="controlPanelContent">
-                <h3>Main:</h3>
-                <label for="numParticles">Number of Particles:</label>
-                <input id="numParticles" data-attribute="particles-main.numParticles" type="number" value="200" min="50" max="10000"
-                    step="50">
 
-                <label for="speed">Speed:</label>
-                <input id="speed" data-attribute="particles-main.speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
+                <h3 data-action="particles-toggleVisibility">▶ Main</h3>
+                <div class="inputContainer">
+                    <label for="numParticles">Number of Particles:</label>
+                    <input id="numParticles" data-attribute="particles-main.numParticles" type="number" value="200"
+                        min="50" max="10000" step="50">
 
-                <label for="mouseReactive">Mouse Distance:</label>
-                <input id="mouseReactive" data-attribute="particles-main.mouseDistance" type="number" value="100" min="0" max="400"
-                    step="50">
+                    <label for="speed">Speed:</label>
+                    <input id="speed" data-attribute="particles-main.speed" type="number" id="speed" step="0.1"
+                        value="0.2" min="0" max="5">
 
-
-                <label for="bgFillStyle">Background Color:</label>
-                <input id="bgFillStyle" data-attribute="particles-main.fillStyle" type="color" value="#000000">
-<div class="checkbox-container">
-                <label for="isResponsiveFlag">Responsive</label>
-                <input id="isResponsiveFlag" data-attribute="particles-main.isResponsive" type="checkbox" checked><br>
-
-                <label for="isFullScreenFlag">Full Screen</label>
-                <input id="isFullScreenFlag" data-attribute="particles-main.isFullScreen" type="checkbox" checked>
+                    <label for="mouseReactive">Mouse Distance:</label>
+                    <input id="mouseReactive" data-attribute="particles-main.mouseDistance" type="number" value="100"
+                        min="0" max="400" step="50">
 
 
-</div>
-                <hr>
-<h3>Particles:</h3>
-                <label for="particlesSize">Particles Size:</label>
-                <input id="particlesSize" data-attribute="particles-particles.size" type="number" value="2" min="1" max="10"
-                    step="1">
+                    <label for="bgFillStyle">Background Color:</label>
+                    <input id="bgFillStyle" data-attribute="particles-main.fillStyle" type="color" value="#000000">
+                    <div class="checkbox-container">
+                        <label for="isResponsiveFlag">Responsive</label>
+                        <input id="isResponsiveFlag" data-attribute="particles-main.isResponsive" type="checkbox"
+                            checked><br>
 
+                        <label for="isFullScreenFlag">Full Screen</label>
+                        <input id="isFullScreenFlag" data-attribute="particles-main.isFullScreen" type="checkbox"
+                            checked>
 
-
-                <label for="particlesFillStyle">Particles Color:</label>
-                <input id="particlesFillStyle" data-attribute="particles-particles.fillStyle" type="color" value='#E1FF00'>
-
-                <label for="particlesOpacity">Particles Opacity:</label>
-                <input id="particlesOpacity" data-attribute="particles-particles.opacity" type="number" min="0" max="1" step="0.05" value="1">
+                    </div>
+                </div>
                 <hr>
 
-                <label for="linesStrokeStyle">Stroke Color:</label>
-                <input id="linesStrokeStyle" data-attribute="particles-lines.strokeStyle" type="color" id="stroke" value="#4f4f4f">
+                <h3 data-action="particles-toggleVisibility">▶ Particles</h3>
+                <div class="inputContainer">
+                    <label for="particlesSize">Particles Size:</label>
+                    <input id="particlesSize" data-attribute="particles-particles.size" type="number" value="2" min="1"
+                        max="10" step="1">
 
-                <label for="linesWidth">Lines Width:</label>
-                <input id="linesWidth" data-attribute="particles-lines.lineWidth" type="number" min="0.1" max="5" step="0.1" value="1">
+                    <label for="particlesFillStyle">Particles Color:</label>
+                    <input id="particlesFillStyle" data-attribute="particles-particles.fillStyle" type="color"
+                        value='#E1FF00'>
 
-                <label for="linesOpacity">Lines Opacity:</label>
-                <input id="linesOpacity" data-attribute="particles-lines.opacity" type="number" min="0" max="1" step="0.05"
-                    value="1">
-<hr>
+                    <label for="particlesOpacity">Particles Opacity:</label>
+                    <input id="particlesOpacity" data-attribute="particles-particles.opacity" type="number" min="0"
+                        max="1" step="0.05" value="1">
 
+                    <div class="checkbox-container">
+                        <label for="particlesFlag">Draw Particles</label>
+                        <input id="particlesFlag" data-attribute="particles-particles.draw" type="checkbox" checked><br>
 
-                <label for="connectDistance">Connect Distance:</label>
-                <input id="connectDistance" data-attribute="particles-lines.connectDistance" type="number"  value="100" min="0"
-                    max="400" step="50">
+                        <label for="particlesCollisionFlag">Particles Collision</label>
+                        <input id="particlesCollisionFlag" data-attribute="particles-particles.collision"
+                            type="checkbox" checked>
 
+                    </div>
+                </div>
+                <hr>
 
+                <h3 data-action="particles-toggleVisibility">▶ Lines</h3>
+                <div class="inputContainer">
+                    <label for="connectDistance">Connect Distance:</label>
+                    <input id="connectDistance" data-attribute="particles-lines.connectDistance" type="number"
+                        value="100" min="0" max="400" step="50">
+
+                    <label for="linesStrokeStyle">Stroke Color:</label>
+                    <input id="linesStrokeStyle" data-attribute="particles-lines.strokeStyle" type="color" id="stroke"
+                        value="#4f4f4f">
+
+                    <label for="linesWidth">Lines Width:</label>
+                    <input id="linesWidth" data-attribute="particles-lines.lineWidth" type="number" min="0.1" max="5"
+                        step="0.1" value="0.3">
+
+                    <label for="linesOpacity">Lines Opacity:</label>
+                    <input id="linesOpacity" data-attribute="particles-lines.opacity" type="number" min="0" max="1"
+                        step="0.05" value="1">
+
+                    <div class="checkbox-container">
+                        <label for="withLinesFlag">Draw Lines</label>
+                        <input id="withLinesFlag" data-attribute="particles-lines.draw" type="checkbox" checked>
+                    </div>
+
+                </div>
+                <hr>
                 <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
                 <button id="toggleContent">Toggle Page Content</button>
 
-                <div class="checkbox-container">
-                    <label for="particlesFlag">Draw Particles</label>
-                    <input id="particlesFlag" data-attribute="particles-particles.draw" type="checkbox" checked>
 
-                    <label for="particlesCollisionFlag">Particles Collision</label>
-                    <input id="particlesCollisionFlag" data-attribute="particles-particles.collision" type="checkbox" checked>
-
-                    <label for="withLinesFlag">Draw Lines</label>
-                    <input id="withLinesFlag" data-attribute="particles-lines.draw" type="checkbox" checked>
-
-
-                </div>
             </div>
         </div>
     </div>
