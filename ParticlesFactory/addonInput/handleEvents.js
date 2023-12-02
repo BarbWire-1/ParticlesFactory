@@ -1,6 +1,8 @@
 //TODO add el-name to path in data-attributes?
 // TODO change early returns into try/catch?
 
+// The input-elements need to have a data-attribute = "particles-<path.to.attribute>"
+// in order to get recognized and validated in here
 export function handleEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);

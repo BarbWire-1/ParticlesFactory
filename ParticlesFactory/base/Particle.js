@@ -1,3 +1,5 @@
+// gets the canvas passed in calling methods from the consuming class
+
 export class Particle {
 	constructor(x, y, size, speed) {
 		this.x = x;
@@ -7,9 +9,9 @@ export class Particle {
 		this.updateSpeed(speed);
 	}
 
-	draw(ctx, fillColor, opacity ) {
-        ctx.fillStyle = fillColor;
-        ctx.globalAlpha = opacity;
+	draw(ctx, fillColor, opacity) {
+		ctx.fillStyle = fillColor;
+		ctx.globalAlpha = opacity;
 
 		// Center the particle on point
 		let cx = this.x - this.size / 2;
@@ -77,8 +79,6 @@ export class Particle {
 	}
 
 	handleMouseMove(mouseX, mouseY, mouseDistance) {
-
-
 		//if (!mouseX || !mouseDistance) return;
 		const { x, y } = this;
 		let distance = this.#getVector(x, y, mouseX, mouseY);
