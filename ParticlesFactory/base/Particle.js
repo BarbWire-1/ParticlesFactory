@@ -23,21 +23,31 @@ export class Particle {
 	}
 
 	// here only boundaries
+	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {
-		let { x, y, size } = this;
+		const { x, y, size } = this;
 		const { width, height } = this.canvas;
-		// adjust to correct prev translating of particles to center when drawn or to 0 if not
-		drawParticles ? (size /= 2) : (size = 0);
-		if (x <= size || x >= width - size) {
-			this.x = x <= size ? size : width - size;
+
+		// as particle translated to center here need to get offset size/2 IF particle is drawn
+		const adjustSize = drawParticles ? size / 2 : 0;
+
+		// boundaries
+		const left = x <= adjustSize;
+		const right = x >= width - adjustSize;
+		const top = y <= adjustSize;
+		const bottom = y >= height - adjustSize;
+
+		if (left || right) {
+			this.x = left ? adjustSize : width - adjustSize;
 			this.xSpeed *= -1;
 		}
 
-		if (y <= size || y >= height - size) {
-			this.y = y <= size ? size : height - size;
+		if (top || bottom) {
+			this.y = top ? adjustSize : height - adjustSize;
 			this.ySpeed *= -1;
 		}
 	}
+
 	particlesCollision(particle, otherParticle, distance) {
 		if (Math.abs(distance) < this.size) {
 			[particle, otherParticle].forEach((p) => {
