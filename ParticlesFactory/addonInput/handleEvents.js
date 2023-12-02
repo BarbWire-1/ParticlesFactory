@@ -1,8 +1,10 @@
-//TODO add el-name to path in data-attributes?
+
 // TODO change early returns into try/catch?
 
 // The input-elements need to have a data-attribute = "particles-<path.to.attribute>"
 // in order to get recognized and validated in here
+
+
 export function handleEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);
@@ -10,14 +12,14 @@ export function handleEvents(el, containerId) {
 	// EVENT - CALLBACKS
 	function handleInputChange(e) {
 		const property = isValidAttribute(e, 'attribute');
-
 		let value = e.target.value;
 
 		if (e.target.type === 'checkbox') {
 			value = e.target.checked;
 		} else {
 			value = +value || value;
-		}
+        };
+
 		// attributes which require recalculations
 		const updates = {
 			numParticles:() => el.updateNumParticles(value),
@@ -35,10 +37,8 @@ export function handleEvents(el, containerId) {
 
 		} else {
 			el[property] = value;
-		}
+        };
     }
-
-
 
 
     function isValidAttribute(e, type) {
@@ -46,7 +46,7 @@ export function handleEvents(el, containerId) {
         const dataAttribute = e.target.dataset?.[ type ]?.split('-');
 		// search for input with corresponding data-attribute
 		if (!dataAttribute || dataAttribute[0] !== 'particles') return;
-		 const path = dataAttribute[ 1 ];
+		const path = dataAttribute[ 1 ];
 		return path;
 	}
 

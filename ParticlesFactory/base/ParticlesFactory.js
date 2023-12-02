@@ -257,7 +257,10 @@ export class ParticlesFactory {
 	// pass new canvasSize
 	// to update for responsive relative re-positioning of particles
 	#updatePosition() {
-		const { isFullScreen } = this.main;
+        const { isFullScreen } = this.main;
+
+        // TODO: this check is redundant!!!!
+        // need to change sequence to remove it here?
 		const canvasWidth = isFullScreen
 			? window.innerWidth
 			: this.canvas.width;

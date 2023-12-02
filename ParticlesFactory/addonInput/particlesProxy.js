@@ -1,6 +1,6 @@
 // TODO!!! colorPicker only shows new color when using hexCode (on proxy)
 
-// calling methods on parent not working!!!
+
 const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 // path and parent as parameters to have access through all levels
@@ -14,7 +14,7 @@ export const particlesProxy = (target, path = '', parent = target) => {
 			const value = target[prop];
 			if (typeof value === 'object' && value !== null) {
 				const childPath = path ? `${path}.${prop}` : prop;
-				return particlesProxy(value, childPath, target); // pass the current target as new parent
+				return particlesProxy(value, childPath, target); // recursion target => parent
 			}
 			return value;
 		},
