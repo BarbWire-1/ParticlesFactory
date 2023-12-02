@@ -1,5 +1,5 @@
 export class Particle {
-	constructor(x, y, size, speed, fillStyle) {
+	constructor(x, y, size, speed) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -7,8 +7,9 @@ export class Particle {
 		this.updateSpeed(speed);
 	}
 
-	draw(ctx, fillColor) {
-		ctx.fillStyle = fillColor;
+	draw(ctx, fillColor, opacity ) {
+        ctx.fillStyle = fillColor;
+        ctx.globalAlpha = opacity;
 
 		// Center the particle on point
 		let cx = this.x - this.size / 2;
@@ -18,11 +19,11 @@ export class Particle {
 	}
 
 	// here only boundaries
-	collisionDetection(canvas, drawParticles) {
+	keepInBoundaries(canvas, drawParticles) {
 		let { x, y, size } = this;
-        const { width, height } = canvas;
-        // adjust to correct prev translating of particles to center when drawn or to 0 if not
-        drawParticles ? size /= 2 : size = 0;
+		const { width, height } = canvas;
+		// adjust to correct prev translating of particles to center when drawn or to 0 if not
+		drawParticles ? (size /= 2) : (size = 0);
 		if (x <= size || x >= width - size) {
 			this.x = x <= size ? size : width - size;
 			this.xSpeed *= -1;
@@ -43,9 +44,9 @@ export class Particle {
 		}
 	}
 
-	update(drawParticles) {
+	update(canvas, drawParticles) {
 		this.size = this.size;
-		this.collisionDetection(drawParticles);
+		this.keepInBoundaries(canvas, drawParticles);
 		this.x += this.xSpeed;
 		this.y += this.ySpeed;
 	}
@@ -61,12 +62,37 @@ export class Particle {
 		const currentHeight = canvas.height;
 
 		if (newWidth !== currentWidth) {
-            this.x = (this.x / currentWidth) * newWidth;
-            //console.log(currentWidth, newWidth)
+			this.x = (this.x / currentWidth) * newWidth;
+			//console.log(currentWidth, newWidth)
 		}
 
 		if (newHeight !== currentHeight) {
 			this.y = (this.y / currentHeight) * newHeight;
+		}
+	}
+
+	// helpers
+	#getVector(x1, y1, x2, y2) {
+		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+	}
+
+	handleMouseMove(mouseX, mouseY, mouseDistance) {
+
+
+		//if (!mouseX || !mouseDistance) return;
+		const { x, y } = this;
+		let distance = this.#getVector(x, y, mouseX, mouseY);
+
+		if (distance && distance < mouseDistance) {
+			let dx = mouseX - x;
+			let dy = mouseY - y;
+			const length = Math.sqrt(dx * dx + dy * dy);
+			dx /= length;
+			dy /= length;
+
+			const moveAmount = 5;
+			this.x = x + dx * -moveAmount;
+			this.y = y + dy * -moveAmount;
 		}
 	}
 }
