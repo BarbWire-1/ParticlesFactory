@@ -18,7 +18,7 @@ export class Particle {
 	}
 
 	// here only boundaries
-	collisionDetection(drawParticles) {
+	collisionDetection(canvas, drawParticles) {
 		let { x, y, size } = this;
         const { width, height } = canvas;
         // adjust to correct prev translating of particles to center when drawn or to 0 if not
