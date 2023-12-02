@@ -1,5 +1,6 @@
 
 // Function to create and append elements based on properties
+//TODO create an object for the individual input-settings?
 function createElementsFromProperties() {
 	const properties = Object.getOwnPropertyNames(myParticles);
 
@@ -46,7 +47,7 @@ function createElementsFromProperties() {
 						...(typeof value !== 'boolean' && {
 							min: '0',
 							max: '100',
-						}), // Only apply min/max for number inputs
+						}), // Only apply min/max for number inputs - would need to specify.
 						...(typeof value === 'boolean' && { checked: value }), // Check the checkbox if it's a boolean value
 					};
 
@@ -88,7 +89,7 @@ function createElementsFromProperties() {
 		}
 	});
 
-	// Return the created HTML content as a string
+
 	return fragment;
 }
 
@@ -99,7 +100,7 @@ if (targetElement) {
 	const elementsFragment = createElementsFromProperties();
 	targetElement.appendChild(elementsFragment);
 }
-//second variant using innerHTML
+//second variant using innerHTML - "easier" to directly add the necessary settings to the inputs
 //TEST -create inputs dynamically
 // get all props not starting with canvas... then create the input-structure
 function generateHTMLFromProperties() {
