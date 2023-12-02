@@ -22,28 +22,20 @@ export class Particle {
 		ctx.fillRect(cx, cy, this.size, this.size);
 	}
 
-	// here only boundaries
+
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {
-		const { x, y, size } = this;
+		let { x, y, size } = this;
 		const { width, height } = this.canvas;
-
-		// as particle translated to center here need to get offset size/2 IF particle is drawn
-		const offset = drawParticles ? size / 2 : 0;
-
-		// boundaries
-		const left = x <= offset;
-		const right = x >= width - offset;
-		const top = y <= offset;
-		const bottom = y >= height - offset;
-
-		if (left || right) {
-			this.x = left ? offset : width - offset;
+		// adjust to correct prev translating of particles to center when drawn or to 0 if not
+		drawParticles ? (size /= 2) : (size = 0);
+		if (x <= size || x >= width - size) {
+			this.x = x <= size ? size : width - size;
 			this.xSpeed *= -1;
 		}
 
-		if (top || bottom) {
-			this.y = top ? offset : height - offset;
+		if (y <= size || y >= height - size) {
+			this.y = y <= size ? size : height - size;
 			this.ySpeed *= -1;
 		}
 	}
