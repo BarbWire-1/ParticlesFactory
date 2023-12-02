@@ -23,7 +23,7 @@
   Click the button below to play with it on netlify:<br><br>
   [![Netlify Status](https://api.netlify.com/api/v1/badges/ba7818d0-76da-49a3-bd61-e75e9c130101/deploy-status)](https://particles-factory.netlify.app/)
 
-![PartilesFactory_Image](/Particles-Factory.png)
+![PartilesFactory_Image](/Particles-Factory-New.png)
 ***
 
 
