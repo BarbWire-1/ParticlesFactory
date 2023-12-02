@@ -149,7 +149,8 @@ export class ParticlesFactory {
 			);
 		}
 	}
-	// drawing
+    // drawing
+    // not nice, but keeps all operations on particles in one loop
 	#drawElements2OffscreenCanvas() {
 		const offCTX = this.#offscreenCtx;
 

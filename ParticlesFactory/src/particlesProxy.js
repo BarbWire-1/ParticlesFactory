@@ -22,19 +22,18 @@ export const particlesProxy = (target, path = '', parent = target) => {
         },
         set(target, prop, value) {
 
-            console.log(parent)
             target[prop] = value;
             const fullPath = path ? `${path}.${prop}` : prop;
             bindInputElement(fullPath, value);
-            console.log(fullPath)
+
             if (fullPath === 'main.numParticles' && parent && typeof parent.updateNumParticles === 'function') {
-                console.log(parent +'should update')
+                //console.log(parent +'should update')
                parent.updateNumParticles(value);
             }
 
             if (fullPath === 'main.isFullScreen' ) {
-                console.log('Should resize')
-                parent.resizeCanvas();
+                //console.log('Should resize')
+                parent.getCanvasSize();
             }
             return true;
         },
@@ -47,17 +46,15 @@ export const particlesProxy = (target, path = '', parent = target) => {
 
 
 function bindInputElement(path, value) {
-     console.log(path)
-	//path = path.slice(1)
-	const inputElement = document.querySelector(
-        `[data-attribute="particles-${path}"]`
+    const inputElement = document.querySelector(`[data-attribute="particles-${path}"]`);
 
-	);
-	//console.log(inputElement);
-	if (inputElement && value) {
-		inputElement.value = value;
-		//console.log(typeof value, value);
-	} else {
-		console.log(`No input found for ${path}`);
-	}
+    if (inputElement) {
+        if (inputElement.type === 'checkbox') {
+            inputElement.checked = value;
+        } else {
+            inputElement.value = value;
+        }
+    } else {
+        console.log(`No input found for ${path}`);
+    }
 }

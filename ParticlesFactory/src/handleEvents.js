@@ -20,7 +20,7 @@ export function handleEvents(el, containerId) {
 		const updates = {
 			numParticles:() => el.updateNumParticles(value),
             speed: () => el.updateSpeed(),
-            isFullScreen: () => el.resizeCanvas()
+            isFullScreen: () => el.getCanvasSize()
         };
 
 		if (property.includes('.')) {

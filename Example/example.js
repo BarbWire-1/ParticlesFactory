@@ -7,7 +7,7 @@ import {
 // Initialisation
 const options = {
 	canvas: {
-		id: 'canvas',
+		id: 'my-particles',
 		 width: 500,
 		 height: 500,
 		// fillStyle: '#000',
@@ -65,3 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //myParticles.canvas.width = myParticles.canvas.height = 500
 proxy.main.isFullScreen = false
+
+
+// PROXY  and HANDLEINPUT ONLY necessary if using inputs
