@@ -52,7 +52,7 @@ export class ParticlesFactory {
 				connectDistance: 100,
 				strokeStyle: '#ffffff',
 				draw: true,
-				lineWidth: 0.3,
+				lineWidth: 0.5,
 				opacity: 1,
 			},
 		};
