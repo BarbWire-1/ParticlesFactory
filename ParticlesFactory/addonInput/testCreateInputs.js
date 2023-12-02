@@ -1,4 +1,3 @@
-
 // Function to create and append elements based on properties
 //TODO create an object for the individual input-settings?
 function createElementsFromProperties() {
@@ -88,7 +87,6 @@ function createElementsFromProperties() {
 			fragment.appendChild(hr);
 		}
 	});
-
 
 	return fragment;
 }

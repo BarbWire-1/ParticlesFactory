@@ -1,6 +1,5 @@
 // TODO!!! colorPicker only shows new color when using hexCode (on proxy)
 
-
 const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 // path and parent as parameters to have access through all levels
