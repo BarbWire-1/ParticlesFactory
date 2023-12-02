@@ -232,8 +232,8 @@ export class ParticlesFactory {
 	}
 
 	#drawLines(offCTX, particle, otherParticle, distance) {
-		if (!particle || !otherParticle) return;
-        const isCloseEnough = this.lines?.draw && distance <= this.lines.connectDistance;
+		if (!particle || !otherParticle || !this.lines?.draw ) return;
+        const isCloseEnough = distance <= this.lines.connectDistance;
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
 			offCTX.beginPath();
