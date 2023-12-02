@@ -29,21 +29,21 @@ export class Particle {
 		const { width, height } = this.canvas;
 
 		// as particle translated to center here need to get offset size/2 IF particle is drawn
-		const adjustSize = drawParticles ? size / 2 : 0;
+		const offset = drawParticles ? size / 2 : 0;
 
 		// boundaries
-		const left = x <= adjustSize;
-		const right = x >= width - adjustSize;
-		const top = y <= adjustSize;
-		const bottom = y >= height - adjustSize;
+		const left = x <= offset;
+		const right = x >= width - offset;
+		const top = y <= offset;
+		const bottom = y >= height - offset;
 
 		if (left || right) {
-			this.x = left ? adjustSize : width - adjustSize;
+			this.x = left ? offset : width - offset;
 			this.xSpeed *= -1;
 		}
 
 		if (top || bottom) {
-			this.y = top ? adjustSize : height - adjustSize;
+			this.y = top ? offset : height - offset;
 			this.ySpeed *= -1;
 		}
 	}
