@@ -4,7 +4,7 @@
 // TODO add a max-speed??
 
 // TODO check early returns, add errorHandling, comments, docu, update readme
-// TODO check performance
+// TODO check performance - esp calculating multiple times for structures basing on same coords/results
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
@@ -221,13 +221,14 @@ export class ParticlesFactory {
 		this.#renderOffscreenCanvas();
 	}
 
-	// inner loop to get otherParticle
+    // inner loop to get otherParticle
+    // check for flags and recalculate/draw in case
 	#handleLinesAndCollision(particle, startIndex, len) {
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-			this.lines.draw &&
+			this.lines?.draw &&
 				this.#drawLines(
 					this.#offscreenCtx,
 					particle,
@@ -247,7 +248,8 @@ export class ParticlesFactory {
 	#drawLines(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
-		// destructure used objects
+        // destructure used objects
+        //TODO keep this line?? just as I hate "this"???
 		const { strokeStyle, lineWidth, opacity, connectDistance } = this.lines;
 		const { x: x1, y: y1 } = particle;
 		const { x: x2, y: y2 } = otherParticle;
