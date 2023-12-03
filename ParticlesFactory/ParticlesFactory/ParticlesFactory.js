@@ -11,7 +11,6 @@
 //TODO batch drawing to offscreen of lines and particles!
 // TODO get i in this.#particles to reuse coords!
 
-
 //TODO WHY do some style updates need a function to map, while others work perfectly without???
 // all in particle constructor need to be set individually?
 
@@ -195,7 +194,7 @@ export class ParticlesFactory {
 	}
 
 	// drawing
-	// not nice, but keeps all operations on particles in one loop
+	//ugly like hell, but keeps all operations on particles and batchdrawing in one loop
 	#drawElements2OffscreenCanvas() {
 		const offCtx = this.#offscreenCtx;
 
@@ -205,13 +204,8 @@ export class ParticlesFactory {
 		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 		const len = this.main.numParticles;
 
-		// Define an array to store line data
+		// Define an array to store indice-pairs for particles to connect
 		const linesToDraw = [];
-
-		// handle all behaviour of particle.
-		// get x,y
-		// optional draw particle and/or draw lines
-		// Move constant property settings outside the loop
 		const { collision, draw, fillStyle, opacity } = this.particles || {};
 
 		for (let i = 0; i < len; i++) {
@@ -219,10 +213,11 @@ export class ParticlesFactory {
 			particle.updateCoords(draw); // bool as param, gets passed to adjust and recalc position whether drawn or not
 
 			// Handle lines and collision
-            for (let j = i + 1; j < len; j++) {
-
+			for (let j = i + 1; j < len; j++) {
 				const otherParticle = this.#particles[j];
 				const distance = this.#getDistance(particle, otherParticle);
+
+				const isCloseEnough = distance <= this.lines.connectDistance;
 
 				if (collision) {
 					particle.particlesCollision(
@@ -231,57 +226,53 @@ export class ParticlesFactory {
 						distance
 					);
 				}
-
 				// Store the index-pairs of particles to connect
-				if (
-					this.lines?.draw &&
-					distance <= this.lines.connectDistance
-				) {
+				this.lines?.draw &&
+					isCloseEnough &&
 					linesToDraw.push({ index1: i, index2: j });
-				}
 			}
 		}
-
+		// took this outside of the loop, test efficience!! - not convinced
 		// batch-draw lines
-        linesToDraw.forEach(({ index1, index2 }) => {
+		// batch-draw lines
+		if (linesToDraw.length) {
+			// Access line-style from the scope
+			const { strokeStyle, lineWidth, opacity } = this.lines;
+			offCtx.strokeStyle = strokeStyle;
+			offCtx.lineWidth = lineWidth;
+			offCtx.globalAlpha = opacity;
 
-			const particle1 = this.#particles[index1];
-			const particle2 = this.#particles[index2];
+			const drawLines = () => {
+				offCtx.beginPath(); // Begin batch
 
-			//draw a line between each stored particles-pair to be connected
-			this.#drawLine(offCtx, particle1, particle2);
-		});
-        // batch-draw all particles - if to draw
+				linesToDraw.forEach(({ index1, index2 }) => {
+					const { x: x1, y: y1 } = this.#particles[index1];
+					const { x: x2, y: y2 } = this.#particles[index2];
+
+					// define the path segments
+					offCtx.moveTo(x1, y1);
+					offCtx.lineTo(x2, y2);
+				});
+
+				offCtx.stroke(); // End batch, execute the batched drawing instructions
+			};
+
+			drawLines();
+		}
+		// TODO - batch particles as well - and perhaps generalise to pass lines/particles as params
 		if (draw) {
 			this.#particles.forEach((p) =>
 				p.drawParticle(offCtx, fillStyle, opacity)
 			);
 		}
-
 		this.#renderOffscreenCanvas();
-	}
+    }
+
+
+
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
-	}
-
-
-    #drawLine(offCtx, particle1, particle2) {
-
-		const { x: x1, y: y1 } = particle1;
-		const { x: x2, y: y2 } = particle2;
-
-		// Access line-style from the scope
-		const { strokeStyle, lineWidth, opacity } = this.lines;
-
-		// Draw lines using stored coordinates
-		offCtx.beginPath();
-		offCtx.moveTo(x1, y1);
-		offCtx.lineTo(x2, y2);
-		offCtx.strokeStyle = strokeStyle;
-		offCtx.lineWidth = lineWidth;
-		offCtx.globalAlpha = opacity;
-		offCtx.stroke();
 	}
 
 	// update on changes
