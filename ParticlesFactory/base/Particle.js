@@ -80,21 +80,27 @@ export class Particle {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 	}
 
-	handleMouseMove(mouseX, mouseY, mouseDistance) {
-		if (!mouseX || !mouseDistance) return;
-		const { x, y } = this;
-		let distance = this.#getVector(x, y, mouseX, mouseY);
+	// Inside Particle class
+handleMouseMove(event, mouseDistance) {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
 
-		if (distance && distance < mouseDistance) {
-			let dx = mouseX - x;
-			let dy = mouseY - y;
-			const length = Math.sqrt(dx * dx + dy * dy);
-			dx /= length;
-			dy /= length;
+    if (!mouseX || !mouseDistance) return;
 
-			const moveAmount = 5;
-			this.x = x + dx * -moveAmount;
-			this.y = y + dy * -moveAmount;
-		}
-	}
+    const { x, y } = this;
+    const distance = this.#getVector(x, y, mouseX, mouseY);
+
+    if (distance && distance < mouseDistance) {
+        let dx = mouseX - x;
+        let dy = mouseY - y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+        dx /= length;
+        dy /= length;
+
+        const moveAmount = 5;
+        this.x = x + dx * -moveAmount;
+        this.y = y + dy * -moveAmount;
+    }
+}
+
 }

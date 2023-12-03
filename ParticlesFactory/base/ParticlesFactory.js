@@ -68,11 +68,7 @@ export class ParticlesFactory {
 			);
 		}
 
-		this.#particles = [];
-		this.#mouseX = undefined;
-		this.#mouseY = undefined;
-		this.#width = undefined;
-		this.#height = undefined;
+		this.#particles = [];// holding all active particles
 
 		// INITIALISATION
 		this.#setupCanvas();
@@ -92,39 +88,34 @@ export class ParticlesFactory {
 
 	getCanvasSize = () => {
         const { isResponsive, isFullScreen } = this.main;
-
-
+        // screen.avail for smaller devices as probs on mobiles with innerWidth/height
         const isMobile = window.innerWidth < 750;// took just any value here
 
         const screenWidth = isMobile? screen.availWidth : window.innerWidth
-		const screenHeight = isMobile ? screen.availHeight : window.innerHeight//screen.availHeight;
+		const screenHeight = isMobile ? screen.availHeight : window.innerHeight
 
 		isResponsive && this.#adjustParticleCoords();
 
-		this.#width = isFullScreen ? screenWidth : this.canvas.width;
-		this.#height = isFullScreen ? screenHeight : this.canvas.height;
+		const width = isFullScreen ? screenWidth : this.canvas.width;
+		const height = isFullScreen ? screenHeight : this.canvas.height;
 
-		this.#offscreenCanvas.width = this.canvasEl.width = this.#width;
-		this.#offscreenCanvas.height = this.canvasEl.height = this.#height;
+		this.#offscreenCanvas.width = this.canvasEl.width = width;
+		this.#offscreenCanvas.height = this.canvasEl.height = height;
 	};
 
 	#initListeners = () => {
-		this.canvasEl.addEventListener(
-			'pointermove',
-			this.#getMousePosition.bind(this)
-		);
+        this.canvasEl.addEventListener('mousemove', (event) => {
+        this.#particles.forEach((particle) => {
+            particle.handleMouseMove(event, this.main.mouseDistance);
+        });
+    });
 
 		if (this.main.isFullScreen) {
 			window.addEventListener('resize', this.getCanvasSize.bind(this));
 		}
 	};
 
-	#getMousePosition(event) {
-		const rect = this.canvasEl.getBoundingClientRect();
-		const { left, top } = rect;
-		this.#mouseX = event.clientX - left;
-		this.#mouseY = event.clientY - top;
-	}
+
 	// helpers
 	#getVector(x1, y1, x2, y2) {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -191,20 +182,11 @@ export class ParticlesFactory {
 					this.particles.opacity
 				);
 			}
-			this.#handleMouseMove(particle);
+
 		}
 		this.#renderOffscreenCanvas();
 	}
-	// TODO crashed mousemove - Only apply when MOVING
-	#handleMouseMove(particle) {
-		if (this.#mouseX && this.main.mouseDistance) {
-			particle.handleMouseMove(
-				this.#mouseX,
-				this.#mouseY,
-				this.main.mouseDistance
-			);
-		}
-	}
+
 	// inner loop to get otherParticle
 	#handleLinesAndCollision(particle, startIndex, len) {
 		for (let j = startIndex + 1; j < len; j++) {
