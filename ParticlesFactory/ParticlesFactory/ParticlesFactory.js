@@ -167,14 +167,17 @@ export class ParticlesFactory {
 		});
 	}
 
-	// helpers
-	#getVector(x1, y1, x2, y2) {
-		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+	// helper
+    #calculateDistance(x1, y1, x2, y2) {
+        const a = x2 - x1;
+        const b = y2 - y1;
+        const c = Math.sqrt(a ** 2 + b ** 2);// ;)
+        return c;
 	}
 
 	#getDistance(particle, otherParticle) {
 		if (!particle || !otherParticle) return;
-		return this.#getVector(
+		return this.#calculateDistance(
 			particle.x,
 			particle.y,
 			otherParticle.x,
