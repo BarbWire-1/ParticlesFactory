@@ -80,9 +80,40 @@ export class ParticlesFactory {
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
 		this.getCanvasSize();
+    }
+
+    #initListeners = () => {
+		this.canvasEl.addEventListener('mousemove', (event) => {
+			this.#particles.forEach((particle) => {
+				particle.handleMouseMove(event, this.main.mouseDistance);
+			});
+		});
+
+		// if (this.main.isFullScreen) {
+		window.addEventListener('resize', this.getCanvasSize.bind(this));
+		//}
+    };
+    
+    // initial creation
+	#createParticles(count = this.main.numParticles) {
+		for (let i = 0; i < count; i++) {
+			const { width, height } = this.#offscreenCanvas;
+			const size = this.particles?.size || 2;
+
+			this.#particles.push(
+				new Particle(
+					this.#offscreenCanvas,
+					Math.random() * (width - 2 * size) + size,
+					Math.random() * (height - 2 * size) + size,
+					size,
+					this.main.speed,
+					this.particles.fillStyle
+				)
+			);
+		}
 	}
 
-	getCanvasSize = () => {
+	getCanvasSize() {
 		const { width, height } = this.#calculateDimensions();
 
 		const prevDimensions = this.#storePreviousDimensions();
@@ -134,17 +165,7 @@ export class ParticlesFactory {
 		this.#updateParticleCoords(width, height, particleRelativePositions);
 	}
 
-	#initListeners = () => {
-		this.canvasEl.addEventListener('mousemove', (event) => {
-			this.#particles.forEach((particle) => {
-				particle.handleMouseMove(event, this.main.mouseDistance);
-			});
-		});
 
-		// if (this.main.isFullScreen) {
-		window.addEventListener('resize', this.getCanvasSize.bind(this));
-		//}
-	};
 
 	// helpers
 	#getVector(x1, y1, x2, y2) {
@@ -161,24 +182,7 @@ export class ParticlesFactory {
 		);
 	}
 
-	// initial creation
-	#createParticles(count = this.main.numParticles) {
-		for (let i = 0; i < count; i++) {
-			const { width, height } = this.#offscreenCanvas;
-			const size = this.particles?.size || 2;
 
-			this.#particles.push(
-				new Particle(
-					this.#offscreenCanvas,
-					Math.random() * (width - 2 * size) + size,
-					Math.random() * (height - 2 * size) + size,
-					size,
-					this.main.speed,
-					this.particles.fillStyle
-				)
-			);
-		}
-	}
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#drawElements2OffscreenCanvas() {
