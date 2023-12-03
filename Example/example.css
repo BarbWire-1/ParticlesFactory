@@ -20,6 +20,9 @@ body {
                12 12,
           auto;
 }
+#controlPanel {
+    margin-left: 0 !important;
+}
 #controlPanelContainer {
      position: fixed;
      top: 0;
@@ -29,7 +32,7 @@ body {
      height: 100%;
      background-color: #ffffff4d; /* Transparent white */
      transition: right 0.3s ease;
-     margin-left: 30px;
+     margin-left: 0px;
      /*overflow: hidden;*/
      border-radius: 20px 0 0 20px;
      border-left: 1px solid #ffffff5d;

@@ -3,10 +3,7 @@
 // TODO2 change to baseParticle and extending shapes - particleType
 // TODO add a max-speed??
 
-
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
-
-
 
 import { Particle } from './Particle.js';
 
@@ -94,12 +91,18 @@ export class ParticlesFactory {
 	}
 
 	getCanvasSize = () => {
-		const { isResponsive, isFullScreen } = this.main;
+        const { isResponsive, isFullScreen } = this.main;
+
+        //TODO check for mobile here in away and use screen.avail...
+
+
+        const screenWidth = window.innerWidth; //screen.availWidth;
+		const screenHeight = window.innerHeight//screen.availHeight;
 
 		isResponsive && this.#adjustParticleCoords();
 
-		this.#width = isFullScreen ? window.innerWidth : this.canvas.width;
-		this.#height = isFullScreen ? window.innerHeight : this.canvas.height;
+		this.#width = isFullScreen ? screenWidth : this.canvas.width;
+		this.#height = isFullScreen ? screenHeight : this.canvas.height;
 
 		this.#offscreenCanvas.width = this.canvasEl.width = this.#width;
 		this.#offscreenCanvas.height = this.canvasEl.height = this.#height;
@@ -117,7 +120,6 @@ export class ParticlesFactory {
 	};
 
 	#getMousePosition(event) {
-
 		const rect = this.canvasEl.getBoundingClientRect();
 		const { left, top } = rect;
 		this.#mouseX = event.clientX - left;
@@ -140,14 +142,13 @@ export class ParticlesFactory {
 
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
-
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.#offscreenCanvas;
 			const size = this.particles?.size || 2;
 
-            this.#particles.push(
-                new Particle(
-                    this.#offscreenCanvas,
+			this.#particles.push(
+				new Particle(
+					this.#offscreenCanvas,
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
 					size,
@@ -172,15 +173,14 @@ export class ParticlesFactory {
 			this.canvasEl.height
 		);
 
-        // handle all behaviour of particle.
-        // get x,y
-        // optional draw particle and/or draw lines
+		// handle all behaviour of particle.
+		// get x,y
+		// optional draw particle and/or draw lines
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
 
-
-			particle.update(this.particles.draw);// boolean/flag
-			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len);// pass to inner loop
+			particle.update(this.particles.draw); // boolean/flag
+			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
 
 			if (this.particles?.draw) {
 				if (!particle) return;
@@ -190,12 +190,12 @@ export class ParticlesFactory {
 					this.particles.fillStyle,
 					this.particles.opacity
 				);
-            }
-            this.#handleMouseMove(particle);
+			}
+			this.#handleMouseMove(particle);
 		}
 		this.#renderOffscreenCanvas();
 	}
-// TODO crashed mousemove - Only apply when MOVING
+	// TODO crashed mousemove - Only apply when MOVING
 	#handleMouseMove(particle) {
 		if (this.#mouseX && this.main.mouseDistance) {
 			particle.handleMouseMove(
@@ -205,7 +205,7 @@ export class ParticlesFactory {
 			);
 		}
 	}
-    // inner loop to get otherParticle
+	// inner loop to get otherParticle
 	#handleLinesAndCollision(particle, startIndex, len) {
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
@@ -218,7 +218,8 @@ export class ParticlesFactory {
 				distance
 			);
 
-			if (this.particles?.collision) {// flag
+			if (this.particles?.collision) {
+				// flag
 				particle.particlesCollision(particle, otherParticle, distance);
 			}
 		}
@@ -241,9 +242,9 @@ export class ParticlesFactory {
 			offCTX.globalAlpha = this.lines.opacity;
 			offCTX.stroke();
 		}
-    }
-    // pass new canvasSize
-    // to update for responsive relative re-positioning of particles
+	}
+	// pass new canvasSize
+	// to update for responsive relative re-positioning of particles
 	#adjustParticleCoords() {
 		const { isFullScreen } = this.main;
 
@@ -256,9 +257,7 @@ export class ParticlesFactory {
 			? window.innerHeight
 			: this.canvas.height;
 
-		this.#particles.map((p) =>
-			p.updatePosition(canvasWidth, canvasHeight)
-		);
+		this.#particles.map((p) => p.updatePosition(canvasWidth, canvasHeight));
 	}
 
 	// update on changes
@@ -266,11 +265,9 @@ export class ParticlesFactory {
 		this.#particles.map((p) => p.updateSpeed(this.main.speed));
 	}
 
-
 	// update instead of recreate by getting the difference old/new
 	// create and add or remove
 	updateNumParticles(newValue) {
-
 		const currentCount = this.#particles.length;
 		let difference = newValue - currentCount;
 
@@ -286,9 +283,7 @@ export class ParticlesFactory {
 	#removeParticles(currentCount, difference) {
 		this.#particles.splice(currentCount - difference, difference);
 		this.numParticles = this.#particles.length;
-    }
-
-
+	}
 
 	// ANIMATION
 	#startAnimation() {
