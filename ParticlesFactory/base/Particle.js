@@ -22,7 +22,6 @@ export class Particle {
 		ctx.fillRect(cx, cy, this.size, this.size);
 	}
 
-
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {
 		let { x, y, size } = this;
@@ -62,17 +61,10 @@ export class Particle {
 		this.ySpeed = speed * (Math.random() * 2 - 1);
 	}
 
-	updatePosition(newWidth, newHeight) {
-		const currentWidth = this.canvas.width;
-		const currentHeight = this.canvas.height;
-
-		if (newWidth !== currentWidth) {
-			this.x = (this.x / currentWidth) * newWidth;
-		}
-
-		if (newHeight !== currentHeight) {
-			this.y = (this.y / currentHeight) * newHeight;
-		}
+    updatePosition(newWidth, newHeight, xPercent, yPercent) {
+        
+		this.x = xPercent * newWidth;
+		this.y = yPercent * newHeight;
 	}
 
 	// helpers
@@ -81,26 +73,25 @@ export class Particle {
 	}
 
 	// Inside Particle class
-handleMouseMove(event, mouseDistance) {
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
+	handleMouseMove(event, mouseDistance) {
+		const mouseX = event.clientX;
+		const mouseY = event.clientY;
 
-    if (!mouseX || !mouseDistance) return;
+		if (!mouseX || !mouseDistance) return;
 
-    const { x, y } = this;
-    const distance = this.#getVector(x, y, mouseX, mouseY);
+		const { x, y } = this;
+		const distance = this.#getVector(x, y, mouseX, mouseY);
 
-    if (distance && distance < mouseDistance) {
-        let dx = mouseX - x;
-        let dy = mouseY - y;
-        const length = Math.sqrt(dx * dx + dy * dy);
-        dx /= length;
-        dy /= length;
+		if (distance && distance < mouseDistance) {
+			let dx = mouseX - x;
+			let dy = mouseY - y;
+			const length = Math.sqrt(dx * dx + dy * dy);
+			dx /= length;
+			dy /= length;
 
-        const moveAmount = 5;
-        this.x = x + dx * -moveAmount;
-        this.y = y + dy * -moveAmount;
-    }
-}
-
+			const moveAmount = 5;
+			this.x = x + dx * -moveAmount;
+			this.y = y + dy * -moveAmount;
+		}
+	}
 }

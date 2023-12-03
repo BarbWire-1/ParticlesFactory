@@ -13,10 +13,6 @@ export class ParticlesFactory {
 	#animationId;
 	#offscreenCanvas;
 	#offscreenCtx;
-	#mouseX;
-	#mouseY;
-	#width;
-	#height;
 
 	constructor(options) {
 		const config = {
@@ -68,7 +64,7 @@ export class ParticlesFactory {
 			);
 		}
 
-		this.#particles = [];// holding all active particles
+		this.#particles = []; // holding all active particles
 
 		// INITIALISATION
 		this.#setupCanvas();
@@ -87,34 +83,68 @@ export class ParticlesFactory {
 	}
 
 	getCanvasSize = () => {
-        const { isResponsive, isFullScreen } = this.main;
-        // screen.avail for smaller devices as probs on mobiles with innerWidth/height
-        const isMobile = window.innerWidth < 750;// took just any value here
+		const { width, height } = this.#calculateDimensions();
 
-        const screenWidth = isMobile? screen.availWidth : window.innerWidth
-		const screenHeight = isMobile ? screen.availHeight : window.innerHeight
+		const prevDimensions = this.#storePreviousDimensions();
+		const particleRelativePositions =
+			this.#calculateRelativeCoords(prevDimensions);
 
-		isResponsive && this.#adjustParticleCoords();
+		this.#setCanvasDimensions(width, height);
 
-		const width = isFullScreen ? screenWidth : this.canvas.width;
-		const height = isFullScreen ? screenHeight : this.canvas.height;
-
-		this.#offscreenCanvas.width = this.canvasEl.width = width;
-		this.#offscreenCanvas.height = this.canvasEl.height = height;
-	};
-
-	#initListeners = () => {
-        this.canvasEl.addEventListener('mousemove', (event) => {
-        this.#particles.forEach((particle) => {
-            particle.handleMouseMove(event, this.main.mouseDistance);
-        });
-    });
-
-		if (this.main.isFullScreen) {
-			window.addEventListener('resize', this.getCanvasSize.bind(this));
+		if (this.main.isResponsive) {
+			this.#updateParticlePositions(
+				width,
+				height,
+				particleRelativePositions
+			);
 		}
 	};
 
+	#calculateDimensions() {
+		const isMobile = window.innerWidth < 750;
+		const screenWidth = isMobile ? screen.availWidth : window.innerWidth;
+		const screenHeight = isMobile ? screen.availHeight : window.innerHeight;
+		const width = this.main.isFullScreen ? screenWidth : this.canvas.width;
+		const height = this.main.isFullScreen
+			? screenHeight
+			: this.canvas.height;
+		return { width, height };
+	}
+
+	#storePreviousDimensions() {
+		return {
+			width: this.canvasEl.width,
+			height: this.canvasEl.height,
+		};
+	}
+
+	#calculateRelativeCoords(prevDimensions) {
+		return this.#particles.map((particle) => ({
+			xPercent: particle.x / prevDimensions.width,
+			yPercent: particle.y / prevDimensions.height,
+		}));
+	}
+
+	#setCanvasDimensions(width, height) {
+		this.#offscreenCanvas.width = this.canvasEl.width = width;
+		this.#offscreenCanvas.height = this.canvasEl.height = height;
+	}
+
+	#updateParticlePositions(width, height, particleRelativePositions) {
+		this.#updateParticleCoords(width, height, particleRelativePositions);
+	}
+
+	#initListeners = () => {
+		this.canvasEl.addEventListener('mousemove', (event) => {
+			this.#particles.forEach((particle) => {
+				particle.handleMouseMove(event, this.main.mouseDistance);
+			});
+		});
+
+		// if (this.main.isFullScreen) {
+		window.addEventListener('resize', this.getCanvasSize.bind(this));
+		//}
+	};
 
 	// helpers
 	#getVector(x1, y1, x2, y2) {
@@ -182,7 +212,6 @@ export class ParticlesFactory {
 					this.particles.opacity
 				);
 			}
-
 		}
 		this.#renderOffscreenCanvas();
 	}
@@ -193,6 +222,7 @@ export class ParticlesFactory {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
+            this.lines.draw &&
 			this.#drawLines(
 				this.#offscreenCtx,
 				particle,
@@ -200,10 +230,9 @@ export class ParticlesFactory {
 				distance
 			);
 
-			if (this.particles?.collision) {
-				// flag
-				particle.particlesCollision(particle, otherParticle, distance);
-			}
+			this.particles?.collision &&
+                particle.particlesCollision(particle, otherParticle, distance);
+
 		}
 	}
 
@@ -225,21 +254,14 @@ export class ParticlesFactory {
 			offCTX.stroke();
 		}
 	}
-	// pass new canvasSize
-	// to update for responsive relative re-positioning of particles
-	#adjustParticleCoords() {
-		const { isFullScreen } = this.main;
 
-		// TODO: this check is redundant!!!!
-		// need to change sequence to remove it here?
-		const canvasWidth = isFullScreen
-			? window.innerWidth
-			: this.canvas.width;
-		const canvasHeight = isFullScreen
-			? window.innerHeight
-			: this.canvas.height;
+	// Update particle coordinates with stored relative positions
+	#updateParticleCoords(newWidth, newHeight, relativePositions) {
+		this.#particles.forEach((particle, index) => {
+			const { xPercent, yPercent } = relativePositions[index];
 
-		this.#particles.map((p) => p.updatePosition(canvasWidth, canvasHeight));
+			particle.updatePosition(newWidth, newHeight, xPercent, yPercent);
+		});
 	}
 
 	// update on changes
