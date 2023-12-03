@@ -51,7 +51,7 @@ export class Particle {
 		}
 	}
 
-	update(drawParticles) {
+	updateCoords(drawParticles) {
 		this.size = this.size;
 		this.keepInBoundaries(drawParticles);
 		this.x += this.xSpeed;

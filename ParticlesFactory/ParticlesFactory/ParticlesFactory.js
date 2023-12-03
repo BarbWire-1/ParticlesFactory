@@ -1,10 +1,17 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
+// TODO 1.1.1 chack all loops for looping over constants!!!!
+// TODO 1.1.2 batch drawing particles and lines!
 
 // TODO2 change to baseParticle and extending shapes - particleType
 // TODO add a max-speed??
 
 // TODO check early returns, add errorHandling, comments, docu, update readme
 // TODO check performance - esp calculating multiple times for structures basing on same coords/results
+
+
+
+//TODO batch drawing to offscreen of lines and particles!
+// TODO get i in this.#particles to reuse coords!
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
@@ -202,22 +209,25 @@ export class ParticlesFactory {
 		// handle all behaviour of particle.
 		// get x,y
 		// optional draw particle and/or draw lines
-		for (let i = 0; i < len; i++) {
-			const particle = this.#particles[i];
+        for (let i = 0; i < len; i++) {
+            const particle = this.#particles[ i ];
 
-			particle.update(this.particles.draw); // boolean/flag
-			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
+            particle.updateCoords(this.particles.draw); // boolean/flag
+            this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
 
-			if (this.particles?.draw) {
-				if (!particle) return;
-				particle.size = size;
-				particle.draw(
-					this.#offscreenCtx,
-					this.particles.fillStyle,
-					this.particles.opacity
-				);
-			}
-		}
+
+
+            if (this.particles?.draw) {
+
+                if (!particle) return;
+                particle.size = size;
+                particle.draw(
+                    this.#offscreenCtx,
+                    this.particles.fillStyle,
+                    this.particles.opacity
+                );
+            }
+        }
 		this.#renderOffscreenCanvas();
 	}
 
@@ -231,7 +241,7 @@ export class ParticlesFactory {
 
             this.particles?.collision &&
                 particle.particlesCollision(particle, otherParticle, distance);
-            
+
 			this.lines?.draw &&
 				this.#drawLines(
 					this.#offscreenCtx,
@@ -239,8 +249,6 @@ export class ParticlesFactory {
 					otherParticle,
 					distance
 				);
-
-
 		}
 	}
 
@@ -257,6 +265,8 @@ export class ParticlesFactory {
 		const { x: x1, y: y1 } = particle;
 		const { x: x2, y: y2 } = otherParticle;
 		const isCloseEnough = distance <= connectDistance;
+
+
 
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
