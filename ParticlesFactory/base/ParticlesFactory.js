@@ -3,6 +3,8 @@
 // TODO2 change to baseParticle and extending shapes - particleType
 // TODO add a max-speed??
 
+// TODO check early returns, add errorHandling, comments, docu, update readme
+
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
 import { Particle } from './Particle.js';
@@ -80,9 +82,9 @@ export class ParticlesFactory {
 		this.#offscreenCtx = this.#offscreenCanvas.getContext('2d');
 
 		this.getCanvasSize();
-    }
+	}
 
-    #initListeners = () => {
+	#initListeners = () => {
 		this.canvasEl.addEventListener('mousemove', (event) => {
 			this.#particles.forEach((particle) => {
 				particle.handleMouseMove(event, this.main.mouseDistance);
@@ -92,9 +94,9 @@ export class ParticlesFactory {
 		// if (this.main.isFullScreen) {
 		window.addEventListener('resize', this.getCanvasSize.bind(this));
 		//}
-    };
-    
-    // initial creation
+	};
+
+	// initial creation
 	#createParticles(count = this.main.numParticles) {
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.#offscreenCanvas;
@@ -113,59 +115,56 @@ export class ParticlesFactory {
 		}
 	}
 
-	getCanvasSize() {
-		const { width, height } = this.#calculateDimensions();
+    // get the calculated canvas diminsions and update particles coords accordingly
+	getCanvasSize = () => {
+		const { isResponsive, isFullScreen } = this.main;
 
-		const prevDimensions = this.#storePreviousDimensions();
-		const particleRelativePositions =
-			this.#calculateRelativeCoords(prevDimensions);
+		const { width, height, prevDimensions } = this.#calculateCanvasSize();
+		this.#setCanvasSize(width, height);
 
-		this.#setCanvasDimensions(width, height);
-
-		if (this.main.isResponsive) {
-			this.#updateParticlePositions(
-				width,
-				height,
-				particleRelativePositions
-			);
+		if (isResponsive /*&& isFullScreen*/) {
+			// TODO decide whether to check for fullScreen here to
+			this.#updateParticleCoords(width, height, prevDimensions);
 		}
 	};
 
-	#calculateDimensions() {
+    // get the canvas size depending on flags and device-dimensions
+    // need to use available(!) screen for mobiles
+	#calculateCanvasSize() {
+
 		const isMobile = window.innerWidth < 750;
+
 		const screenWidth = isMobile ? screen.availWidth : window.innerWidth;
 		const screenHeight = isMobile ? screen.availHeight : window.innerHeight;
+
 		const width = this.main.isFullScreen ? screenWidth : this.canvas.width;
 		const height = this.main.isFullScreen
 			? screenHeight
 			: this.canvas.height;
-		return { width, height };
-	}
 
-	#storePreviousDimensions() {
-		return {
+		const prevDimensions = {
 			width: this.canvasEl.width,
 			height: this.canvasEl.height,
 		};
+
+		return { width, height, prevDimensions };
 	}
 
-	#calculateRelativeCoords(prevDimensions) {
-		return this.#particles.map((particle) => ({
-			xPercent: particle.x / prevDimensions.width,
-			yPercent: particle.y / prevDimensions.height,
-		}));
-	}
-
-	#setCanvasDimensions(width, height) {
+	#setCanvasSize(width, height) {
 		this.#offscreenCanvas.width = this.canvasEl.width = width;
 		this.#offscreenCanvas.height = this.canvasEl.height = height;
 	}
 
-	#updateParticlePositions(width, height, particleRelativePositions) {
-		this.#updateParticleCoords(width, height, particleRelativePositions);
+    // update particles coords by maintaining prev RELATIVE position
+	#updateParticleCoords(width, height, prevDimensions) {
+		const dWidth = width / prevDimensions.width;
+		const dHeight = height / prevDimensions.height;
+
+		this.#particles.forEach((particle) => {
+			particle.x *= dWidth;
+			particle.y *= dHeight;
+		});
 	}
-
-
 
 	// helpers
 	#getVector(x1, y1, x2, y2) {
@@ -181,7 +180,6 @@ export class ParticlesFactory {
 			otherParticle.y
 		);
 	}
-
 
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
@@ -226,17 +224,16 @@ export class ParticlesFactory {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-            this.lines.draw &&
-			this.#drawLines(
-				this.#offscreenCtx,
-				particle,
-				otherParticle,
-				distance
-			);
+			this.lines.draw &&
+				this.#drawLines(
+					this.#offscreenCtx,
+					particle,
+					otherParticle,
+					distance
+				);
 
 			this.particles?.collision &&
-                particle.particlesCollision(particle, otherParticle, distance);
-
+				particle.particlesCollision(particle, otherParticle, distance);
 		}
 	}
 
@@ -257,15 +254,6 @@ export class ParticlesFactory {
 			offCTX.globalAlpha = this.lines.opacity;
 			offCTX.stroke();
 		}
-	}
-
-	// Update particle coordinates with stored relative positions
-	#updateParticleCoords(newWidth, newHeight, relativePositions) {
-		this.#particles.forEach((particle, index) => {
-			const { xPercent, yPercent } = relativePositions[index];
-
-			particle.updatePosition(newWidth, newHeight, xPercent, yPercent);
-		});
 	}
 
 	// update on changes

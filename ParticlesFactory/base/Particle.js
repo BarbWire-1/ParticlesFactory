@@ -61,12 +61,6 @@ export class Particle {
 		this.ySpeed = speed * (Math.random() * 2 - 1);
 	}
 
-    updatePosition(newWidth, newHeight, xPercent, yPercent) {
-        
-		this.x = xPercent * newWidth;
-		this.y = yPercent * newHeight;
-	}
-
 	// helpers
 	#getVector(x1, y1, x2, y2) {
 		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
