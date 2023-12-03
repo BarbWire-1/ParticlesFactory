@@ -13,15 +13,16 @@ export class Particle {
 	}
 
     drawParticle(ctx, fillColor, opacity) {
+        const size = this.size
 
 		ctx.fillStyle = fillColor;
 		ctx.globalAlpha = opacity;
 
 		// Center the particle on point
-		let cx = this.x - this.size / 2;
-		let cy = this.y - this.size / 2;
+		let cx = this.x - size / 2;
+		let cy = this.y - size / 2;
 
-		ctx.fillRect(cx, cy, this.size, this.size);
+		ctx.fillRect(cx, cy, size, size);
 	}
 
 	// flag - particle drawn or not
@@ -50,6 +51,7 @@ export class Particle {
 			});
 		}
 	}
+
 
 	updateCoords(drawParticles) {
 		this.size = this.size;

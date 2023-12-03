@@ -98,7 +98,9 @@ export class ParticlesFactory {
 		});
 
 		// if (this.main.isFullScreen) {
-		window.addEventListener('resize', this.getCanvasSize.bind(this));
+		window.addEventListener('resize', (e) => {
+			this.getCanvasSize();
+		}); // why need "bind" herre???
 		//}
 	};
 
@@ -200,7 +202,8 @@ export class ParticlesFactory {
 		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 		const len = this.main.numParticles;
 
-
+		// Define an array to store line data
+		const linesToDraw = [];
 
 		// handle all behaviour of particle.
 		// get x,y
@@ -210,7 +213,7 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
-			particle.updateCoords(draw);// bool as param, gets passed to adjust and recalc position whether drawn or not
+			particle.updateCoords(draw); // bool as param, gets passed to adjust and recalc position whether drawn or not
 
 			// Handle lines and collision
 			for (let j = i + 1; j < len; j++) {
@@ -224,20 +227,52 @@ export class ParticlesFactory {
 						distance
 					);
 				}
-				if (this.lines?.draw) {
-					this.#drawLine(
-						offCtx,
-						particle,
-						otherParticle,
-						distance
-					);
+				// if (this.lines?.draw) {
+				// 	this.#drawLine(
+				// 		offCtx,
+				// 		particle,
+				// 		otherParticle,
+				// 		distance
+				// 	);
+				// }
+
+				// Store the indices of particles that need lines
+				if (
+					this.lines?.draw &&
+					distance <= this.lines.connectDistance
+				) {
+					linesToDraw.push({ particleIndex1: i, particleIndex2: j });
 				}
 			}
-			if (draw) {
-				particle.size = size; // Set size once
-				particle.drawParticle(offCtx, fillStyle, opacity); // Reuse fillStyle and opacity
-			}
-		}
+			// if (draw) {
+			// 	particle.size = size; // Set size once
+			// 	particle.drawParticle(offCtx, fillStyle, opacity); // Reuse fillStyle and opacity
+			// }
+
+
+        }
+
+        // Batch-draw lines
+			linesToDraw.forEach(({ particleIndex1, particleIndex2 }) => {
+				const particle1 = this.#particles[particleIndex1];
+				const particle2 = this.#particles[particleIndex2];
+				const { strokeStyle, lineWidth, opacity } = this.lines;
+				const { x: x1, y: y1 } = particle1;
+				const { x: x2, y: y2 } = particle2;
+
+				// Draw lines using stored coordinates
+				offCtx.beginPath();
+				offCtx.moveTo(x1, y1);
+				offCtx.lineTo(x2, y2);
+				offCtx.strokeStyle = strokeStyle;
+				offCtx.lineWidth = lineWidth;
+				offCtx.globalAlpha = opacity;
+				offCtx.stroke();
+            });
+        if (draw) {
+
+            this.#particles.forEach(p => p.drawParticle(offCtx, fillStyle, opacity))
+        }
 
 		this.#renderOffscreenCanvas();
 	}
@@ -267,7 +302,7 @@ export class ParticlesFactory {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-    // TODO move this into loop to get fix values once only??
+	// TODO move this into loop to get fix values once only??
 	#drawLine(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
@@ -306,7 +341,11 @@ export class ParticlesFactory {
 			: this.#removeParticles(currentCount, -difference);
 
 		this.main.numParticles = currentCount + difference;
-	}
+    }
+
+    updateParticlesSize() {
+        this.#particles.map((p) => p.size = this.particles.size);
+    }
 	#addParticles(difference) {
 		this.#createParticles(difference);
 	}

@@ -21,7 +21,8 @@ export function handleInterfaceEvents(el, containerId) {
 		// attributes which require recalculations
 		const updates = {
 			numParticles: () => el.updateNumParticles(value),
-			speed: () => el.updateSpeed(),
+            speed: () => el.updateSpeed(),
+            size:() => el.updateParticlesSize(),
 			isFullScreen: () => el.getCanvasSize(),
 		};
 
