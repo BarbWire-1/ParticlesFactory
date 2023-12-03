@@ -1,11 +1,18 @@
 // TODO!!! colorPicker only shows new color when using hexCode (on proxy)
 
+// The proxy is used to keep data-object and interface values in sync
 const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 // path and parent as parameters to have access through all levels
 export const particlesProxy = (target, path = '', parent = target) => {
+    
+	const actions = {
+		'main.numParticles': (value) => parent.updateNumParticles(value),
+		'main.isFullScreen': () => parent.getCanvasSize(),
+		// Add more actions here as needed
+	};
 	if (proxies.has(target)) {
-		return proxies.get(target);
+		return proxies.get(target); // reuse already exoisting proxies for sub-objects
 	}
 
 	const handler = {
@@ -22,19 +29,11 @@ export const particlesProxy = (target, path = '', parent = target) => {
 			const fullPath = path ? `${path}.${prop}` : prop;
 			bindInputElement(fullPath, value);
 
-			if (
-				fullPath === 'main.numParticles' &&
-				parent &&
-				typeof parent.updateNumParticles === 'function'
-			) {
-				//console.log(parent +'should update')
-				parent.updateNumParticles(value);
+			const actionCallback = actions[fullPath];
+			if (actions[fullPath] && typeof actionCallback === 'function') {
+				actionCallback(value); // call corresponding action callback if it exists
 			}
 
-			if (fullPath === 'main.isFullScreen') {
-				//console.log('Should resize')
-				parent.getCanvasSize();
-			}
 			return true;
 		},
 	};
@@ -53,7 +52,7 @@ function bindInputElement(path, value) {
 		if (inputElement.type === 'checkbox') {
 			inputElement.checked = value;
 		} else {
-			inputElement.value = value;
+			inputElement.value = +value || value;
 		}
 	} else {
 		console.log(`No input found for ${path}`);

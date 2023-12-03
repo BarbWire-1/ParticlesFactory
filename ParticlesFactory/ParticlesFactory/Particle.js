@@ -1,7 +1,8 @@
 // gets the canvas passed in calling methods from the consuming class
-
+//TODO pass canvas as arg where needed instead in constructor?
 export class Particle {
-	constructor(canvas, x, y, size, speed) {
+    constructor (canvas, x, y, size, speed) {
+
 		this.canvas = canvas;
 		this.x = x;
 		this.y = y;
@@ -11,7 +12,8 @@ export class Particle {
 		this.updateSpeed(speed);
 	}
 
-	draw(ctx, fillColor, opacity) {
+    draw(ctx, fillColor, opacity) {
+
 		ctx.fillStyle = fillColor;
 		ctx.globalAlpha = opacity;
 
@@ -25,7 +27,8 @@ export class Particle {
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {
 		let { x, y, size } = this;
-		const { width, height } = this.canvas;
+        const { width, height } = this.canvas;
+
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
 		drawParticles ? (size /= 2) : (size = 0);
 		if (x <= size || x >= width - size) {
@@ -61,28 +64,23 @@ export class Particle {
 		this.ySpeed = speed * (Math.random() * 2 - 1);
 	}
 
-	// helpers
-	#getVector(x1, y1, x2, y2) {
-		return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-	}
-
 	// Inside Particle class
 	handleMouseMove(event, mouseDistance) {
+		if (!+mouseDistance) return; // need number here to use as bool!!!
 		const mouseX = event.clientX;
 		const mouseY = event.clientY;
 
-		if (!mouseX || !mouseDistance) return;
-
+		//console.log(mouseDistance,'listening for mouse')
 		const { x, y } = this;
-		const distance = this.#getVector(x, y, mouseX, mouseY);
+		let dx = mouseX - x;
+		let dy = mouseY - y;
+
+		const distance = Math.sqrt(dx * dx + dy * dy);
 
 		if (distance && distance < mouseDistance) {
-			let dx = mouseX - x;
-			let dy = mouseY - y;
-			const length = Math.sqrt(dx * dx + dy * dy);
-			dx /= length;
-			dy /= length;
-            // TODO remove moveAmount - go with px OR switch to using small int with higher miltilicator??
+			dx /= distance;
+			dy /= distance;
+			// TODO remove moveAmount - go with px OR switch to using small int with higher miltilicator??
 			const moveAmount = 1;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;

@@ -15,7 +15,7 @@ const options = {
 	main: {
 		numParticles: 200,
 		speed: 0.2,
-		mouseDistance: 50,
+		mouseDistance: 100,
 		isFullScreen: true,
 		isResponsive: true, // whether to recalculate x,y of particles on resize
 	},
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // myParticles.updateNumParticles(500)
 // myParticles.updateSpeed(1);
 // myParticles.particles.size = 20;
-// proxy.main.numParticles = 500;
+ //proxy.main.numParticles = 50;
 
 //myParticles.canvas.width = myParticles.canvas.height = 500
 //myParticles.main.isFullScreen = false
