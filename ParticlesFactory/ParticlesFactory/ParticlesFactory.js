@@ -104,8 +104,7 @@ export class ParticlesFactory {
 		// if (this.main.isFullScreen) {
 		window.addEventListener('resize', (e) => {
 			this.getCanvasSize();
-		}); // why need "bind" herre???
-		//}
+		}); // get scope by using arrowFunction - else would need to bind(this)
 	};
 
 	// initial creation
