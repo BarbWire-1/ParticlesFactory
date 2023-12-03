@@ -4,6 +4,7 @@
 // TODO add a max-speed??
 
 // TODO check early returns, add errorHandling, comments, docu, update readme
+// TODO check performance
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
