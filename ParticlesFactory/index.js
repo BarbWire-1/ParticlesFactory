@@ -1,4 +1,4 @@
-export { handleEvents} from "./addonInput/handleEvents.js";
+export { handleInterfaceEvents} from "./ParticlesInterfaceHandler/handleInterfaceEvents.js";
 //export { Particle } from "./src/Particle.js";
-export { ParticlesFactory } from "./base/ParticlesFactory.js";
-export { particlesProxy } from "./addonInput/particlesProxy.js";
+export { ParticlesFactory } from "./ParticlesFactory/ParticlesFactory.js";
+export { particlesProxy } from "./ParticlesInterfaceHandler/particlesProxy.js";

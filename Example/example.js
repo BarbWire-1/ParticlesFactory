@@ -1,6 +1,6 @@
 import {
 	ParticlesFactory,
-	handleEvents,
+	handleInterfaceEvents,
 	particlesProxy,
 } from '../ParticlesFactory/index.js';
 
@@ -25,7 +25,7 @@ const options = {
 
 const myParticles = new ParticlesFactory(options);
 
-handleEvents(myParticles, 'controlPanelContainer');
+handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
 // for setting dynamically in JS to update corresponding input use the proxy
 const proxy = particlesProxy(myParticles);
