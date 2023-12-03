@@ -118,7 +118,7 @@ export class ParticlesFactory {
 
 	// get the calculated canvas diminsions and update particles coords accordingly
 	getCanvasSize = () => {
-		const { isResponsive, isFullScreen } = this.main;
+		const { isResponsive/*, isFullScreen */ } = this.main;
 
 		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 		this.#setCanvasSize(width, height);
@@ -221,13 +221,17 @@ export class ParticlesFactory {
 		this.#renderOffscreenCanvas();
 	}
 
-    // inner loop to get otherParticle
+    // inner loop to get otherParticle - distance
     // check for flags and recalculate/draw in case
 	#handleLinesAndCollision(particle, startIndex, len) {
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
+
+            this.particles?.collision &&
+                particle.particlesCollision(particle, otherParticle, distance);
+            
 			this.lines?.draw &&
 				this.#drawLines(
 					this.#offscreenCtx,
@@ -236,8 +240,7 @@ export class ParticlesFactory {
 					distance
 				);
 
-			this.particles?.collision &&
-				particle.particlesCollision(particle, otherParticle, distance);
+
 		}
 	}
 
