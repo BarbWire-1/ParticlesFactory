@@ -27,7 +27,7 @@ export class ParticlesFactory {
 			main: {
 				numParticles: 100,
 				speed: 0.2,
-				mouseDistance: 100,
+				mouseDistance: 50,
 				fillStyle: '#000',
 				isFullScreen: true,
 				isResponsive: true,

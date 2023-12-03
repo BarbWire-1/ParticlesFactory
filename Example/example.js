@@ -15,7 +15,7 @@ const options = {
 	main: {
 		numParticles: 200,
 		speed: 0.2,
-		mouseDistance: 100,
+		mouseDistance: 50,
 		isFullScreen: true,
 		isResponsive: true, // whether to recalculate x,y of particles on resize
 	},

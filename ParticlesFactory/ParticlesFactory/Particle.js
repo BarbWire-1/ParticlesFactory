@@ -82,8 +82,8 @@ export class Particle {
 			const length = Math.sqrt(dx * dx + dy * dy);
 			dx /= length;
 			dy /= length;
-
-			const moveAmount = 5;
+            // TODO remove moveAmount - go with px OR switch to using small int with higher miltilicator??
+			const moveAmount = 1;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;
 		}
