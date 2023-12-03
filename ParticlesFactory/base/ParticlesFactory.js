@@ -93,11 +93,11 @@ export class ParticlesFactory {
 	getCanvasSize = () => {
         const { isResponsive, isFullScreen } = this.main;
 
-        //TODO check for mobile here in away and use screen.avail...
 
+        const isMobile = window.innerWidth < 750;// took just any value here
 
-        const screenWidth = window.innerWidth; //screen.availWidth;
-		const screenHeight = window.innerHeight//screen.availHeight;
+        const screenWidth = isMobile? screen.availWidth : window.innerWidth
+		const screenHeight = isMobile ? screen.availHeight : window.innerHeight//screen.availHeight;
 
 		isResponsive && this.#adjustParticleCoords();
 
