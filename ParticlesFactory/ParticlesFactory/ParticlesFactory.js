@@ -11,6 +11,10 @@
 //TODO batch drawing to offscreen of lines and particles!
 // TODO get i in this.#particles to reuse coords!
 
+
+//TODO WHY do some style updates need a function to map, while others work perfectly without???
+// all in particle constructor need to be set individually?
+
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
 import { Particle } from './Particle.js';
@@ -209,130 +213,86 @@ export class ParticlesFactory {
 		// get x,y
 		// optional draw particle and/or draw lines
 		// Move constant property settings outside the loop
-		const { size, draw, fillStyle, opacity } = this.particles || {};
+		const { collision, draw, fillStyle, opacity } = this.particles || {};
 
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
 			particle.updateCoords(draw); // bool as param, gets passed to adjust and recalc position whether drawn or not
 
 			// Handle lines and collision
-			for (let j = i + 1; j < len; j++) {
+            for (let j = i + 1; j < len; j++) {
+
 				const otherParticle = this.#particles[j];
 				const distance = this.#getDistance(particle, otherParticle);
 
-				if (draw) {
+				if (collision) {
 					particle.particlesCollision(
 						particle,
 						otherParticle,
 						distance
 					);
 				}
-				// if (this.lines?.draw) {
-				// 	this.#drawLine(
-				// 		offCtx,
-				// 		particle,
-				// 		otherParticle,
-				// 		distance
-				// 	);
-				// }
 
-				// Store the indices of particles that need lines
+				// Store the index-pairs of particles to connect
 				if (
 					this.lines?.draw &&
 					distance <= this.lines.connectDistance
 				) {
-					linesToDraw.push({ particleIndex1: i, particleIndex2: j });
+					linesToDraw.push({ index1: i, index2: j });
 				}
 			}
-			// if (draw) {
-			// 	particle.size = size; // Set size once
-			// 	particle.drawParticle(offCtx, fillStyle, opacity); // Reuse fillStyle and opacity
-			// }
+		}
 
+		// batch-draw lines
+        linesToDraw.forEach(({ index1, index2 }) => {
 
-        }
+			const particle1 = this.#particles[index1];
+			const particle2 = this.#particles[index2];
 
-        // Batch-draw lines
-			linesToDraw.forEach(({ particleIndex1, particleIndex2 }) => {
-				const particle1 = this.#particles[particleIndex1];
-				const particle2 = this.#particles[particleIndex2];
-				const { strokeStyle, lineWidth, opacity } = this.lines;
-				const { x: x1, y: y1 } = particle1;
-				const { x: x2, y: y2 } = particle2;
-
-				// Draw lines using stored coordinates
-				offCtx.beginPath();
-				offCtx.moveTo(x1, y1);
-				offCtx.lineTo(x2, y2);
-				offCtx.strokeStyle = strokeStyle;
-				offCtx.lineWidth = lineWidth;
-				offCtx.globalAlpha = opacity;
-				offCtx.stroke();
-            });
-        if (draw) {
-
-            this.#particles.forEach(p => p.drawParticle(offCtx, fillStyle, opacity))
-        }
+			//draw a line between each stored particles-pair to be connected
+			this.#drawLine(offCtx, particle1, particle2);
+		});
+        // batch-draw all particles - if to draw
+		if (draw) {
+			this.#particles.forEach((p) =>
+				p.drawParticle(offCtx, fillStyle, opacity)
+			);
+		}
 
 		this.#renderOffscreenCanvas();
 	}
-
-	//     // inner loop to get otherParticle - distance
-	//     // check for flags and recalculate/draw in case
-	// 	#handleLinesAndCollision(particle, startIndex, len) {
-	// 		for (let j = startIndex + 1; j < len; j++) {
-	// 			const otherParticle = this.#particles[j];
-	// 			const distance = this.#getDistance(particle, otherParticle);
-	//
-	//
-	//             this.particles?.collision &&
-	//                 particle.particlesCollision(particle, otherParticle, distance);
-	//
-	//             this.lines?.draw &&
-	// 				this.#drawLine(
-	// 					this.#offscreenCtx,
-	// 					particle,
-	// 					otherParticle,
-	// 					distance
-	// 				);
-	// 		}
-	// 	}
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-	// TODO move this into loop to get fix values once only??
-	#drawLine(offCTX, particle, otherParticle, distance) {
-		if (!particle || !otherParticle || !this.lines?.draw) return;
 
-		// destructure used objects
-		//TODO keep this line?? just as I hate "this"???
-		const { strokeStyle, lineWidth, opacity, connectDistance } = this.lines;
-		const { x: x1, y: y1 } = particle;
-		const { x: x2, y: y2 } = otherParticle;
-		const isCloseEnough = distance <= connectDistance;
+    #drawLine(offCtx, particle1, particle2) {
 
-		// set coords of connection -lines if in connectionDistance
-		if (isCloseEnough) {
-			offCTX.beginPath();
-			offCTX.moveTo(x1, y1);
-			offCTX.lineTo(x2, y2);
-			offCTX.strokeStyle = strokeStyle;
-			offCTX.lineWidth = lineWidth;
-			offCTX.globalAlpha = opacity;
-			offCTX.stroke();
-		}
+		const { x: x1, y: y1 } = particle1;
+		const { x: x2, y: y2 } = particle2;
+
+		// Access line-style from the scope
+		const { strokeStyle, lineWidth, opacity } = this.lines;
+
+		// Draw lines using stored coordinates
+		offCtx.beginPath();
+		offCtx.moveTo(x1, y1);
+		offCtx.lineTo(x2, y2);
+		offCtx.strokeStyle = strokeStyle;
+		offCtx.lineWidth = lineWidth;
+		offCtx.globalAlpha = opacity;
+		offCtx.stroke();
 	}
 
 	// update on changes
-	updateSpeed() {
-		this.#particles.map((p) => p.updateSpeed(this.main.speed));
+	setSpeed() {
+		this.#particles.map((p) => p.setSpeed(this.main.speed));
 	}
 
 	// update instead of recreate by getting the difference old/new
 	// create and add or remove
-	updateNumParticles(newValue) {
+	setNumParticles(newValue) {
 		const currentCount = this.#particles.length;
 		let difference = newValue - currentCount;
 
@@ -341,11 +301,11 @@ export class ParticlesFactory {
 			: this.#removeParticles(currentCount, -difference);
 
 		this.main.numParticles = currentCount + difference;
-    }
+	}
 
-    updateParticlesSize() {
-        this.#particles.map((p) => p.size = this.particles.size);
-    }
+	setParticlesSize() {
+		this.#particles.map((p) => (p.size = this.particles.size));
+	}
 	#addParticles(difference) {
 		this.#createParticles(difference);
 	}

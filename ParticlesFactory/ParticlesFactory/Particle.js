@@ -9,7 +9,7 @@ export class Particle {
 		this.size = size;
 		this.speed = speed;
 
-		this.updateSpeed(speed);
+		this.setSpeed(speed);
 	}
 
     drawParticle(ctx, fillColor, opacity) {
@@ -60,7 +60,7 @@ export class Particle {
 		this.y += this.ySpeed;
 	}
 
-	updateSpeed(speed) {
+	setSpeed(speed) {
 		// rondomize speed and direction
 		this.xSpeed = speed * (Math.random() * 2 - 1);
 		this.ySpeed = speed * (Math.random() * 2 - 1);
