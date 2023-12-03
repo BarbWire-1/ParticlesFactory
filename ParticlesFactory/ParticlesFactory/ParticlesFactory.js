@@ -267,6 +267,7 @@ export class ParticlesFactory {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
+    // TODO move this into loop to get fix values once only??
 	#drawLine(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
