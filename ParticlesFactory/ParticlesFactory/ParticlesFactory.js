@@ -1,5 +1,5 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
-// TODO 1.1.1 chack all loops for looping over constants!!!!
+// TODO 1.1.1 chack all loops for looping over constants - remove obsolete bool-checks!!!!
 // TODO 1.1.2 batch drawing particles and lines!
 
 // TODO2 change to baseParticle and extending shapes - particleType
