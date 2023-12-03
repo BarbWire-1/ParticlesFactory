@@ -97,13 +97,13 @@ export class ParticlesFactory {
 
 	#initListeners = () => {
 		this.canvasEl.addEventListener('mousemove', (event) => {
-			this.#particles.forEach((particle) => {
-				particle.handleMouseMove(event, this.main.mouseDistance);
+			this.#particles.forEach((p) => {
+				p.handleMouseMove(event, this.main.mouseDistance);
 			});
 		});
 
 		// if (this.main.isFullScreen) {
-		window.addEventListener('resize', (e) => {
+		window.addEventListener('resize', () => {
 			this.getCanvasSize();
 		}); // get scope by using arrowFunction - else would need to bind(this)
 	};
@@ -229,34 +229,33 @@ export class ParticlesFactory {
 					);
 				}
 				// Store the index-pairs of particles to connect
-				this.lines?.draw &&
-					isCloseEnough &&
-					linesToDraw.push({ index1: i, index2: j });
+                this.lines?.draw &&
+                    isCloseEnough &&
+                    linesToDraw.push({ i, j });
 			}
 		}
 		// took this outside of the loop, test efficience!! - not convinced
 		// batch-draw lines
-		// batch-draw lines
 		if (linesToDraw.length) {
-			// Access line-style from the scope
+			// access line-style from the scope
 			const { strokeStyle, lineWidth, opacity } = this.lines;
 			offCtx.strokeStyle = strokeStyle;
 			offCtx.lineWidth = lineWidth;
 			offCtx.globalAlpha = opacity;
 
 			const drawLines = () => {
-				offCtx.beginPath(); // Begin batch
+				offCtx.beginPath(); // begin batch
 
-				linesToDraw.forEach(({ index1, index2 }) => {
-					const { x: x1, y: y1 } = this.#particles[index1];
-					const { x: x2, y: y2 } = this.#particles[index2];
+				linesToDraw.forEach(({ i, j }) => {
+					const { x: x1, y: y1 } = this.#particles[i];
+					const { x: x2, y: y2 } = this.#particles[j];
 
 					// define the path segments
 					offCtx.moveTo(x1, y1);
 					offCtx.lineTo(x2, y2);
 				});
 
-				offCtx.stroke(); // End batch, execute the batched drawing instructions
+				offCtx.stroke(); // end batch, execute the batched drawing instructions
 			};
 
 			drawLines();
@@ -298,7 +297,7 @@ export class ParticlesFactory {
 	setParticlesSize() {
 		this.#particles.map((p) => (p.size = this.particles.size));
     }
-    
+
 	#addParticles(difference) {
 		this.#createParticles(difference);
 	}
