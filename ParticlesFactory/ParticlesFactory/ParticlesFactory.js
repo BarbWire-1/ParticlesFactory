@@ -8,8 +8,6 @@
 // TODO check early returns, add errorHandling, comments, docu, update readme
 // TODO check performance - esp calculating multiple times for structures basing on same coords/results
 
-
-
 //TODO batch drawing to offscreen of lines and particles!
 // TODO get i in this.#particles to reuse coords!
 
@@ -125,8 +123,8 @@ export class ParticlesFactory {
 
 	// get the calculated canvas diminsions and update particles coords accordingly
 	getCanvasSize = () => {
-		const { isResponsive/*, isFullScreen */ } = this.main;
-        const { width, height, prevDimensions } = this.#calculateCanvasSize();
+		const { isResponsive /*, isFullScreen */ } = this.main;
+		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 
 		this.#setCanvasSize(width, height);
 
@@ -194,71 +192,76 @@ export class ParticlesFactory {
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#drawElements2OffscreenCanvas() {
+		const offCtx = this.#offscreenCtx;
 
+		// Set the background with globalAlpha 1
+		offCtx.globalAlpha = 1;
+		offCtx.fillStyle = this.main.fillStyle;
+		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 		const len = this.main.numParticles;
 
-		// draw background rectangle
-		this.#offscreenCtx.fillStyle = this.main.fillStyle;
-		this.#offscreenCtx.fillRect(
-			0,
-			0,
-			this.canvasEl.width,
-			this.canvasEl.height
-        );
+
 
 		// handle all behaviour of particle.
 		// get x,y
 		// optional draw particle and/or draw lines
-        // Move constant property settings outside the loop
-const { size, draw, fillStyle, opacity } = this.particles || {};
+		// Move constant property settings outside the loop
+		const { size, draw, fillStyle, opacity } = this.particles || {};
 
-for (let i = 0; i < len; i++) {
-    const particle = this.#particles[i];
-    particle.updateCoords(draw);
+		for (let i = 0; i < len; i++) {
+			const particle = this.#particles[i];
+			particle.updateCoords(draw);// bool as param, gets passed to adjust and recalc position whether drawn or not
 
-    if (draw) {
-        particle.size = size; // Set size once
-        particle.drawParticle(this.#offscreenCtx, fillStyle, opacity); // Reuse fillStyle and opacity
-    }
+			// Handle lines and collision
+			for (let j = i + 1; j < len; j++) {
+				const otherParticle = this.#particles[j];
+				const distance = this.#getDistance(particle, otherParticle);
 
-    // Handle lines and collision
-    for (let j = i + 1; j < len; j++) {
-        const otherParticle = this.#particles[j];
-        const distance = this.#getDistance(particle, otherParticle);
-
-        if (draw) {
-            particle.particlesCollision(particle, otherParticle, distance);
-        }
-
-        if (this.lines?.draw) {
-            this.#drawLine(this.#offscreenCtx, particle, otherParticle, distance);
-        }
-    }
-}
+				if (draw) {
+					particle.particlesCollision(
+						particle,
+						otherParticle,
+						distance
+					);
+				}
+				if (this.lines?.draw) {
+					this.#drawLine(
+						offCtx,
+						particle,
+						otherParticle,
+						distance
+					);
+				}
+			}
+			if (draw) {
+				particle.size = size; // Set size once
+				particle.drawParticle(offCtx, fillStyle, opacity); // Reuse fillStyle and opacity
+			}
+		}
 
 		this.#renderOffscreenCanvas();
 	}
 
-//     // inner loop to get otherParticle - distance
-//     // check for flags and recalculate/draw in case
-// 	#handleLinesAndCollision(particle, startIndex, len) {
-// 		for (let j = startIndex + 1; j < len; j++) {
-// 			const otherParticle = this.#particles[j];
-// 			const distance = this.#getDistance(particle, otherParticle);
-//
-//
-//             this.particles?.collision &&
-//                 particle.particlesCollision(particle, otherParticle, distance);
-//
-//             this.lines?.draw &&
-// 				this.#drawLine(
-// 					this.#offscreenCtx,
-// 					particle,
-// 					otherParticle,
-// 					distance
-// 				);
-// 		}
-// 	}
+	//     // inner loop to get otherParticle - distance
+	//     // check for flags and recalculate/draw in case
+	// 	#handleLinesAndCollision(particle, startIndex, len) {
+	// 		for (let j = startIndex + 1; j < len; j++) {
+	// 			const otherParticle = this.#particles[j];
+	// 			const distance = this.#getDistance(particle, otherParticle);
+	//
+	//
+	//             this.particles?.collision &&
+	//                 particle.particlesCollision(particle, otherParticle, distance);
+	//
+	//             this.lines?.draw &&
+	// 				this.#drawLine(
+	// 					this.#offscreenCtx,
+	// 					particle,
+	// 					otherParticle,
+	// 					distance
+	// 				);
+	// 		}
+	// 	}
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
@@ -267,14 +270,12 @@ for (let i = 0; i < len; i++) {
 	#drawLine(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
-        // destructure used objects
-        //TODO keep this line?? just as I hate "this"???
+		// destructure used objects
+		//TODO keep this line?? just as I hate "this"???
 		const { strokeStyle, lineWidth, opacity, connectDistance } = this.lines;
 		const { x: x1, y: y1 } = particle;
 		const { x: x2, y: y2 } = otherParticle;
 		const isCloseEnough = distance <= connectDistance;
-
-
 
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
