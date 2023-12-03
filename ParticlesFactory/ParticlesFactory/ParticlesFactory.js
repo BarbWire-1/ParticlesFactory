@@ -116,7 +116,7 @@ export class ParticlesFactory {
 		}
 	}
 
-    // get the calculated canvas diminsions and update particles coords accordingly
+	// get the calculated canvas diminsions and update particles coords accordingly
 	getCanvasSize = () => {
 		const { isResponsive, isFullScreen } = this.main;
 
@@ -129,10 +129,9 @@ export class ParticlesFactory {
 		}
 	};
 
-    // get the canvas size depending on flags and device-dimensions
-    // need to use available(!) screen for mobiles
+	// get the canvas size depending on flags and device-dimensions
+	// need to use available(!) screen for mobiles
 	#calculateCanvasSize() {
-
 		const isMobile = window.innerWidth < 750;
 
 		const screenWidth = isMobile ? screen.availWidth : window.innerWidth;
@@ -156,7 +155,7 @@ export class ParticlesFactory {
 		this.#offscreenCanvas.height = this.canvasEl.height = height;
 	}
 
-    // update particles coords by maintaining prev RELATIVE position
+	// update particles coords by maintaining prev RELATIVE position
 	#updateParticleCoords(width, height, prevDimensions) {
 		const dWidth = width / prevDimensions.width;
 		const dHeight = height / prevDimensions.height;
@@ -168,11 +167,11 @@ export class ParticlesFactory {
 	}
 
 	// helper
-    #calculateDistance(x1, y1, x2, y2) {
-        const a = x2 - x1;
-        const b = y2 - y1;
-        const c = Math.sqrt(a ** 2 + b ** 2);// ;)
-        return c;
+	#calculateDistance(x1, y1, x2, y2) {
+		const a = x2 - x1;
+		const b = y2 - y1;
+		const c = Math.sqrt(a ** 2 + b ** 2); // ;)
+		return c;
 	}
 
 	#getDistance(particle, otherParticle) {
@@ -247,15 +246,21 @@ export class ParticlesFactory {
 
 	#drawLines(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
-		const isCloseEnough = distance <= this.lines.connectDistance;
+
+		// destructure used objects
+		const { strokeStyle, lineWidth, opacity, connectDistance } = this.lines;
+		const { x: x1, y: y1 } = particle;
+		const { x: x2, y: y2 } = otherParticle;
+		const isCloseEnough = distance <= connectDistance;
+
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
 			offCTX.beginPath();
-			offCTX.moveTo(particle.x, particle.y);
-			offCTX.lineTo(otherParticle.x, otherParticle.y);
-			offCTX.strokeStyle = this.lines.strokeStyle;
-			offCTX.lineWidth = this.lines.lineWidth;
-			offCTX.globalAlpha = this.lines.opacity;
+			offCTX.moveTo(x1, y1);
+			offCTX.lineTo(x2, y2);
+			offCTX.strokeStyle = strokeStyle;
+			offCTX.lineWidth = lineWidth;
+			offCTX.globalAlpha = opacity;
 			offCTX.stroke();
 		}
 	}
