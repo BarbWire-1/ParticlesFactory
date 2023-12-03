@@ -12,7 +12,7 @@ export class Particle {
 		this.updateSpeed(speed);
 	}
 
-    draw(ctx, fillColor, opacity) {
+    drawParticle(ctx, fillColor, opacity) {
 
 		ctx.fillStyle = fillColor;
 		ctx.globalAlpha = opacity;

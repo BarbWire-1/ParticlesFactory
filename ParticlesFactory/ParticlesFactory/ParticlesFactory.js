@@ -126,8 +126,8 @@ export class ParticlesFactory {
 	// get the calculated canvas diminsions and update particles coords accordingly
 	getCanvasSize = () => {
 		const { isResponsive/*, isFullScreen */ } = this.main;
+        const { width, height, prevDimensions } = this.#calculateCanvasSize();
 
-		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 		this.#setCanvasSize(width, height);
 
 		if (isResponsive /*&& isFullScreen*/) {
@@ -194,7 +194,7 @@ export class ParticlesFactory {
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#drawElements2OffscreenCanvas() {
-		const size = this.particles?.size || 2;
+
 		const len = this.main.numParticles;
 
 		// draw background rectangle
@@ -204,59 +204,67 @@ export class ParticlesFactory {
 			0,
 			this.canvasEl.width,
 			this.canvasEl.height
-		);
+        );
 
 		// handle all behaviour of particle.
 		// get x,y
 		// optional draw particle and/or draw lines
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[ i ];
+        // Move constant property settings outside the loop
+const { size, draw, fillStyle, opacity } = this.particles || {};
 
-            particle.updateCoords(this.particles.draw); // boolean/flag
-            this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
+for (let i = 0; i < len; i++) {
+    const particle = this.#particles[i];
+    particle.updateCoords(draw);
 
+    if (draw) {
+        particle.size = size; // Set size once
+        particle.drawParticle(this.#offscreenCtx, fillStyle, opacity); // Reuse fillStyle and opacity
+    }
 
+    // Handle lines and collision
+    for (let j = i + 1; j < len; j++) {
+        const otherParticle = this.#particles[j];
+        const distance = this.#getDistance(particle, otherParticle);
 
-            if (this.particles?.draw) {
-
-                if (!particle) return;
-                particle.size = size;
-                particle.draw(
-                    this.#offscreenCtx,
-                    this.particles.fillStyle,
-                    this.particles.opacity
-                );
-            }
+        if (draw) {
+            particle.particlesCollision(particle, otherParticle, distance);
         }
+
+        if (this.lines?.draw) {
+            this.#drawLine(this.#offscreenCtx, particle, otherParticle, distance);
+        }
+    }
+}
+
 		this.#renderOffscreenCanvas();
 	}
 
-    // inner loop to get otherParticle - distance
-    // check for flags and recalculate/draw in case
-	#handleLinesAndCollision(particle, startIndex, len) {
-		for (let j = startIndex + 1; j < len; j++) {
-			const otherParticle = this.#particles[j];
-			const distance = this.#getDistance(particle, otherParticle);
-
-
-            this.particles?.collision &&
-                particle.particlesCollision(particle, otherParticle, distance);
-
-			this.lines?.draw &&
-				this.#drawLines(
-					this.#offscreenCtx,
-					particle,
-					otherParticle,
-					distance
-				);
-		}
-	}
+//     // inner loop to get otherParticle - distance
+//     // check for flags and recalculate/draw in case
+// 	#handleLinesAndCollision(particle, startIndex, len) {
+// 		for (let j = startIndex + 1; j < len; j++) {
+// 			const otherParticle = this.#particles[j];
+// 			const distance = this.#getDistance(particle, otherParticle);
+//
+//
+//             this.particles?.collision &&
+//                 particle.particlesCollision(particle, otherParticle, distance);
+//
+//             this.lines?.draw &&
+// 				this.#drawLine(
+// 					this.#offscreenCtx,
+// 					particle,
+// 					otherParticle,
+// 					distance
+// 				);
+// 		}
+// 	}
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-	#drawLines(offCTX, particle, otherParticle, distance) {
+	#drawLine(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
         // destructure used objects
