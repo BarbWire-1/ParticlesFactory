@@ -92,7 +92,7 @@ export class Particle {
 			dx /= length;
 			dy /= length;
 
-			const moveAmount = 1;
+			const moveAmount = 5;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;
 		}
