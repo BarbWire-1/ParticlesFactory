@@ -12,6 +12,8 @@
 // TODO get i in this.#particles to reuse coords!
 
 //TODO WHY do some style updates need a function to map, while others work perfectly without???
+
+// TODO use web worker?????????
 // all in particle constructor need to be set individually?
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
