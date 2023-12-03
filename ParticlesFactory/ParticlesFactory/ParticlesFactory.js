@@ -297,7 +297,8 @@ export class ParticlesFactory {
 
 	setParticlesSize() {
 		this.#particles.map((p) => (p.size = this.particles.size));
-	}
+    }
+    
 	#addParticles(difference) {
 		this.#createParticles(difference);
 	}
