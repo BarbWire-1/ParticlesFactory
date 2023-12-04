@@ -197,75 +197,80 @@ export class ParticlesFactory {
 	}
 
 	// drawing
-    //ugly like hell, but keeps all operations on particles and batchdrawing in one loop
+	//ugly like hell, but keeps all operations on particles and batchdrawing in one loop
 
-    // change this to create all rects/lines in here but DRAW them in one  - now having 3 loops for calc /draw
+	// change this to create all rects/lines in here but DRAW them in one  - now having 3 loops for calc /draw
 	#drawElements2OffscreenCanvas() {
-    const offCtx = this.#offscreenCtx;
+		const offCtx = this.#offscreenCtx;
 
-    // Set the background with globalAlpha 1
-    offCtx.globalAlpha = 1;
-    offCtx.fillStyle = this.main.fillStyle;
-    offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
-    const len = this.main.numParticles;
+		// Set the background with globalAlpha 1
+		offCtx.globalAlpha = 1;
+		offCtx.fillStyle = this.main.fillStyle;
+		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+		const len = this.main.numParticles;
 
-    const { collision, draw, fillStyle, opacity, size } = this.particles || {};
+		const { collision, draw, fillStyle, opacity } = this.particles || {};
+		const drawLines = this.lines?.draw;
 
+		if ((draw || (collision && drawLines)) && len > 0) {
+			const particleCoords = []; // Collect particle coordinates once
 
-        // Handle lines and collision within the same loop
-    if (collision && this.lines?.draw) {
-        const { strokeStyle, lineWidth, opacity } = this.lines;
-        offCtx.strokeStyle = strokeStyle;
-        offCtx.lineWidth = lineWidth;
-        offCtx.globalAlpha = opacity;
+			offCtx.beginPath(); // Begin drawing all elements
 
-        offCtx.beginPath(); // Begin drawing lines
+			for (let i = 0; i < len; i++) {
+				const particle = this.#particles[i];
+				particle.updateCoords(draw);
 
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[i];
-            for (let j = i + 1; j < len; j++) {
-                const otherParticle = this.#particles[j];
-                const distance = this.#getDistance(particle, otherParticle);
+				const cx = particle.x - this.particles.size / 2;
+				const cy = particle.y - this.particles.size / 2;
 
-                const isCloseEnough = distance <= this.lines.connectDistance;
+				if (draw) {
+					offCtx.fillStyle = fillStyle;
+					offCtx.globalAlpha = opacity;
+					offCtx.rect(
+						cx,
+						cy,
+						this.particles.size,
+						this.particles.size
+					); // Add rectangle paths for particles
+				}
 
-                if (isCloseEnough) {
-                    offCtx.moveTo(particle.x, particle.y);
-                    offCtx.lineTo(otherParticle.x, otherParticle.y);
-                }
-            }
-        }
+				if (collision && drawLines) {
+					particleCoords.push({ x: particle.x, y: particle.y }); // Store coordinates
+					for (let j = i + 1; j < len; j++) {
+						const otherParticle = this.#particles[j];
+						const distance = this.#getDistance(
+							particle,
+							otherParticle
+						);
 
-        offCtx.stroke(); // End drawing lines
-    }
+						const isCloseEnough =
+							distance <= this.lines.connectDistance;
 
-    // Define particle drawing properties outside the loop
-    if (draw) {
-        offCtx.fillStyle = fillStyle;
-        offCtx.globalAlpha = opacity;
-        const halfSize = size / 2; // half-size for centering
+						if (isCloseEnough) {
+							offCtx.moveTo(particle.x, particle.y);
+							offCtx.lineTo(otherParticle.x, otherParticle.y);
+						}
+					}
+				}
+			}
 
-        offCtx.beginPath(); // Begin drawing particles
+			if (draw) {
+				offCtx.fill(); // Fill all added rectangles for particles in one go
+			}
 
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[i];
-            particle.updateCoords(draw); // bool as param, gets passed to adjust and recalc position whether drawn or not
+			if (collision && drawLines) {
+				const { strokeStyle, lineWidth, opacity } = this.lines;
+				offCtx.strokeStyle = strokeStyle;
+				offCtx.lineWidth = lineWidth;
+				offCtx.globalAlpha = opacity;
 
-            const cx = particle.x - halfSize;
-            const cy = particle.y - halfSize;
+				offCtx.stroke(); // End drawing lines
+			}
 
-            offCtx.rect(cx, cy, size, size); // add rectangle paths for particles
-        }
-
-        offCtx.fill(); // batch-fill
-    }
-
-
-    this.#renderOffscreenCanvas();
-}
-
-
-
+			this.#renderOffscreenCanvas();
+		}
+	}
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
