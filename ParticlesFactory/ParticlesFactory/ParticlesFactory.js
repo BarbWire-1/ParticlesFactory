@@ -14,7 +14,7 @@
 
 
 // TODO try to reduce passing of args!!!!!!!!!!!!!!!
-// better to pass ALL settings on Particle-instance on creation??
+// better to pass ALL common stuff in constructor of Particle
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
