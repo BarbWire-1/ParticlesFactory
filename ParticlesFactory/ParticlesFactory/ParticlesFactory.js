@@ -1,14 +1,11 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
 // TODO 1.1.1.1 - change back to simple logic: 3 times as performant!!!!!!!!!!
 
-
-
 // TODO2 change to baseParticle and extending shapes - particleType
 // TODO add a max-speed??
 
 // TODO check early returns, add errorHandling, comments, docu, update readme
 // TODO check performance - esp calculating multiple times for structures basing on same coords/results
-
 
 //TODO combine collisionDetections boundaries/otherParticle
 // better to pass ALL common stuff in constructor of Particle
@@ -40,10 +37,10 @@ export class ParticlesFactory {
 				isResponsive: true,
 			},
 			particles: {
-                fillStyle: '#ff0000',
-                randomFill: true,
-                size: 2,
-                randomSize: true,
+				fillStyle: '#ff0000',
+				randomFill: true,
+				size: 2,
+				randomSize: true,
 				draw: true,
 				collision: false,
 				opacity: 1,
@@ -105,28 +102,31 @@ export class ParticlesFactory {
 		window.addEventListener('resize', this.getCanvasSize.bind(this));
 		//}
 	};
-    #randomHex = () => {
-        let number = (Math.random() * 0xffffff) >> 0;
-        return "#" + number.toString(16).padStart(6, "0");
-    };
+	#randomHex = () => {
+		let number = (Math.random() * 0xffffff) >> 0;
+		return '#' + number.toString(16).padStart(6, '0');
+	};
 	// initial creation
-    #createParticles(count = this.main.numParticles) {
- //let fill =  this.particles.fillStyle = "random" ? this.#randomHex() : this.particles.fillStyle;
+	#createParticles(count = this.main.numParticles) {
+		//let fill =  this.particles.fillStyle = "random" ? this.#randomHex() : this.particles.fillStyle;
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.#offscreenCanvas;
-            let size = this.particles?.size || 2;
-
-
-
+			let size = this.particles?.size || 2;
 
 			this.#particles.push(
 				new Particle(
 					this.#offscreenCanvas,
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
-					size = size * (this.particles.randomSize? Math.max(.2,Math.random()) : 1),
+					(size =
+						size *
+						(this.particles.randomSize
+							? Math.max(0.2, Math.random())
+							: 1)),
 					this.main.speed,
-				   this.particles.randomFill ? this.#randomHex() : this.particles.fillStyle
+					this.particles.randomFill
+						? this.#randomHex()
+						: this.particles.fillStyle
 				)
 			);
 		}
@@ -134,8 +134,8 @@ export class ParticlesFactory {
 
 	// get the calculated canvas diminsions and update particles coords accordingly
 	getCanvasSize = () => {
-		const { isResponsive/*, isFullScreen */ } = this.main;
-        const { width, height, prevDimensions } = this.#calculateCanvasSize();
+		const { isResponsive /*, isFullScreen */ } = this.main;
+		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 
 		this.#setCanvasSize(width, height);
 
@@ -198,65 +198,63 @@ export class ParticlesFactory {
 			otherParticle.x,
 			otherParticle.y
 		);
-    }
+	}
 
-    set randomColor(newValue) {
-        this.particles.randomColor != this.particles.randomColor
-
-    }
+	set randomColor(newValue) {
+		this.particles.randomColor != this.particles.randomColor;
+	}
 
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
-
 		const len = this.main.numParticles;
 
 		// draw background rectangle
-        this.#offscreenCtx.fillStyle = this.main.fillStyle;
-        this.#offscreenCtx.globalAlpha = 1;
+		this.#offscreenCtx.fillStyle = this.main.fillStyle;
+		this.#offscreenCtx.globalAlpha = 1;
 		this.#offscreenCtx.fillRect(
 			0,
 			0,
 			this.canvasEl.width,
 			this.canvasEl.height
-        );
+		);
 
 		// handle all behaviour of particle.
 		// get x,y
 		// optional draw particle and/or draw lines
-        for (let i = 0; i < len; i++) {
-            const particle = this.#particles[ i ];
+		for (let i = 0; i < len; i++) {
+			const particle = this.#particles[i];
 
-            particle.updateCoords(this.particles.draw); // boolean/flag
-            this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
+			particle.updateCoords(this.particles.draw); // boolean/flag
+			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
 
-            if (this.particles?.draw) {
-
-
-
-                particle.drawParticle(
-                    this.#offscreenCtx,
-                    this.particles.randomFill ? particle.fillStyle : this.particles.fillStyle,
-                    this.particles.opacity,
-                    this.particles.randomSize ? particle.size : this.particles.size
-                );
-            }
-        }
+			if (this.particles?.draw) {
+				particle.drawParticle(
+					this.#offscreenCtx,
+					this.particles.randomFill
+						? particle.fillStyle
+						: this.particles.fillStyle,
+					this.particles.opacity,
+					this.particles.randomSize
+						? particle.size
+						: this.particles.size
+				);
+			}
+		}
 		this.#renderOffscreenCanvas();
 	}
 
-    // inner loop to get otherParticle - distance
-    // check for flags and recalculate/draw in case
+	// inner loop to get otherParticle - distance
+	// check for flags and recalculate/draw in case
 	#handleLinesAndCollision(particle, startIndex, len) {
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
+			this.particles?.collision &&
+				particle.particlesCollision(particle, otherParticle, distance);
 
-            this.particles?.collision &&
-                particle.particlesCollision(particle, otherParticle, distance);
-
-            this.lines?.draw &&
+			this.lines?.draw &&
 				this.#drawLine(
 					this.#offscreenCtx,
 					particle,
@@ -273,13 +271,11 @@ export class ParticlesFactory {
 	#drawLine(offCTX, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
-        // destructure used objects
+		// destructure used objects
 		const { strokeStyle, lineWidth, opacity, connectDistance } = this.lines;
 		const { x: x1, y: y1 } = particle;
 		const { x: x2, y: y2 } = otherParticle;
 		const isCloseEnough = distance <= connectDistance;
-
-
 
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
@@ -291,10 +287,10 @@ export class ParticlesFactory {
 			offCTX.globalAlpha = opacity;
 			offCTX.stroke();
 		}
-    }
-    changeColorMode() {
-        this.#particles.map(p => p.fillStyle = this.particles.fillstyle)
-    }
+	}
+	changeColorMode() {
+		this.#particles.map((p) => (p.fillStyle = this.particles.fillstyle));
+	}
 
 	// update on changes
 	setSpeed() {
