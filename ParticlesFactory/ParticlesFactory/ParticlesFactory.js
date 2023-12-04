@@ -280,7 +280,7 @@ export class ParticlesFactory {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-    //TODO test this instead of looping ofer all j filter the array to "otherParticle"
+    //TODO test this instead of looping over all j filter the array to "otherParticle"
 	getNearbyParticles(particle, connectDistance) {
 		return this.#particles.filter((otherParticle) => {
             if (otherParticle !== particle) {
