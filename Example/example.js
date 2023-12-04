@@ -68,3 +68,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // PROXY  and HANDLEINPUT ONLY necessary if using inputs
+
+
+function getOwnPropertiesAsJSON(obj) {
+  const result = {};
+
+  for (let prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      if (typeof obj[prop] === 'object' && obj[prop] !== null) {
+        result[prop] = getOwnPropertiesAsJSON(obj[prop]);
+      } else {
+        result[prop] = obj[prop];
+      }
+    }
+  }
+
+  return result;
+}
+
+
+
+
+
+
+function downloadOwnPropertiesAsJSON(obj) {
+    const jsonContent = JSON.stringify(obj, null, 2);
+    const blob = new Blob([ jsonContent ], { type: 'application/json' });
+
+    downloadButton.addEventListener('click', function () {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = "ParticlesProperties.json";
+        link.click();
+
+
+    })
+
+}
+
+const ownPropertiesJSON = getOwnPropertiesAsJSON(myParticles);
+downloadOwnPropertiesAsJSON(ownPropertiesJSON);

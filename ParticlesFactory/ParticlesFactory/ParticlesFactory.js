@@ -202,7 +202,7 @@ export class ParticlesFactory {
 		);
 	}
 
-	
+
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
@@ -225,7 +225,7 @@ export class ParticlesFactory {
 			const particle = this.#particles[i];
 
 			particle.updateCoords(this.particles.draw); // boolean/flag
-			this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
+			if(this.particles.draw || this.particles.collision) this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
 
 			if (this.particles?.draw) {
 				particle.drawParticle(
