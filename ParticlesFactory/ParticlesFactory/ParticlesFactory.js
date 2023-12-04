@@ -252,28 +252,27 @@ export class ParticlesFactory {
 
 					drawLines &&
 						isCloseEnough &&
-						this.#drawLine(
-							offCtx,
-							x1,
-							y1,
-							x2,
-							y2,
-							strokeStyle,
-							lineWidth,
-							lineAlpha
-						);
+						this.#drawLine(offCtx, x1, y1, x2, y2);
 				}
 			}
 			drawParticles &&
 				particle.drawParticle(
 					offCtx,
-					particleFill,
-					particleAlpha,
+
 					size
 				);
-		}
+        }
+        // re-set context before drawing lines
+		offCtx.strokeStyle = strokeStyle;
+		offCtx.lineWidth = lineWidth;
+		offCtx.globalAlpha = lineAlpha;
 		offCtx.stroke();
-		offCtx.fill();
+
+        // re-set context before drawing particles
+		offCtx.fillStyle = particleFill;
+		offCtx.globalAlpha = particleAlpha;
+        offCtx.fill();
+
 		this.#renderOffscreenCanvas();
 	}
 
@@ -281,12 +280,9 @@ export class ParticlesFactory {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-	#drawLine(offCTX, x1, y1, x2, y2, strokeStyle, lineWidth, lineAlpha) {
+	#drawLine(offCTX, x1, y1, x2, y2) {
 		offCTX.moveTo(x1, y1);
 		offCTX.lineTo(x2, y2);
-		offCTX.strokeStyle = strokeStyle;
-		offCTX.lineWidth = lineWidth;
-		offCTX.globalAlpha = lineAlpha;
 	}
 
 	// update on changes

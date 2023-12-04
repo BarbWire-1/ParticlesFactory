@@ -12,11 +12,10 @@ export class Particle {
 		this.setSpeed(speed);
 	}
 
-    drawParticle(ctx, fillColor, opacity, size) {
+    drawParticle(ctx, size) {
         //const size = this.size
 
-		ctx.fillStyle = fillColor;
-		ctx.globalAlpha = opacity;
+		
 
 		// Center the particle on point
 		let cx = this.x - size / 2;
