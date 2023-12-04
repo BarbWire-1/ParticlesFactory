@@ -22,7 +22,7 @@ export function handleInterfaceEvents(el, containerId) {
 		const updates = {
 			numParticles: () => el.setNumParticles(value),
             speed: () => el.setSpeed(),
-            size:() => el.setParticlesSize(),
+            //size:() => el.setParticlesSize(),
 			isFullScreen: () => el.getCanvasSize(),
 		};
 

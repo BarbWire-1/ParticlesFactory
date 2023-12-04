@@ -12,8 +12,8 @@ export class Particle {
 		this.setSpeed(speed);
 	}
 
-    drawParticle(ctx, fillColor, opacity) {
-        const size = this.size
+    drawParticle(ctx, fillColor, opacity, size) {
+        //const size = this.size
 
 		ctx.fillStyle = fillColor;
 		ctx.globalAlpha = opacity;
@@ -22,7 +22,7 @@ export class Particle {
 		let cx = this.x - size / 2;
 		let cy = this.y - size / 2;
 
-		ctx.fillRect(cx, cy, size, size);
+		ctx.rect(cx, cy, size, size);
 	}
 
 	// flag - particle drawn or not
@@ -43,15 +43,13 @@ export class Particle {
 		}
 	}
 
-	particlesCollision(particle, otherParticle, distance) {
-		if (Math.abs(distance) < this.size) {
+	particlesCollision(particle, otherParticle) {
 			[particle, otherParticle].forEach((p) => {
 				p.xSpeed *= -1.001;
 				p.ySpeed *= -1.001;
 			});
-		}
-	}
 
+	}
 
 	updateCoords(drawParticles) {
 		this.size = this.size;
