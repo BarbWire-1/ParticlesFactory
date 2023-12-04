@@ -19,7 +19,7 @@ const options = {
 		isFullScreen: true,
 		isResponsive: true, // whether to recalculate x,y of particles on resize
 	},
-	particles: { fillStyle: '#E1FF00', size: 5, draw: true, collision: true }, // optional - with defaults if only "particles"
+	particles: { fillStyle: 'random', opacity: 1, size: 25, draw: true, collision: true }, // optional - with defaults if only "particles"
 	lines: { connectDistance: 100, strokeStyle: '#4f4f4f', draw: true }, // optional - with defaults if only "lines"
 };
 
@@ -34,7 +34,7 @@ const proxy = particlesProxy(myParticles);
 //
 // proxy.lines.strokeStyle = "#ff0000"// ok
 // proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
-proxy.particles.fillStyle = '#0000ff';
+//proxy.particles.fillStyle = '#0000ff';
 proxy.lines.strokeStyle = '#8F5219';
 // proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok

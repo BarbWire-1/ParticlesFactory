@@ -41,7 +41,8 @@ export class ParticlesFactory {
 			},
 			particles: {
 				fillStyle: '#ff0000',
-				size: 2,
+                size: 2,
+                randomSize: true,
 				draw: true,
 				collision: false,
 				opacity: 1,
@@ -103,21 +104,28 @@ export class ParticlesFactory {
 		window.addEventListener('resize', this.getCanvasSize.bind(this));
 		//}
 	};
-
+    #randomHex = () => {
+        let number = (Math.random() * 0xffffff) >> 0;
+        return "#" + number.toString(16).padStart(6, "0");
+    };
 	// initial creation
-	#createParticles(count = this.main.numParticles) {
+    #createParticles(count = this.main.numParticles) {
+ //let fill =  this.particles.fillStyle = "random" ? this.#randomHex() : this.particles.fillStyle;
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.#offscreenCanvas;
-			const size = this.particles?.size || 2;
+            let size = this.particles?.size || 2;
+            
+
+
 
 			this.#particles.push(
 				new Particle(
 					this.#offscreenCanvas,
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
-					size,
+					size = size * (this.particles.randomSize? Math.random() : 1),
 					this.main.speed,
-					this.particles.fillStyle
+				   this.particles.fillStyle === "random" ? this.#randomHex() : this.particles.fillStyle
 				)
 			);
 		}
@@ -218,11 +226,11 @@ export class ParticlesFactory {
 
             if (this.particles?.draw) {
 
-                particle.size = this.particles.size
-                // how to separate fill/opacity for stroke/particles without passing for EACH
+
+
                 particle.drawParticle(
                     this.#offscreenCtx,
-                    this.particles.fillStyle,
+                    this.particles.fillStyle === "random" ? particle.fillStyle : this.particles.fillStyle,
                     this.particles.opacity
                 );
             }

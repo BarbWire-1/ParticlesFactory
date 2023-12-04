@@ -1,13 +1,14 @@
 // gets the canvas passed in calling methods from the consuming class
 //TODO pass canvas as arg where needed instead in constructor?
 export class Particle {
-    constructor (canvas, x, y, size, speed) {
+    constructor (canvas, x, y, size, speed, fillStyle) {
 
 		this.canvas = canvas;
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.speed = speed;
+        this.speed = speed;
+        this.fillStyle = fillStyle;
 
 		this.updateSpeed(speed);
 	}
