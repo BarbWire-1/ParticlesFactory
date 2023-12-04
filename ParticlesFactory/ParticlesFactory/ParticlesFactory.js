@@ -121,8 +121,8 @@ export class ParticlesFactory {
 					Math.random() * (height - 2 * size) + size,
 					size,
 					this.main.speed,
-                    this.particles.fillStyle,
-                    this.particles.opacity
+					this.particles.fillStyle,
+					this.particles.opacity
 				)
 			);
 		}
@@ -197,96 +197,72 @@ export class ParticlesFactory {
 	}
 
 	// drawing
-	//ugly like hell, but keeps all operations on particles and batchdrawing in one loop
+    //ugly like hell, but keeps all operations on particles and batchdrawing in one loop
+
+    // change this to create all rects/lines in here but DRAW them in one  - now having 3 loops for calc /draw
 	#drawElements2OffscreenCanvas() {
-		const offCtx = this.#offscreenCtx;
+    const offCtx = this.#offscreenCtx;
 
-		// Set the background with globalAlpha 1
-		offCtx.globalAlpha = 1;
-		offCtx.fillStyle = this.main.fillStyle;
-		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
-		const len = this.main.numParticles;
+    // Set the background with globalAlpha 1
+    offCtx.globalAlpha = 1;
+    offCtx.fillStyle = this.main.fillStyle;
+    offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+    const len = this.main.numParticles;
 
-		// Define an array to store indice-pairs for particles to connect
-		const linesToDraw = [];
-		const { collision, draw, fillStyle, opacity } = this.particles || {};
+    const { collision, draw, fillStyle, opacity, size } = this.particles || {};
 
-		for (let i = 0; i < len; i++) {
-			const particle = this.#particles[i];
-			particle.updateCoords(draw); // bool as param, gets passed to adjust and recalc position whether drawn or not
 
-			// Handle lines and collision
-			for (let j = i + 1; j < len; j++) {
-				const otherParticle = this.#particles[j];
-				const distance = this.#getDistance(particle, otherParticle);
+        // Handle lines and collision within the same loop
+    if (collision && this.lines?.draw) {
+        const { strokeStyle, lineWidth, opacity } = this.lines;
+        offCtx.strokeStyle = strokeStyle;
+        offCtx.lineWidth = lineWidth;
+        offCtx.globalAlpha = opacity;
 
-				const isCloseEnough = distance <= this.lines.connectDistance;
+        offCtx.beginPath(); // Begin drawing lines
 
-				if (collision) {
-					particle.particlesCollision(
-						particle,
-						otherParticle,
-						distance
-					);
-				}
-				// Store the index-pairs of particles to connect
-                this.lines?.draw &&
-                    isCloseEnough &&
-                    linesToDraw.push({ i, j });
-			}
-		}
-		// took this outside of the loop, test efficience!! - not convinced
-		// batch-draw lines
-		if (linesToDraw.length) {
-			// access line-style from the scope
-			const { strokeStyle, lineWidth, opacity } = this.lines;
-			offCtx.strokeStyle = strokeStyle;
-			offCtx.lineWidth = lineWidth;
-			offCtx.globalAlpha = opacity;
+        for (let i = 0; i < len; i++) {
+            const particle = this.#particles[i];
+            for (let j = i + 1; j < len; j++) {
+                const otherParticle = this.#particles[j];
+                const distance = this.#getDistance(particle, otherParticle);
 
-			const drawLines = () => {
-				offCtx.beginPath(); // begin batch
+                const isCloseEnough = distance <= this.lines.connectDistance;
 
-				linesToDraw.forEach(({ i, j }) => {
-					const { x: x1, y: y1 } = this.#particles[i];
-					const { x: x2, y: y2 } = this.#particles[j];
+                if (isCloseEnough) {
+                    offCtx.moveTo(particle.x, particle.y);
+                    offCtx.lineTo(otherParticle.x, otherParticle.y);
+                }
+            }
+        }
 
-					// define the path segments
-					offCtx.moveTo(x1, y1);
-					offCtx.lineTo(x2, y2);
-				});
-
-				offCtx.stroke(); // end batch, execute the batched drawing instructions
-			};
-
-			drawLines();
-		}
-		// TODO - batch particles as well - and perhaps generalise to pass lines/particles as params
-        if (draw) {
-    const { fillStyle, opacity, size } = this.particles;
-    offCtx.fillStyle = fillStyle;
-    offCtx.globalAlpha = opacity;
-
-    const drawParticles = () => {
-        offCtx.beginPath();
-        const halfSize = size / 2; // Calculate half-size for centering
-
-        this.#particles.forEach((p) => {
-            const cx = p.x - halfSize;
-            const cy = p.y - halfSize;
-
-            offCtx.rect(cx, cy, size, size); // Add rectangle paths without filling
-        });
-
-        offCtx.fill(); // Fill all added rectangles in one go
-    };
-
-    drawParticles();
-   
-}
-
-		this.#renderOffscreenCanvas();
+        offCtx.stroke(); // End drawing lines
     }
+
+    // Define particle drawing properties outside the loop
+    if (draw) {
+        offCtx.fillStyle = fillStyle;
+        offCtx.globalAlpha = opacity;
+        const halfSize = size / 2; // half-size for centering
+
+        offCtx.beginPath(); // Begin drawing particles
+
+        for (let i = 0; i < len; i++) {
+            const particle = this.#particles[i];
+            particle.updateCoords(draw); // bool as param, gets passed to adjust and recalc position whether drawn or not
+
+            const cx = particle.x - halfSize;
+            const cy = particle.y - halfSize;
+
+            offCtx.rect(cx, cy, size, size); // add rectangle paths for particles
+        }
+
+        offCtx.fill(); // batch-fill
+    }
+
+
+    this.#renderOffscreenCanvas();
+}
 
 
 
@@ -315,7 +291,7 @@ export class ParticlesFactory {
 
 	setParticlesSize() {
 		this.#particles.map((p) => (p.size = this.particles.size));
-    }
+	}
 
 	#addParticles(difference) {
 		this.#createParticles(difference);
