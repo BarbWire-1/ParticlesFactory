@@ -11,7 +11,7 @@
 //TODO batch drawing to offscreen of lines and particles!
 // TODO get i in this.#particles to reuse coords!
 
-// TODO try to reduce passing of args!!!!!!!!!!!!!!!
+//TODO combine collisionDetections boundaries/otherParticle
 // better to pass ALL common stuff in constructor of Particle
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
@@ -193,23 +193,17 @@ export class ParticlesFactory {
 		);
 	}
 
-	// TODO change back to the use of indices array for lines to only draw those!!! instead of call draw for each
-	// drawing
-	// not nice, but keeps all operations on particles in one loop
-	#drawElements2OffscreenCanvas() {
+	#updateParticles() {
 		const offCtx = this.#offscreenCtx;
 
 		// Draw the background
 		offCtx.globalAlpha = 1;
 		offCtx.fillStyle = this.main.fillStyle;
 		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
-		const len = this.main.numParticles;
 
-		offCtx.beginPath();
-		// handle all behaviour of particle.
-		// get x,y
-		// optional draw particle and/or draw lines
-		// Move constant property settings outside the loop
+
+		offCtx.beginPath();// start path to batch
+
 		const {
 			size,
 			draw: drawParticles,
@@ -226,67 +220,68 @@ export class ParticlesFactory {
 			connectDistance,
 		} = this.lines || {};
 
-		// tried with a gridSearch here, but for any reason (????) the performance was way worse
-		for (let i = 0; i < len; i++) {
-			const particle = this.#particles[i];
-			particle.updateCoords(drawParticles); // bool as param, gets passed to adjust and recalc position whether drawn or not
+		this.#particles.forEach((particle) => {
+			particle.updateCoords(drawParticles);
 
-			// Handle lines and collision
-			if (collision || drawLines) {
-				for (let j = i + 1; j < len; j++) {
-					const otherParticle = this.#particles[j];
+            // create an array of particles inRange by filtering
+			if ((collision || drawLines) && (drawParticles || drawLines)) {
+				const particlesInRange = this.getNearbyParticles(
+					particle,
+					connectDistance || 3 * size
+				);
+
+				particlesInRange.forEach((otherParticle) => {
 					const { x: x1, y: y1 } = particle;
 					const { x: x2, y: y2 } = otherParticle;
 
 					const distance = this.#getDistance(particle, otherParticle);
 					const isCloseEnough = distance <= connectDistance;
-					const collides = Math.abs(distance) < size;
+					const collides = distance < 1.414 * size;
 
-					collision &&
-						collides &&
+					if (collision && collides) {
 						particle.particlesCollision(
 							particle,
 							otherParticle,
 							distance
-						); // changes direction
+						);
+					}
 
-					drawLines &&
-						isCloseEnough &&
+					if (drawLines && isCloseEnough) {
 						this.#drawLine(offCtx, x1, y1, x2, y2);
-				}
+					}
+				});
 			}
-			drawParticles &&
-				particle.drawParticle(
-					offCtx,
 
-					size
-				);
-		}
+			if (drawParticles) {
+				particle.drawParticle(offCtx, size);
+			}
+		});
+
 		// re-set context before drawing lines
 		offCtx.strokeStyle = strokeStyle;
 		offCtx.lineWidth = lineWidth;
 		offCtx.globalAlpha = lineAlpha;
-		offCtx.stroke();
+		offCtx.stroke(); // batch-draw lines
 
 		// re-set context before drawing particles
 		offCtx.fillStyle = particleFill;
 		offCtx.globalAlpha = particleAlpha;
-		offCtx.fill();
+		offCtx.fill();// batch-draw particles
 
-		this.#renderOffscreenCanvas();
+		this.#renderOffscreenCanvas();// draw image to populated canvas
 	}
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-    //TODO test this instead of looping over all j filter the array to "otherParticle"
+	// filter particles to particles inRange to draw lines/collisionDetection
 	getNearbyParticles(particle, connectDistance) {
 		return this.#particles.filter((otherParticle) => {
-            if (otherParticle !== particle) {
-                const distance = this.#getDistance(particle, otherParticle);
-                return distance <= connectDistance;
-            }
+			if (otherParticle !== particle) {
+				const distance = this.#getDistance(particle, otherParticle);
+				return distance <= connectDistance;
+			}
 		});
 	}
 
@@ -322,7 +317,7 @@ export class ParticlesFactory {
 
 	// ANIMATION
 	#startAnimation() {
-		this.#drawElements2OffscreenCanvas();
+		this.#updateParticles();
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
