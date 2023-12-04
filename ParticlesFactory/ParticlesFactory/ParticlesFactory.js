@@ -93,7 +93,7 @@ export class ParticlesFactory {
 	}
 
 	#initListeners = () => {
-		this.canvasEl.addEventListener('mousemove', (event) => {
+		this.canvasEl.addEventListener('pointermove', (event) => {
 			this.#particles.forEach((particle) => {
 				particle.handleMouseMove(event, this.main.mouseDistance);
 			});
@@ -202,10 +202,7 @@ export class ParticlesFactory {
 		);
 	}
 
-	set randomColor(newValue) {
-		this.particles.randomColor != this.particles.randomColor;
-	}
-
+	
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
@@ -228,7 +225,7 @@ export class ParticlesFactory {
 			const particle = this.#particles[i];
 
 			particle.updateCoords(this.particles.draw); // boolean/flag
-			this.lines?.draw && this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
+			this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
 
 			if (this.particles?.draw) {
 				particle.drawParticle(
