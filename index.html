@@ -24,7 +24,7 @@
 
             <div id="inputSection" class="controlPanelContent">
 
-                <h3 data-action="particles-toggleVisibility" >▶ main</h3>
+                <h3 data-action="particles-toggleVisibility">▶ main</h3>
                 <div class="inputContainer collapsed"><!-- show on load -->
                     <label for="numParticles">Number of Particles:</label>
                     <input id="numParticles" data-attribute="particles-main.numParticles" type="number" value="200"
@@ -69,18 +69,31 @@
                         max="1" step="0.05" value="1">
 
                     <div class="checkbox-container">
+
+                        <label for="particlesType">Particles Type</label>
+                        <select id="particlesType" data-attribute="particles-particles.shape">
+                            <option value="circle">Circle</option>
+                            <option value="square">Square</option>
+                            <option value="hexagon">Hexagon</option>
+
+                        </select>
+
                         <label for="particlesFlag">Draw Particles</label>
                         <input id="particlesFlag" data-attribute="particles-particles.draw" type="checkbox" checked><br>
 
+
+
                         <label for="particlesCollisionFlag">Particles Collision</label>
                         <input id="particlesCollisionFlag" data-attribute="particles-particles.collision"
-                            type="checkbox" checked><br>
+                            type="checkbox"><br>
 
-                            <label for="particlesRandomSize">Random Size</label>
-                            <input id="particlesRandomSize" data-attribute="particles-particles.randomSize" type="checkbox" checked><br>
+                        <label for="particlesRandomSize">Random Size</label>
+                        <input id="particlesRandomSize" data-attribute="particles-particles.randomSize" type="checkbox"
+                            checked><br>
 
-                            <label for="particlesRandomColor">Random Color</label>
-                            <input id="particlesRandomColor" data-attribute="particles-particles.randomFill" type="checkbox" checked>
+                        <label for="particlesRandomColor">Random Color</label>
+                        <input id="particlesRandomColor" data-attribute="particles-particles.randomFill" type="checkbox"
+                            checked>
 
                     </div>
                 </div>
@@ -116,14 +129,15 @@
 
             </div>
             <div class="button-container">
-            <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
-            <button id="toggleContent">Toggle Page Content</button>
+                <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
+                <button id="toggleContent">Toggle Page Content</button>
             </div>
         </div>
     </div>
 
     <!-- Link with text and GitHub icon -->
-    <a href="https://github.com/BarbWire-1/ParticlesFactory/tree/refactor-optionals" target="_blank" rel="noopener noreferrer">
+    <a href="https://github.com/BarbWire-1/ParticlesFactory/tree/refactor-optionals" target="_blank"
+        rel="noopener noreferrer">
         <i class="fab fa-github"></i>
         Github Repo
 

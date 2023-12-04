@@ -9,21 +9,50 @@ export class Particle {
 		this.size = size;
         this.speed = speed;
         this.fillStyle = fillStyle;
+        //this.type = type;
 
 		this.updateSpeed(speed);
 	}
 
-    drawParticle(ctx, fillColor, opacity, size) {
+    drawParticle(ctx, fillColor, opacity, size, shape) {
+    ctx.fillStyle = fillColor || this.fillStyle;
+    ctx.globalAlpha = opacity;
 
-		ctx.fillStyle = fillColor;
-		ctx.globalAlpha = opacity;
+    if (shape === 'circle') {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
+        ctx.fill();
 
-		// Center the particle on point
-		let cx = this.x - size / 2;
-		let cy = this.y - size / 2;
+    } else if (shape === 'square') {
+        // Center the particle on point
+        let cx = this.x - size / 2;
+        let cy = this.y - size / 2;
 
-		ctx.fillRect(cx, cy, size, size);
-	}
+        ctx.fillRect(cx, cy, size, size);
+
+    } else if (shape === 'hexagon') {
+        ctx.beginPath();
+        const sides = 6; // Number of sides for the polygon
+        //console.log(sides)
+        const angle = (Math.PI * 2) / sides;
+        const polygonSize = size / 2; // Radius of the polygon
+
+        ctx.moveTo(
+            this.x + polygonSize * Math.cos(0),
+            this.y + polygonSize * Math.sin(0)
+        );
+        for (let i = 1; i <= sides; i++) {
+            ctx.lineTo(
+                this.x + polygonSize * Math.cos(angle * i),
+                this.y + polygonSize * Math.sin(angle * i)
+            );
+        }
+        ctx.closePath(); // Close the path
+        ctx.fill(); // Fill the polygon
+    }
+}
+
+
 
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {

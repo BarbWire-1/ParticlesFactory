@@ -19,7 +19,7 @@ const options = {
 		isFullScreen: true,
 		isResponsive: true, // whether to recalculate x,y of particles on resize
 	},
-	particles: { fillStyle: '#0000ff', opacity: 1, size: 25, draw: true, collision: true }, // optional - with defaults if only "particles"
+	particles: { fillStyle: '#0000ff', opacity: 1, size: 25, draw: true, collision: false }, // optional - with defaults if only "particles"
 	lines: { connectDistance: 100, strokeStyle: '#ffff', opacity: 1, lineWidth: .6, draw: true }, // optional - with defaults if only "lines"
 };
 

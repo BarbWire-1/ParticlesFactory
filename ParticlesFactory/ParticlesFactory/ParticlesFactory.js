@@ -36,7 +36,8 @@ export class ParticlesFactory {
 				isFullScreen: true,
 				isResponsive: true,
 			},
-			particles: {
+            particles: {
+                shape: 'circle',
 				fillStyle: '#ff0000',
 				randomFill: true,
 				size: 2,
@@ -126,7 +127,8 @@ export class ParticlesFactory {
 					this.main.speed,
 					this.particles.randomFill
 						? this.#randomHex()
-						: this.particles.fillStyle
+                        : this.particles.fillStyle,
+                    this.particles.shape
 				)
 			);
 		}
@@ -218,7 +220,7 @@ export class ParticlesFactory {
 			this.canvasEl.width,
 			this.canvasEl.height
 		);
-
+//console.log(this.particles.type)
 		// handle all behaviour of particle.
 		// get x,y
 		// optional draw particle and/or draw lines
@@ -237,7 +239,9 @@ export class ParticlesFactory {
 					this.particles.opacity,
 					this.particles.randomSize
 						? particle.size
-						: this.particles.size
+                        : this.particles.size,
+                    this.particles.shape
+
 				);
 			}
 		}
