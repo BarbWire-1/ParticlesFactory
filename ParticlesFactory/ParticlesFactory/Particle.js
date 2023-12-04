@@ -9,19 +9,19 @@ export class Particle {
 		this.size = size;
 		this.speed = speed;
 
-		this.setSpeed(speed);
+		this.updateSpeed(speed);
 	}
 
-    drawParticle(ctx, size) {
-        //const size = this.size
+    drawParticle(ctx, fillColor, opacity) {
 
-		
+		ctx.fillStyle = fillColor;
+		ctx.globalAlpha = opacity;
 
 		// Center the particle on point
-		let cx = this.x - size / 2;
-		let cy = this.y - size / 2;
+		let cx = this.x - this.size / 2;
+		let cy = this.y - this.size / 2;
 
-		ctx.rect(cx, cy, size, size);
+		ctx.fillRect(cx, cy, this.size, this.size);
 	}
 
 	// flag - particle drawn or not
@@ -42,12 +42,13 @@ export class Particle {
 		}
 	}
 
-	particlesCollision(particle, otherParticle) {
+	particlesCollision(particle, otherParticle, distance) {
+		if (Math.abs(distance) < this.size) {
 			[particle, otherParticle].forEach((p) => {
 				p.xSpeed *= -1.001;
 				p.ySpeed *= -1.001;
 			});
-
+		}
 	}
 
 	updateCoords(drawParticles) {
@@ -57,7 +58,7 @@ export class Particle {
 		this.y += this.ySpeed;
 	}
 
-	setSpeed(speed) {
+	updateSpeed(speed) {
 		// rondomize speed and direction
 		this.xSpeed = speed * (Math.random() * 2 - 1);
 		this.ySpeed = speed * (Math.random() * 2 - 1);
@@ -80,7 +81,7 @@ export class Particle {
 			dx /= distance;
 			dy /= distance;
 			// TODO remove moveAmount - go with px OR switch to using small int with higher miltilicator??
-			const moveAmount = 1;
+			const moveAmount = 2;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;
 		}
