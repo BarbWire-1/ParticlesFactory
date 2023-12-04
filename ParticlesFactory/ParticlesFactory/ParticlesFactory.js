@@ -14,6 +14,7 @@
 
 
 // TODO try to reduce passing of args!!!!!!!!!!!!!!!
+// better to pass ALL settings on Particle-instance on creation??
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
@@ -138,6 +139,7 @@ export class ParticlesFactory {
     }
   };
 
+    // TODO do this once on load to determine device type!
   // get the canvas size depending on flags and device-dimensions
   // need to use available(!) screen for mobiles
   #calculateCanvasSize() {
@@ -231,16 +233,17 @@ export class ParticlesFactory {
         // Handle lines and collision
         if (collision || drawLines) {
             for (let j = i + 1; j < len; j++) {
-                const otherParticle = this.#particles[ j ];
-                const distance = this.#getDistance(particle, otherParticle);
 
+                const otherParticle = this.#particles[ j ];
                 const { x: x1, y: y1 } = particle;
                 const { x: x2, y: y2 } = otherParticle;
+
+                const distance = this.#getDistance(particle, otherParticle);
                 const isCloseEnough = distance <= connectDistance;
                 const collides = Math.abs(distance) < size
 
                 collision && collides &&
-                    particle.particlesCollision(particle, otherParticle, distance);
+                    particle.particlesCollision(particle, otherParticle, distance);// changes direction
 
                 drawLines &&
                     isCloseEnough &&
@@ -257,7 +260,7 @@ export class ParticlesFactory {
             }
         }
       drawParticles &&
-        particle.drawParticle(offCtx, particleFill, particleAlpha, size); // Reuse fillStyle and opacity
+        particle.drawParticle(offCtx, particleFill, particleAlpha, size);
     }
     offCtx.stroke();
     offCtx.fill();
