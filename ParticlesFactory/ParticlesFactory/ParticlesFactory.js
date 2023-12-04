@@ -40,7 +40,8 @@ export class ParticlesFactory {
 				isResponsive: true,
 			},
 			particles: {
-				fillStyle: '#ff0000',
+                fillStyle: '#ff0000',
+                randomFill: true,
                 size: 2,
                 randomSize: true,
 				draw: true,
@@ -114,7 +115,7 @@ export class ParticlesFactory {
 		for (let i = 0; i < count; i++) {
 			const { width, height } = this.#offscreenCanvas;
             let size = this.particles?.size || 2;
-            
+
 
 
 
@@ -125,7 +126,7 @@ export class ParticlesFactory {
 					Math.random() * (height - 2 * size) + size,
 					size = size * (this.particles.randomSize? Math.random() : 1),
 					this.main.speed,
-				   this.particles.fillStyle === "random" ? this.#randomHex() : this.particles.fillStyle
+				   this.particles.randomFill ? this.#randomHex() : this.particles.fillStyle
 				)
 			);
 		}
@@ -197,7 +198,12 @@ export class ParticlesFactory {
 			otherParticle.x,
 			otherParticle.y
 		);
-	}
+    }
+
+    set randomColor(newValue) {
+        this.particles.randomColor != this.particles.randomColor
+
+    }
 
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
@@ -230,8 +236,9 @@ export class ParticlesFactory {
 
                 particle.drawParticle(
                     this.#offscreenCtx,
-                    this.particles.fillStyle === "random" ? particle.fillStyle : this.particles.fillStyle,
-                    this.particles.opacity
+                    this.particles.randomFill ? particle.fillStyle : this.particles.fillStyle,
+                    this.particles.opacity,
+                    this.particles.randomSize ? particle.size : this.particles.size
                 );
             }
         }
@@ -284,7 +291,10 @@ export class ParticlesFactory {
 			offCTX.globalAlpha = opacity;
 			offCTX.stroke();
 		}
-	}
+    }
+    changeColorMode() {
+        this.#particles.map(p => p.fillStyle = this.particles.fillstyle)
+    }
 
 	// update on changes
 	setSpeed() {
