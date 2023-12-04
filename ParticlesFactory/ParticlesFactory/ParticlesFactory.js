@@ -106,11 +106,12 @@ export class ParticlesFactory {
 	};
 
 	// initial creation
+	// count is used as param for later adding new particles
 	#createParticles(count = this.main.numParticles) {
-		for (let i = 0; i < count; i++) {
-			const { width, height } = this.#offscreenCanvas;
-			const size = this.particles?.size || 2;
+		const { width, height } = this.#offscreenCanvas;
+		const size = this.particles?.size || 2;
 
+		while (count) {
 			this.#particles.push(
 				new Particle(
 					this.#offscreenCanvas,
@@ -121,6 +122,7 @@ export class ParticlesFactory {
 					this.particles.fillStyle
 				)
 			);
+			count--;
 		}
 	}
 
@@ -201,8 +203,7 @@ export class ParticlesFactory {
 		offCtx.fillStyle = this.main.fillStyle;
 		offCtx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 
-
-		offCtx.beginPath();// start path to batch
+		offCtx.beginPath(); // start path to batch
 
 		const {
 			size,
@@ -223,7 +224,7 @@ export class ParticlesFactory {
 		this.#particles.forEach((particle) => {
 			particle.updateCoords(drawParticles);
 
-            // create an array of particles inRange by filtering
+			// create an array of particles inRange by filtering
 			if ((collision || drawLines) && (drawParticles || drawLines)) {
 				const particlesInRange = this.getNearbyParticles(
 					particle,
@@ -236,19 +237,19 @@ export class ParticlesFactory {
 
 					const distance = this.#getDistance(particle, otherParticle);
 					const isCloseEnough = distance <= connectDistance;
-					const collides = distance < 1.414 * size;
+					const collides = distance < size;
 
-					if (collision && collides) {
+					collision &&
+						collides &&
 						particle.particlesCollision(
 							particle,
 							otherParticle,
 							distance
 						);
-					}
 
-					if (drawLines && isCloseEnough) {
+					drawLines &&
+						isCloseEnough &&
 						this.#drawLine(offCtx, x1, y1, x2, y2);
-					}
 				});
 			}
 
@@ -266,9 +267,9 @@ export class ParticlesFactory {
 		// re-set context before drawing particles
 		offCtx.fillStyle = particleFill;
 		offCtx.globalAlpha = particleAlpha;
-		offCtx.fill();// batch-draw particles
+		offCtx.fill(); // batch-draw particles
 
-		this.#renderOffscreenCanvas();// draw image to populated canvas
+		this.#renderOffscreenCanvas(); // draw image to populated canvas
 	}
 
 	#renderOffscreenCanvas() {
