@@ -261,23 +261,33 @@ export class ParticlesFactory {
 
 					size
 				);
-        }
-        // re-set context before drawing lines
+		}
+		// re-set context before drawing lines
 		offCtx.strokeStyle = strokeStyle;
 		offCtx.lineWidth = lineWidth;
 		offCtx.globalAlpha = lineAlpha;
 		offCtx.stroke();
 
-        // re-set context before drawing particles
+		// re-set context before drawing particles
 		offCtx.fillStyle = particleFill;
 		offCtx.globalAlpha = particleAlpha;
-        offCtx.fill();
+		offCtx.fill();
 
 		this.#renderOffscreenCanvas();
 	}
 
 	#renderOffscreenCanvas() {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
+	}
+
+    //TODO test this instead of looping ofer all j filter the array to "otherParticle"
+	getNearbyParticles(particle, connectDistance) {
+		return this.#particles.filter((otherParticle) => {
+            if (otherParticle !== particle) {
+                const distance = this.#getDistance(particle, otherParticle);
+                return distance <= connectDistance;
+            }
+		});
 	}
 
 	#drawLine(offCTX, x1, y1, x2, y2) {
