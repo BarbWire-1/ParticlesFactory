@@ -1,6 +1,6 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
-// TODO 1.1.1 chack all loops for looping over constants - remove obsolete bool-checks!!!!
-// TODO 1.1.2 batch drawing particles and lines!
+
+
 
 // TODO2 change to baseParticle and extending shapes - particleType
 // TODO add a max-speed??
@@ -8,8 +8,6 @@
 // TODO check early returns, add errorHandling, comments, docu, update readme
 // TODO check performance - esp calculating multiple times for structures basing on same coords/results
 
-//TODO batch drawing to offscreen of lines and particles!
-// TODO get i in this.#particles to reuse coords!
 
 //TODO combine collisionDetections boundaries/otherParticle
 // better to pass ALL common stuff in constructor of Particle
@@ -119,7 +117,7 @@ export class ParticlesFactory {
 					Math.random() * (height - 2 * size) + size,
 					size,
 					this.main.speed,
-					this.particles.fillStyle
+					this.particles?.fillStyle
 				)
 			);
 			count--;
@@ -225,10 +223,11 @@ export class ParticlesFactory {
 			particle.updateCoords(drawParticles);
 
 			// create an array of particles inRange by filtering
-			if ((collision || drawLines) && (drawParticles || drawLines)) {
+            if ((collision || drawLines) && (drawParticles || drawLines)) {
+                let range = 0;
 				const particlesInRange = this.getNearbyParticles(
 					particle,
-					connectDistance || 3 * size
+					range = drawLines ? connectDistance : 3 * size
 				);
 
 				particlesInRange.forEach((otherParticle) => {
