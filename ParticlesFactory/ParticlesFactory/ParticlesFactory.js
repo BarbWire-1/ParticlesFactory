@@ -1,4 +1,5 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
+// TODO 1.1.1.1 - change back to simple logic: 3 times as performant!!!!!!!!!!
 
 
 
