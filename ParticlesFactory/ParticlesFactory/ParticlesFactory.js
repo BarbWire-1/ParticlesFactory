@@ -121,7 +121,8 @@ export class ParticlesFactory {
 					Math.random() * (height - 2 * size) + size,
 					size,
 					this.main.speed,
-					this.particles.fillStyle
+                    this.particles.fillStyle,
+                    this.particles.opacity
 				)
 			);
 		}
@@ -261,11 +262,29 @@ export class ParticlesFactory {
 			drawLines();
 		}
 		// TODO - batch particles as well - and perhaps generalise to pass lines/particles as params
-		if (draw) {
-			this.#particles.forEach((p) =>
-				p.drawParticle(offCtx, fillStyle, opacity)
-			);
-		}
+        if (draw) {
+    const { fillStyle, opacity, size } = this.particles;
+    offCtx.fillStyle = fillStyle;
+    offCtx.globalAlpha = opacity;
+
+    const drawParticles = () => {
+        offCtx.beginPath();
+        const halfSize = size / 2; // Calculate half-size for centering
+
+        this.#particles.forEach((p) => {
+            const cx = p.x - halfSize;
+            const cy = p.y - halfSize;
+
+            offCtx.rect(cx, cy, size, size); // Add rectangle paths without filling
+        });
+
+        offCtx.fill(); // Fill all added rectangles in one go
+    };
+
+    drawParticles();
+   
+}
+
 		this.#renderOffscreenCanvas();
     }
 
