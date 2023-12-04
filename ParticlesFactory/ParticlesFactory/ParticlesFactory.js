@@ -124,7 +124,7 @@ export class ParticlesFactory {
 					this.#offscreenCanvas,
 					Math.random() * (width - 2 * size) + size,
 					Math.random() * (height - 2 * size) + size,
-					size = size * (this.particles.randomSize? Math.random() : 1),
+					size = size * (this.particles.randomSize? Math.max(.2,Math.random()) : 1),
 					this.main.speed,
 				   this.particles.randomFill ? this.#randomHex() : this.particles.fillStyle
 				)
