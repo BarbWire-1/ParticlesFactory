@@ -412,7 +412,7 @@ export class ParticlesFactory {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'all_properties.json'; // Set the filename
+        link.download = 'particles-factory-config.json'; // Set the filename
         link.click();
     }
 }
