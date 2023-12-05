@@ -226,10 +226,11 @@ export class ParticlesFactory {
         for (let i = 0; i < len; i++) {
             const particle = this.#particles[ i ];
 
+
+
             particle.updateCoords(this.particles.draw); // boolean/flag
             if (this.particles.draw || this.particles.collision) this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
-
-            if (this.particles?.draw) {
+ if (this.particles?.draw) {
                 particle.drawParticle(
                     this.#offscreenCtx,
                     this.particles.randomFill
@@ -244,6 +245,7 @@ export class ParticlesFactory {
 
                 );
             }
+
         }
         this.#renderOffscreenCanvas();
     }
