@@ -13,14 +13,14 @@ const options = {
 		// fillStyle: '#000',
 	},
 	main: {
-		numParticles: 200,
+		numParticles: 450,
 		speed: 0.2,
 		mouseDistance: 100,
 		isFullScreen: true,
 		isResponsive: true, // whether to recalculate x,y of particles on resize
 	},
-	particles: { fillStyle: '#0000ff', opacity: 1, size: 25, draw: true, collision: false }, // optional - with defaults if only "particles"
-	lines: { connectDistance: 100, strokeStyle: '#ffff', opacity: 1, lineWidth: .6, draw: true }, // optional - with defaults if only "lines"
+    particles: { fillStyle: '#0000ff', opacity: .7, size: 50, draw: true, collision: false, shape: 'circle' }, // optional - with defaults if only "particles"
+	lines: { connectDistance: 100, strokeStyle: '#ffff', opacity: 0.3, lineWidth: .8, draw: true }, // optional - with defaults if only "lines"
 };
 
 const myParticles = new ParticlesFactory(options);

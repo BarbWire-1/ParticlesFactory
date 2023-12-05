@@ -38,6 +38,7 @@ export class ParticlesFactory {
             },
             particles: {
                 shape: 'circle',
+                sides: undefined,
                 fillStyle: '#ff0000',
                 randomFill: true,
                 size: 2,
@@ -128,7 +129,8 @@ export class ParticlesFactory {
                     this.particles.randomFill
                         ? this.#randomHex()
                         : this.particles.fillStyle,
-                    this.particles.shape
+                    this.particles.shape,
+                    this.particles.side
                 )
             );
         }
@@ -237,7 +239,8 @@ export class ParticlesFactory {
                     this.particles.randomSize
                         ? particle.size
                         : this.particles.size,
-                    this.particles.shape
+                    this.particles.shape,
+                    this.particles.sides
 
                 );
             }
