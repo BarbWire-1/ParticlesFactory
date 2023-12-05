@@ -114,33 +114,43 @@ export class ParticlesFactory {
 	#randomHex = () => {
 		let number = (Math.random() * 0xffffff) >> 0;
 		return '#' + number.toString(16).padStart(6, '0');
-	};
+    };
+
+    
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
-		//let fill =  this.particles.fillStyle = "random" ? this.#randomHex() : this.particles.fillStyle;
-		for (let i = 0; i < count; i++) {
+
+		while(count) {
 			const { width, height } = this.#offscreenCanvas;
-			let size = this.particles?.size || 2;
+            let size = this.particles?.size || 2;
+
+            const adjustedFill = this.particles.randomFill
+                ? this.#randomHex()// the particle gets an individual fill!
+                : this.particles.fillStyle;
+
+            const adjustedSize = size *
+                (this.particles.randomSize
+                    ? Math.max(0.2, Math.random())// the particle gets an individual size!
+                    : 1);
+            const { x, y } = {
+                x: Math.random() * (width - 2 * size) + size,
+                y: Math.random() * (height - 2 * size) + size
+            }
 
 			this.#particles.push(
 				new Particle(
 					this.#offscreenCanvas,
-					Math.random() * (width - 2 * size) + size,
-					Math.random() * (height - 2 * size) + size,
-					(size =
-						size *
-						(this.particles.randomSize
-							? Math.max(0.2, Math.random())
-							: 1)),
+					x,
+					y,
+					adjustedSize,
 					this.main.speed,
-					this.particles.randomFill
-						? this.#randomHex()
-						: this.particles.fillStyle,
+					adjustedFill,
 					this.particles.shape,
 					this.particles.side
 				)
-			);
-		}
+            );
+            count--;
+        };
 	}
 
 	// get the calculated canvas diminsions and update particles coords accordingly
@@ -163,7 +173,7 @@ export class ParticlesFactory {
 		const { innerWidth, innerHeight } = window;
         const { availWidth, availHeight } = screen;
         const isMobile = innerWidth < 750;
-        
+
 		const isFullScreen = this.main.isFullScreen;
 
 		const screenWidth = isMobile ? availWidth : innerWidth;
@@ -265,17 +275,19 @@ export class ParticlesFactory {
 
 		for (let i = 0; i < len; i++) {
 			const particle = this.#particles[i];
-			particle.updateCoords(drawParticles); // boolean/flag - used for translating IF drawn
+			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
 
-			if ((this.lines.draw && +this.lines.connectDistance) || collision)
-				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
+			((this.lines.draw && +this.lines.connectDistance) || collision)&&
+                this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
+
 			if (drawParticles) {
-				let adjustedFillStyle = fillStyle; // Default fillStyle
+				let adjustedFillStyle = fillStyle; // default
 
 				if (noFill) {
-					adjustedFillStyle = 'transparent';
+                    adjustedFillStyle = 'transparent';
+
 				} else if (randomFill) {
-					adjustedFillStyle = particle.fillStyle;
+					adjustedFillStyle = particle.fillStyle;// use the individual ly assigned fill
 				}
 
 				particle.drawParticle(
@@ -285,7 +297,7 @@ export class ParticlesFactory {
 					randomSize ? particle.size : size,
 					shape,
 					strokeStyle
-					//this.particles.sides
+
 				);
 			}
 		}
