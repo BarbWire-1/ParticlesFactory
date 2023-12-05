@@ -29,12 +29,14 @@ handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
 // for setting dynamically in JS to update corresponding input use the proxy
 const proxy = particlesProxy(myParticles);
+
 // proxy.numParticles = 30;
 //
 //
 // proxy.lines.strokeStyle = "#ff0000"// ok
-// proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
-//proxy.particles.fillStyle = '#0000ff';
+//proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
+proxy.particles.randomFill = false
+proxy.particles.fillStyle = '#565656';
 //proxy.lines.strokeStyle = '#8F5219';
 // proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok

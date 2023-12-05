@@ -42,10 +42,8 @@ export const particlesProxy = (target, path = '', parent = target) => {
 
 	const proxy = new Proxy(target, handler);
 	proxies.set(target, proxy); // store newly created proxy in proxies
-    return {
-        proxy,
-        getCurrentState: () => proxies.get(target) // Retrieve synchronized data from the proxies map;
-    };
+    return proxy
+
 };
 
 function bindInputElement(path, value) {
