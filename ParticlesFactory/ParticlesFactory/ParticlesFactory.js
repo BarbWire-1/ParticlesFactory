@@ -159,12 +159,16 @@ export class ParticlesFactory {
 	// need to use available(!) screen for mobiles
 	#calculateCanvasSize() {
 		const isMobile = window.innerWidth < 750;
+        const { innerWidth, innerHeight } = window;
+        const { availWidth, availHeight } = screen;
+        const isFullScreen = this.main.isFullScreen;
 
-		const screenWidth = isMobile ? screen.availWidth : window.innerWidth;
-		const screenHeight = isMobile ? screen.availHeight : window.innerHeight;
 
-		const width = this.main.isFullScreen ? screenWidth : this.canvas.width;
-		const height = this.main.isFullScreen
+		const screenWidth = isMobile ? availWidth : innerWidth;
+		const screenHeight = isMobile ? availHeight : innerHeight;
+
+		const width = isFullScreen ? screenWidth : this.canvas.width;
+		const height = isFullScreen
 			? screenHeight
 			: this.canvas.height;
 
@@ -192,6 +196,12 @@ export class ParticlesFactory {
 		});
 	}
 
+//     getRatio(attribute, newValue, oldValue) {
+//         const ratio = newValue / oldValue;
+//         attribute *= ratio;
+//         oldValue = newValue;
+//
+//     }
 	// update randomSize relative on each particle IF randomSize
 	// in handleInterface... handled currently
 	changeBaseSize(newBaseSize) {
@@ -225,7 +235,8 @@ export class ParticlesFactory {
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
-		const len = this.main.numParticles;
+        const len = this.main.numParticles;
+        const {draw: drawParticles, collision, randomFill, fillStyle, opacity, randomSize, size, shape} = this.particles
 
 		// draw background rectangle
 		this.#offscreenCtx.fillStyle = this.main.fillStyle;
@@ -240,24 +251,25 @@ export class ParticlesFactory {
 		// handle all behaviour of particle.
 		// get x,y
 		// optional draw particle and/or draw lines
-		for (let i = 0; i < len; i++) {
-			const particle = this.#particles[i];
+        for (let i = 0; i < len; i++) {
 
-			particle.updateCoords(this.particles.draw); // boolean/flag
-			if (this.particles.draw || this.particles.collision)
-				this.#handleLinesAndCollision(particle, i, len); // pass to inner loop
-			if (this.particles?.draw) {
+            const particle = this.#particles[ i ];
+            particle.updateCoords(drawParticles); // boolean/flag - used for translating IF drawn
+
+			if (this.lines.draw || collision)
+				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
+			if (drawParticles) {
 				particle.drawParticle(
 					this.#offscreenCtx,
-					this.particles.randomFill
-						? particle.fillStyle
-						: this.particles.fillStyle,
-					this.particles.opacity,
-					this.particles.randomSize
-						? particle.size
-						: this.particles.size,
-					this.particles.shape,
-					this.particles.sides
+					randomFill
+						? particle.fillStyle// style individually!
+						: fillStyle,
+					opacity,
+					randomSize
+						? particle.size// size individually!
+						: size,
+					shape,
+					//this.particles.sides
 				);
 			}
 		}
