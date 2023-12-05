@@ -80,3 +80,26 @@ downloadButton.addEventListener('click', () => {
     //myParticles.getStatusAndSaveToFile();
     myParticles.savePropsStatus2File()
 });
+
+
+// testing the use of downloaded config
+const test = {
+
+            "canvas":
+                {"id":"my-particles","width":500,"height":500},
+
+            "main":
+                {"numParticles":3200,"speed":4.7,"mouseDistance":100,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
+
+            "particles":
+                {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":true,"size":60,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
+
+            "lines":
+                {"connectDistance":60,"strokeStyle":"#3a9862","draw":false,"lineWidth":1,"opacity":0.5},
+
+            "numParticles":
+                350
+}
+
+const config = JSON.parse(JSON.stringify(test));
+//console.log(config)// that's nice!

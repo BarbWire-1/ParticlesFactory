@@ -14,7 +14,6 @@
 
 //TODO add a helper function: getRatio (used several times)
 
-
 // TODO unify create and update in a draw
 // move helpers to an own utils.js to use wherever needed
 
@@ -117,28 +116,27 @@ export class ParticlesFactory {
 	#randomHex = () => {
 		let number = (Math.random() * 0xffffff) >> 0;
 		return '#' + number.toString(16).padStart(6, '0');
-    };
-
+	};
 
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
+		const { width, height } = this.#offscreenCanvas;
+		const size = this.particles?.size || 2;
 
-		while(count) {
-			const { width, height } = this.#offscreenCanvas;
-            let size = this.particles?.size || 2;
+		while (count) {
+			const adjustedFill = this.particles.randomFill
+				? this.#randomHex() // the particle gets an individual fill!
+				: this.particles.fillStyle;
 
-            const adjustedFill = this.particles.randomFill
-                ? this.#randomHex()// the particle gets an individual fill!
-                : this.particles.fillStyle;
-
-            const adjustedSize = size *
-                (this.particles.randomSize
-                    ? Math.max(0.2, Math.random())// the particle gets an individual size!
-                    : 1);
-            const { x, y } = {
-                x: Math.random() * (width - 2 * size) + size,
-                y: Math.random() * (height - 2 * size) + size
-            }
+			const adjustedSize =
+				size *
+				(this.particles.randomSize
+					? Math.max(0.2, Math.random()) // the particle gets an individual size!
+					: 1);
+			const { x, y } = {
+				x: Math.random() * (width - 2 * size) + size,
+				y: Math.random() * (height - 2 * size) + size,
+			};
 
 			this.#particles.push(
 				new Particle(
@@ -151,9 +149,9 @@ export class ParticlesFactory {
 					this.particles.shape,
 					this.particles.side
 				)
-            );
-            count--;
-        };
+			);
+			count--;
+		}
 	}
 
 	// get the calculated canvas diminsions and update particles coords accordingly
@@ -164,7 +162,6 @@ export class ParticlesFactory {
 		this.#setCanvasSize(width, height);
 
 		if (isResponsive /*&& isFullScreen*/) {
-
 			this.#updateParticleCoords(width, height, prevDimensions);
 		}
 	};
@@ -172,10 +169,9 @@ export class ParticlesFactory {
 	// get the canvas size depending on flags and device-dimensions
 	// need to use available(!) screen for mobiles
 	#calculateCanvasSize() {
-
 		const { innerWidth, innerHeight } = window;
-        const { availWidth, availHeight } = screen;
-        const isMobile = innerWidth < 750;
+		const { availWidth, availHeight } = screen;
+		const isMobile = innerWidth < 750;
 
 		const isFullScreen = this.main.isFullScreen;
 
@@ -279,17 +275,16 @@ export class ParticlesFactory {
 			const particle = this.#particles[i];
 			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
 
-			((this.lines.draw && +this.lines.connectDistance) || collision)&&
-                this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
+			((this.lines.draw && +this.lines.connectDistance) || collision) &&
+				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 
 			if (drawParticles) {
 				let adjustedFillStyle = fillStyle; // default
 
 				if (noFill) {
-                    adjustedFillStyle = 'transparent';
-
+					adjustedFillStyle = 'transparent';
 				} else if (randomFill) {
-					adjustedFillStyle = particle.fillStyle;// use the individual ly assigned fill
+					adjustedFillStyle = particle.fillStyle; // use the individual ly assigned fill
 				}
 
 				particle.drawParticle(
@@ -299,7 +294,6 @@ export class ParticlesFactory {
 					randomSize ? particle.size : size,
 					shape,
 					strokeStyle
-
 				);
 			}
 		}
