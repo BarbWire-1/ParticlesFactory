@@ -50,7 +50,7 @@ export class Particle {
 		ctx.fill();
 	}
 
-	drawPolygon(ctx, size, sides, rotate, squeeze, shape) {
+	drawPolygon(ctx, size, sides, rotate, squeeze) {
 		const angle = (Math.PI * 2) / sides;
 		const polygonSize = size / 2; // radius
 
@@ -90,7 +90,7 @@ export class Particle {
 	}
 
 	particlesCollision(particle, otherParticle, distance) {
-		if (Math.abs(distance) < this.size) {
+		if (Math.abs(distance) < (particle.size + otherParticle.size) / 2) {
 			[particle, otherParticle].forEach((p) => {
 				p.xSpeed *= -1.001;
 				p.ySpeed *= -1.001;

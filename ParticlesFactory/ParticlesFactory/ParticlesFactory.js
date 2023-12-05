@@ -45,6 +45,7 @@ export class ParticlesFactory {
 				sides: undefined,
 				fillStyle: '#ff0000',
 				randomFill: true,
+				noFill: false,
 				stroke: true,
 				size: 2,
 				randomSize: true,
@@ -233,10 +234,13 @@ export class ParticlesFactory {
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
 		const len = this.main.numParticles;
+
 		const {
 			draw: drawParticles,
 			collision,
 			randomFill,
+
+			noFill,
 			fillStyle,
 			stroke,
 			opacity,
@@ -264,15 +268,22 @@ export class ParticlesFactory {
 			if ((this.lines.draw && +this.lines.connectDistance) || collision)
 				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 			if (drawParticles) {
+				let adjustedFillStyle = fillStyle; // Default fillStyle
+
+                if (noFill) {
+
+                    adjustedFillStyle = 'transparent';
+
+                } else if (randomFill) {
+                    
+					adjustedFillStyle = particle.fillStyle;
+				}
+
 				particle.drawParticle(
 					this.#offscreenCtx,
-					randomFill
-						? particle.fillStyle // style individually!
-						: fillStyle,
+					adjustedFillStyle,
 					opacity,
-					randomSize
-						? particle.size // size individually!
-						: size,
+					randomSize ? particle.size : size,
 					shape,
 					strokeStyle
 					//this.particles.sides
@@ -405,7 +416,7 @@ export class ParticlesFactory {
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
-		link.download = 'particles-factory-config.json'; 
+		link.download = 'particles-factory-config.json';
 		link.click();
 	}
 }

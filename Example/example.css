@@ -30,7 +30,7 @@ body {
      /*right: 0;*/
      width: 200px;
      height: 100%;
-     background-color: #ffffff4d; /* Transparent white */
+     background-color: #312b2ba5; /* Transparent white */
      transition: right 0.3s ease;
      margin-left: 0px;
      /*overflow: hidden;*/
@@ -237,4 +237,26 @@ label {
 .controlPanelContent h3 + .inputContainer.collapsed {
     display: flex;
     flex-direction: column
+}
+
+input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #8f8679;
+
+    color: white;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 2px black;
+    outline: none;
+     box-shadow: 2px 2px 2px black;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: inner-spin-button;
+  opacity: 1;
+}
+hr {
+    border: none;
+    height: 2px;
+    background-color: #8f8679;
 }

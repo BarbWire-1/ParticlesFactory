@@ -37,6 +37,8 @@ const proxy = particlesProxy(myParticles);
 //proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
 proxy.particles.randomFill = false
 proxy.particles.fillStyle = '#565656';
+
+//proxy.particles.fillStyle = 'transparent';
 //proxy.lines.strokeStyle = '#8F5219';
 // proxy.particles.size = 5;// ok
 // proxy.particles.draw = false;// ok

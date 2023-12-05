@@ -89,6 +89,8 @@
                         <label for="particlesStrokeFlag">Draw Stroke</label>
                         <input id="particlesStrokeFlag" data-attribute="particles-particles.stroke" type="checkbox"
                             checked><br>
+                            <label for="particlesTransparency">No Fill</label>
+                            <input id="particlesTransparency" data-attribute="particles-particles.noFill" type="checkbox"><br>
 
 
 
@@ -100,7 +102,7 @@
                         <input id="particlesRandomSize" data-attribute="particles-particles.randomSize" type="checkbox"
                             checked><br>
 
-                        <label for="particlesRandomColor">Random Color</label>
+                        <label for="particlesRandomColor">Random Fill</label>
                         <input id="particlesRandomColor" data-attribute="particles-particles.randomFill" type="checkbox"
                             checked>
 
@@ -125,7 +127,7 @@
 
                     <label for="linesOpacity">Lines Opacity:</label>
                     <input id="linesOpacity" data-attribute="particles-lines.opacity" type="number" min="0" max="1"
-                        step="0.5" value="1">
+                        step="0.05" value="0.5">
 
                     <div class="checkbox-container">
                         <label for="withLinesFlag">Draw Lines</label>
