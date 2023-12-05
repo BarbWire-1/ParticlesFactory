@@ -151,7 +151,7 @@ export class ParticlesFactory {
 		this.#setCanvasSize(width, height);
 
 		if (isResponsive /*&& isFullScreen*/) {
-		
+
 			this.#updateParticleCoords(width, height, prevDimensions);
 		}
 	};
@@ -159,9 +159,11 @@ export class ParticlesFactory {
 	// get the canvas size depending on flags and device-dimensions
 	// need to use available(!) screen for mobiles
 	#calculateCanvasSize() {
-		const isMobile = window.innerWidth < 750;
+
 		const { innerWidth, innerHeight } = window;
-		const { availWidth, availHeight } = screen;
+        const { availWidth, availHeight } = screen;
+        const isMobile = innerWidth < 750;
+        
 		const isFullScreen = this.main.isFullScreen;
 
 		const screenWidth = isMobile ? availWidth : innerWidth;
