@@ -346,17 +346,73 @@ export class ParticlesFactory {
         console.log(this.particles); // Check the entire 'particles' object
         console.log(this.particles.propertyName); // Access specific properties within 'particles'
     }
-    getStatus() {
+    getStatus1() {
 
-        console.log(this.main.numParticles)
+        console.log(this.main.numParticles)// logs the updated value
         return {
-            main: {
-                numParticles: this.main.numParticles
 
-            },
-            particles: this.particles,
-            lines: this.lines,
+                "numParticles": `${this.main.numParticles}`
 
         }
+    }
+
+    async getStatusAndSaveToFile() {
+        const logs = []; // Variable to capture console.log output
+
+        // Override console.log to capture the output
+        const originalConsoleLog = console.log;
+        console.log = function (...args) {
+            logs.push(args.join(' ')); // Push the log content to the logs array
+            originalConsoleLog.apply(console, args); // Preserve the original console.log behavior
+        };
+
+        // Trigger the log you want to capture
+        console.log('Updated numParticles:', this.main.numParticles);
+
+        // Restore the original console.log
+        console.log = originalConsoleLog;
+
+        // Convert the logs to text
+        const logsText = logs.join('\n');
+
+        // Example: save as a text file
+        const blob = new Blob([logsText], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        // Create a link and simulate a click to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'console_logs.txt'; // Set the filename
+        link.click();
+    }
+
+
+    async getAllPropertiesAndSaveToFile() {
+        // Get all properties (excluding methods) of the current instance
+        const properties = Object.keys(this).filter(key => typeof this[key] !== 'function' && this[key] !== this.canvasEl);
+
+        const propertyValues = properties.map(key => {
+            const value = this[key];
+            const obj = `
+            ${JSON.stringify(key)}:
+                ${JSON.stringify(value)
+        }`;
+            // string representation of the property and its value
+            return obj
+            });
+
+        // convert to formatted string
+        const propertiesText =
+        `{
+            ${propertyValues.join(', \n')}
+    }`;
+
+        // BLOB
+        const blob = new Blob([propertiesText], { type: 'JSON' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'all_properties.json'; // Set the filename
+        link.click();
     }
 }
