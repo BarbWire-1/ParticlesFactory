@@ -52,23 +52,23 @@ export class Particle {
 
 	drawPolygon(ctx, size, sides, rotate, squeeze) {
 		const angle = (Math.PI * 2) / sides;
-		const polygonSize = size / 2; // radius
+		const radius = size / 2;
 
 		ctx.beginPath();
 		ctx.moveTo(
-			this.x + polygonSize * Math.cos(rotate),
-			this.y + polygonSize * Math.sin(rotate * squeeze)
+			this.x + radius * Math.cos(rotate),
+			this.y + radius * Math.sin(rotate * squeeze)
 		);
 
 		for (let i = 1; i <= sides; i++) {
 			ctx.lineTo(
-				this.x + polygonSize * Math.cos(angle * i + rotate),
-				this.y + polygonSize * Math.sin(angle * i + rotate) * squeeze
+				this.x + radius * Math.cos(angle * i + rotate),
+				this.y + radius * Math.sin(angle * i + rotate) * squeeze
 			);
 		}
 
-		ctx.closePath(); // Close the path
-		ctx.fill(); // Fill the polygon
+		ctx.closePath();
+		ctx.fill();
 	}
 
 	// flag - particle drawn or not

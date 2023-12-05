@@ -151,7 +151,7 @@ export class ParticlesFactory {
 		this.#setCanvasSize(width, height);
 
 		if (isResponsive /*&& isFullScreen*/) {
-			// TODO decide whether to check for fullScreen here to
+		
 			this.#updateParticleCoords(width, height, prevDimensions);
 		}
 	};
@@ -270,12 +270,9 @@ export class ParticlesFactory {
 			if (drawParticles) {
 				let adjustedFillStyle = fillStyle; // Default fillStyle
 
-                if (noFill) {
-
-                    adjustedFillStyle = 'transparent';
-
-                } else if (randomFill) {
-                    
+				if (noFill) {
+					adjustedFillStyle = 'transparent';
+				} else if (randomFill) {
 					adjustedFillStyle = particle.fillStyle;
 				}
 
