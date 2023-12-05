@@ -13,6 +13,9 @@
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
 //TODO add a helper function: getRatio (used several times)
+
+
+// TODO unify create and update in a draw
 // move helpers to an own utils.js to use wherever needed
 
 import { Particle } from './Particle.js';
@@ -116,7 +119,7 @@ export class ParticlesFactory {
 		return '#' + number.toString(16).padStart(6, '0');
     };
 
-    
+
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
 
@@ -251,7 +254,6 @@ export class ParticlesFactory {
 			draw: drawParticles,
 			collision,
 			randomFill,
-
 			noFill,
 			fillStyle,
 			stroke,
