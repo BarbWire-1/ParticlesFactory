@@ -5,7 +5,7 @@ const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 // path and parent as parameters to have access through all levels
 export const particlesProxy = (target, path = '', parent = target) => {
-    
+
 	const actions = {
 		'main.numParticles': (value) => parent.updateNumParticles(value),
 		'main.isFullScreen': () => parent.getCanvasSize(),
@@ -34,13 +34,18 @@ export const particlesProxy = (target, path = '', parent = target) => {
 				actionCallback(value); // call corresponding action callback if it exists
 			}
 
-			return true;
+            proxies.set(parent, proxy); // Update the synchronized data in the proxies map
+
+            return true;
 		},
 	};
 
 	const proxy = new Proxy(target, handler);
 	proxies.set(target, proxy); // store newly created proxy in proxies
-	return proxy;
+    return {
+        proxy,
+        getCurrentState: () => proxies.get(target) // Retrieve synchronized data from the proxies map;
+    };
 };
 
 function bindInputElement(path, value) {

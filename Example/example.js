@@ -96,6 +96,7 @@ function downloadOwnPropertiesAsJSON(obj) {
     const blob = new Blob([ jsonContent ], { type: 'application/json' });
 
     downloadButton.addEventListener('click', function () {
+        console.log(myParticles.readProperties());
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = "ParticlesProperties.json";
@@ -106,5 +107,5 @@ function downloadOwnPropertiesAsJSON(obj) {
 
 }
 
-const ownPropertiesJSON = getOwnPropertiesAsJSON(myParticles);
-downloadOwnPropertiesAsJSON(ownPropertiesJSON);
+const ownPropertiesJSON = getOwnPropertiesAsJSON(proxy);
+downloadOwnPropertiesAsJSON(myParticles.getStatus());
