@@ -12,6 +12,10 @@
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
+
+//TODO add a helper function: getRatio (used several times)
+// move helpers to an own utils.js to use wherever needed
+
 import { Particle } from './Particle.js';
 
 export class ParticlesFactory {
