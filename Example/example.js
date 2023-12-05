@@ -20,7 +20,7 @@ const options = {
 		isResponsive: true, // whether to recalculate x,y of particles on resize
 	},
     particles: { fillStyle: '#0000ff', opacity: .7, size: 50, draw: true, collision: false, shape: 'circle' }, // optional - with defaults if only "particles"
-	lines: { connectDistance: 60, strokeStyle: '#ffff', opacity: 0.5, lineWidth: 1, draw: true }, // optional - with defaults if only "lines"
+	lines: { connectDistance: 60, strokeStyle: '#ff0000', opacity: 0.5, lineWidth: 1, draw: true }, // optional - with defaults if only "lines"
 };
 
 const myParticles = new ParticlesFactory(options);
@@ -78,5 +78,3 @@ downloadButton.addEventListener('click', () => {
     //myParticles.getStatusAndSaveToFile();
     myParticles.savePropsStatus2File()
 });
-
-

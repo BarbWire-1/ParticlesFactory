@@ -1,82 +1,80 @@
 // gets the canvas passed in calling methods from the consuming class
 //TODO pass canvas as arg where needed instead in constructor?
 export class Particle {
-    constructor (canvas, x, y, size, speed, fillStyle) {
-
+	constructor(canvas, x, y, size, speed, fillStyle) {
 		this.canvas = canvas;
 		this.x = x;
 		this.y = y;
 		this.size = size;
-        this.speed = speed;
-        this.fillStyle = fillStyle;
-        //this.type = type;
+		this.speed = speed;
+		this.fillStyle = fillStyle;
+		//this.type = type;
 
 		this.updateSpeed(speed);
 	}
 
-    drawParticle(ctx, fillColor, opacity, size, shape, strokeStyle) {
-        strokeStyle && (ctx.strokeStyle = strokeStyle);// set strokeStyle if stroke
-        ctx.fillStyle = fillColor //|| this.fillStyle;
-        ctx.globalAlpha = opacity;
+	drawParticle(ctx, fillColor, opacity, size, shape, strokeStyle) {
+		strokeStyle && (ctx.strokeStyle = strokeStyle); // set strokeStyle if stroke
+		ctx.fillStyle = fillColor; //|| this.fillStyle;
+		ctx.globalAlpha = opacity;
 
-        switch (shape) {
-            case 'circle':
-                this.drawCircle(ctx, size);
-                break;
-            case 'square':
-                this.drawPolygon(ctx, size, 4, -Math.PI / 4, 1, 'square');
-                break;
-            case 'rhombus':
-                this.drawPolygon(ctx, size, 4, 0, 2 / 3, 'rhombus');
-                break;
-            case 'hexagon':
-                this.drawPolygon(ctx, size, 6, 0, 1, 'hexagon');
-                break;
-            case 'triangle':
-                this.drawPolygon(ctx, size, 3, -Math.PI / 2, 1, 'triangle');
-                break;
-            default:
-                break;
-        }
+		switch (shape) {
+			case 'circle':
+				this.drawCircle(ctx, size);
+				break;
+			case 'square':
+				this.drawPolygon(ctx, size, 4, -Math.PI / 4, 1, 'square');
+				break;
+			case 'rhombus':
+				this.drawPolygon(ctx, size, 4, 0, 2 / 3, 'rhombus');
+				break;
+			case 'hexagon':
+				this.drawPolygon(ctx, size, 6, 0, 1, 'hexagon');
+				break;
+			case 'triangle':
+				this.drawPolygon(ctx, size, 3, -Math.PI / 2, 1, 'triangle');
+				break;
+			default:
+				break;
+		}
 
-        if (strokeStyle) {
-            ctx.strokeStyle = strokeStyle;
-            ctx.stroke();
-        }
-    }
+		if (strokeStyle) {
+			ctx.strokeStyle = strokeStyle;
+			ctx.stroke();
+		}
+	}
 
-    drawCircle(ctx, size) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
-        ctx.fill();
-    }
+	drawCircle(ctx, size) {
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
+		ctx.fill();
+	}
 
-    drawPolygon(ctx, size, sides, rotate, squeeze, shape) {
-        const angle = (Math.PI * 2) / sides;
-        const polygonSize = size / 2; // radius
+	drawPolygon(ctx, size, sides, rotate, squeeze, shape) {
+		const angle = (Math.PI * 2) / sides;
+		const polygonSize = size / 2; // radius
 
-        ctx.beginPath();
-        ctx.moveTo(
-            this.x + polygonSize * Math.cos(rotate),
-            this.y + polygonSize * Math.sin(rotate * squeeze)
-        );
+		ctx.beginPath();
+		ctx.moveTo(
+			this.x + polygonSize * Math.cos(rotate),
+			this.y + polygonSize * Math.sin(rotate * squeeze)
+		);
 
-        for (let i = 1; i <= sides; i++) {
-            ctx.lineTo(
-                this.x + polygonSize * Math.cos(angle * i + rotate),
-                this.y + polygonSize * Math.sin(angle * i + rotate) * squeeze
-            );
-        }
+		for (let i = 1; i <= sides; i++) {
+			ctx.lineTo(
+				this.x + polygonSize * Math.cos(angle * i + rotate),
+				this.y + polygonSize * Math.sin(angle * i + rotate) * squeeze
+			);
+		}
 
-        ctx.closePath(); // Close the path
-        ctx.fill(); // Fill the polygon
-    }
-
+		ctx.closePath(); // Close the path
+		ctx.fill(); // Fill the polygon
+	}
 
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {
 		let { x, y, size } = this;
-        const { width, height } = this.canvas;
+		const { width, height } = this.canvas;
 
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
 		drawParticles ? (size /= 2) : (size = 0);

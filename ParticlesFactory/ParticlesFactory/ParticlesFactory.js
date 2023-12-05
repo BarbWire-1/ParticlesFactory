@@ -12,7 +12,6 @@
 
 // private methods don't get inherited to child-classes - so that idea doesn't work :(
 
-
 //TODO add a helper function: getRatio (used several times)
 // move helpers to an own utils.js to use wherever needed
 
@@ -45,8 +44,8 @@ export class ParticlesFactory {
 				shape: 'circle',
 				sides: undefined,
 				fillStyle: '#ff0000',
-                randomFill: true,
-                stroke: true,
+				randomFill: true,
+				stroke: true,
 				size: 2,
 				randomSize: true,
 				draw: true,
@@ -160,18 +159,15 @@ export class ParticlesFactory {
 	// need to use available(!) screen for mobiles
 	#calculateCanvasSize() {
 		const isMobile = window.innerWidth < 750;
-        const { innerWidth, innerHeight } = window;
-        const { availWidth, availHeight } = screen;
-        const isFullScreen = this.main.isFullScreen;
-
+		const { innerWidth, innerHeight } = window;
+		const { availWidth, availHeight } = screen;
+		const isFullScreen = this.main.isFullScreen;
 
 		const screenWidth = isMobile ? availWidth : innerWidth;
 		const screenHeight = isMobile ? availHeight : innerHeight;
 
 		const width = isFullScreen ? screenWidth : this.canvas.width;
-		const height = isFullScreen
-			? screenHeight
-			: this.canvas.height;
+		const height = isFullScreen ? screenHeight : this.canvas.height;
 
 		const prevDimensions = {
 			width: this.canvasEl.width,
@@ -197,12 +193,12 @@ export class ParticlesFactory {
 		});
 	}
 
-//     getRatio(attribute, newValue, oldValue) {
-//         const ratio = newValue / oldValue;
-//         attribute *= ratio;
-//         oldValue = newValue;
-//
-//     }
+	//     getRatio(attribute, newValue, oldValue) {
+	//         const ratio = newValue / oldValue;
+	//         attribute *= ratio;
+	//         oldValue = newValue;
+	//
+	//     }
 	// update randomSize relative on each particle IF randomSize
 	// in handleInterface... handled currently
 	changeBaseSize(newBaseSize) {
@@ -236,10 +232,20 @@ export class ParticlesFactory {
 	// drawing
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
-        const len = this.main.numParticles;
-        const { draw: drawParticles, collision, randomFill, fillStyle, stroke, opacity, randomSize, size, shape } = this.particles
-        //console.log(stroke)
-        let strokeStyle = stroke ? this.lines.strokeStyle : undefined;
+		const len = this.main.numParticles;
+		const {
+			draw: drawParticles,
+			collision,
+			randomFill,
+			fillStyle,
+			stroke,
+			opacity,
+			randomSize,
+			size,
+			shape,
+		} = this.particles;
+		//console.log(stroke)
+		let strokeStyle = stroke ? this.lines.strokeStyle : undefined;
 
 		// draw background rectangle
 		this.#offscreenCtx.fillStyle = this.main.fillStyle;
@@ -251,25 +257,24 @@ export class ParticlesFactory {
 			this.canvasEl.height
 		);
 
-        for (let i = 0; i < len; i++) {
+		for (let i = 0; i < len; i++) {
+			const particle = this.#particles[i];
+			particle.updateCoords(drawParticles); // boolean/flag - used for translating IF drawn
 
-            const particle = this.#particles[ i ];
-            particle.updateCoords(drawParticles); // boolean/flag - used for translating IF drawn
-
-			if ((this.lines.draw && +this.lines.connectDistance)|| collision)
+			if ((this.lines.draw && +this.lines.connectDistance) || collision)
 				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 			if (drawParticles) {
-                particle.drawParticle(
-                    this.#offscreenCtx,
-                    randomFill
-                        ? particle.fillStyle// style individually!
-                        : fillStyle,
-                    opacity,
-                    randomSize
-                        ? particle.size// size individually!
-                        : size,
-                    shape,
-                    strokeStyle
+				particle.drawParticle(
+					this.#offscreenCtx,
+					randomFill
+						? particle.fillStyle // style individually!
+						: fillStyle,
+					opacity,
+					randomSize
+						? particle.size // size individually!
+						: size,
+					shape,
+					strokeStyle
 					//this.particles.sides
 				);
 			}
@@ -279,8 +284,8 @@ export class ParticlesFactory {
 
 	// inner loop to get otherParticle - distance
 	// check for flags and recalculate/draw in case
-    #handleLinesAndCollision(particle, startIndex, len) {
-        //console.log(this.lines.connectDistance)
+	#handleLinesAndCollision(particle, startIndex, len) {
+		//console.log(this.lines.connectDistance)
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
@@ -373,13 +378,9 @@ export class ParticlesFactory {
 		}
 	}
 
-
-
-
-
-// ONLY IN EXAMPLE TO GET CURRENT STATE FOR CONFIG
+	// ONLY IN EXAMPLE TO GET CURRENT STATE FOR CONFIG
 	async savePropsStatus2File() {
-		// Get all properties (excluding methods) of the current instance
+		// Get all properties (excluding methods and canvasEl) of the current instance
 		const properties = Object.keys(this).filter(
 			(key) =>
 				typeof this[key] !== 'function' && this[key] !== this.canvasEl
@@ -404,7 +405,7 @@ export class ParticlesFactory {
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
-		link.download = 'particles-factory-config.json'; // Set the filename
+		link.download = 'particles-factory-config.json'; 
 		link.click();
 	}
 }
