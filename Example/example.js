@@ -74,5 +74,5 @@ document.addEventListener('DOMContentLoaded', function () {
 downloadButton.addEventListener('click', () => {
     // Assuming myParticles is an instance of ParticlesFactory
     //myParticles.getStatusAndSaveToFile();
-    myParticles.getAllPropertiesAndSaveToFile()
+    myParticles.savePropsStatus2File()
 });

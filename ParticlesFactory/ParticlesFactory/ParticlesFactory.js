@@ -387,7 +387,7 @@ export class ParticlesFactory {
     }
 
 
-    async getAllPropertiesAndSaveToFile() {
+    async savePropsStatus2File() {
         // Get all properties (excluding methods) of the current instance
         const properties = Object.keys(this).filter(key => typeof this[key] !== 'function' && this[key] !== this.canvasEl);
 
