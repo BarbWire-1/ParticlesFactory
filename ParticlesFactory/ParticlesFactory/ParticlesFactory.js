@@ -45,7 +45,8 @@ export class ParticlesFactory {
 				shape: 'circle',
 				sides: undefined,
 				fillStyle: '#ff0000',
-				randomFill: true,
+                randomFill: true,
+                stroke: true,
 				size: 2,
 				randomSize: true,
 				draw: true,
@@ -236,7 +237,9 @@ export class ParticlesFactory {
 	// not nice, but keeps all operations on particles in one loop
 	#updateCanvas() {
         const len = this.main.numParticles;
-        const {draw: drawParticles, collision, randomFill, fillStyle, opacity, randomSize, size, shape} = this.particles
+        const { draw: drawParticles, collision, randomFill, fillStyle, stroke, opacity, randomSize, size, shape } = this.particles
+        //console.log(stroke)
+        let strokeStyle = stroke ? this.lines.strokeStyle : undefined;
 
 		// draw background rectangle
 		this.#offscreenCtx.fillStyle = this.main.fillStyle;
@@ -247,28 +250,26 @@ export class ParticlesFactory {
 			this.canvasEl.width,
 			this.canvasEl.height
 		);
-		//console.log(this.particles.type)
-		// handle all behaviour of particle.
-		// get x,y
-		// optional draw particle and/or draw lines
+
         for (let i = 0; i < len; i++) {
 
             const particle = this.#particles[ i ];
             particle.updateCoords(drawParticles); // boolean/flag - used for translating IF drawn
 
-			if (this.lines.draw || collision)
+			if ((this.lines.draw && +this.lines.connectDistance)|| collision)
 				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 			if (drawParticles) {
-				particle.drawParticle(
-					this.#offscreenCtx,
-					randomFill
-						? particle.fillStyle// style individually!
-						: fillStyle,
-					opacity,
-					randomSize
-						? particle.size// size individually!
-						: size,
-					shape,
+                particle.drawParticle(
+                    this.#offscreenCtx,
+                    randomFill
+                        ? particle.fillStyle// style individually!
+                        : fillStyle,
+                    opacity,
+                    randomSize
+                        ? particle.size// size individually!
+                        : size,
+                    shape,
+                    strokeStyle
 					//this.particles.sides
 				);
 			}
@@ -278,7 +279,8 @@ export class ParticlesFactory {
 
 	// inner loop to get otherParticle - distance
 	// check for flags and recalculate/draw in case
-	#handleLinesAndCollision(particle, startIndex, len) {
+    #handleLinesAndCollision(particle, startIndex, len) {
+        //console.log(this.lines.connectDistance)
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
@@ -371,50 +373,11 @@ export class ParticlesFactory {
 		}
 	}
 
-	// TESTING
-	// Example: Changing size and color of a specific particle at index 'index'
-	changeParticleSize(index, newSize) {
-		if (index >= 0 && index < this.#particles.length) {
-			this.#particles[index].size = newSize;
-		}
-	}
 
-	changeParticleColor(index, newColor) {
-		if (index >= 0 && index < this.#particles.length) {
-			this.#particles[index].fillStyle = newColor;
-		}
-	}
 
-	async getStatusAndSaveToFile() {
-		const logs = []; // Variable to capture console.log output
 
-		// Override console.log to capture the output
-		const originalConsoleLog = console.log;
-		console.log = function (...args) {
-			logs.push(args.join(' ')); // Push the log content to the logs array
-			originalConsoleLog.apply(console, args); // Preserve the original console.log behavior
-		};
 
-		// Trigger the log you want to capture
-		console.log('Updated numParticles:', this.main.numParticles);
-
-		// Restore the original console.log
-		console.log = originalConsoleLog;
-
-		// Convert the logs to text
-		const logsText = logs.join('\n');
-
-		// Example: save as a text file
-		const blob = new Blob([logsText], { type: 'text/plain' });
-		const url = URL.createObjectURL(blob);
-
-		// Create a link and simulate a click to trigger the download
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = 'console_logs.txt'; // Set the filename
-		link.click();
-	}
-
+// ONLY IN EXAMPLE TO GET CURRENT STATE FOR CONFIG
 	async savePropsStatus2File() {
 		// Get all properties (excluding methods) of the current instance
 		const properties = Object.keys(this).filter(

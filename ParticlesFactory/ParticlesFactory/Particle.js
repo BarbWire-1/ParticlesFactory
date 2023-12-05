@@ -14,51 +14,63 @@ export class Particle {
 		this.updateSpeed(speed);
 	}
 
-    drawParticle(ctx, fillColor, opacity, size, shape, sides) {
-        ctx.fillStyle = fillColor || this.fillStyle;
+    drawParticle(ctx, fillColor, opacity, size, shape, strokeStyle) {
+        strokeStyle && (ctx.strokeStyle = strokeStyle);// set strokeStyle if stroke
+        ctx.fillStyle = fillColor //|| this.fillStyle;
         ctx.globalAlpha = opacity;
 
-        if (shape === 'circle') {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
-            ctx.fill();
+        switch (shape) {
+            case 'circle':
+                this.drawCircle(ctx, size);
+                break;
+            case 'square':
+                this.drawPolygon(ctx, size, 4, -Math.PI / 4, 1, 'square');
+                break;
+            case 'rhombus':
+                this.drawPolygon(ctx, size, 4, 0, 2 / 3, 'rhombus');
+                break;
+            case 'hexagon':
+                this.drawPolygon(ctx, size, 6, 0, 1, 'hexagon');
+                break;
+            case 'triangle':
+                this.drawPolygon(ctx, size, 3, -Math.PI / 2, 1, 'triangle');
+                break;
+            default:
+                break;
+        }
 
-        } else if (shape === 'square') {
-            // Center the particle on point
-            let cx = this.x - size / 2;
-            let cy = this.y - size / 2;
-
-            ctx.fillRect(cx, cy, size, size);
-
-        } else if (shape === 'polygon' || shape === 'hexagon' || shape === "triangle") {
-
-            ctx.beginPath();
-            let rotate = 0;
-            if (shape === 'hexagon') sides = 6;
-            if (shape === 'triangle') {
-                sides = 3;
-                rotate = -Math.PI / 2; // rotate 90deg
-            }
-
-            const angle = (Math.PI * 2) / sides;
-            const polygonSize = size / 2;// radius
-
-            ctx.moveTo(
-                this.x + polygonSize * Math.cos(rotate),
-                this.y + polygonSize * Math.sin(rotate)
-            );
-            for (let i = 1; i <= sides; i++) {
-                ctx.lineTo(
-                    this.x + polygonSize * Math.cos(angle * i + rotate),
-                    this.y + polygonSize * Math.sin(angle * i + rotate)
-                );
-            }
-            ctx.closePath(); // Close the path
-            ctx.fill(); // Fill the polygon
-
+        if (strokeStyle) {
+            ctx.strokeStyle = strokeStyle;
+            ctx.stroke();
         }
     }
 
+    drawCircle(ctx, size) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    drawPolygon(ctx, size, sides, rotate, squeeze, shape) {
+        const angle = (Math.PI * 2) / sides;
+        const polygonSize = size / 2; // radius
+
+        ctx.beginPath();
+        ctx.moveTo(
+            this.x + polygonSize * Math.cos(rotate),
+            this.y + polygonSize * Math.sin(rotate * squeeze)
+        );
+
+        for (let i = 1; i <= sides; i++) {
+            ctx.lineTo(
+                this.x + polygonSize * Math.cos(angle * i + rotate),
+                this.y + polygonSize * Math.sin(angle * i + rotate) * squeeze
+            );
+        }
+
+        ctx.closePath(); // Close the path
+        ctx.fill(); // Fill the polygon
+    }
 
 
 	// flag - particle drawn or not
