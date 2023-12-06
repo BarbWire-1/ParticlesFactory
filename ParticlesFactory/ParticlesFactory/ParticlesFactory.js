@@ -25,8 +25,8 @@ export class ParticlesFactory {
 	#animationId;
 	#offscreenCanvas;
 	#offscreenCtx;
-    #originalBaseSize;
-    #throttledUpdate
+	#originalBaseSize;
+	#throttledUpdate;
 
 	constructor(options) {
 		const config = {
@@ -35,8 +35,8 @@ export class ParticlesFactory {
 				width: 500,
 				height: 500,
 			},
-            main: {
-                frameRate: 30,
+			main: {
+				frameRate: 30,
 				numParticles: 100,
 				speed: 0.2,
 				mouseDistance: 100,
@@ -85,9 +85,9 @@ export class ParticlesFactory {
 		}
 
 		this.#particles = []; // holding all active particles
-        this.#originalBaseSize = this.particles?.size || 2; // Store the original base size
+		this.#originalBaseSize = this.particles?.size || 2; // Store the original base size
 
-        this.#throttledUpdate = this.#throttle(this.#updateCanvas); // Throttle to custom frameRate
+		this.#throttledUpdate = this.#throttle(this.#updateCanvas); // Throttle to custom frameRate
 
 		// INITIALISATION
 		this.#setupCanvas();
@@ -113,7 +113,11 @@ export class ParticlesFactory {
 		});
 
 		// if (this.main.isFullScreen) {
-		window.addEventListener('resize', this.getCanvasSize.bind(this));
+		window.addEventListener('resize', () => {
+            this.getCanvasSize();
+            this.#updateCanvas();
+
+		});
 		//}
 	};
 	#randomHex = () => {
@@ -165,7 +169,8 @@ export class ParticlesFactory {
 
 		if (isResponsive /*&& isFullScreen*/) {
 			this.#updateParticleCoords(width, height, prevDimensions);
-		}
+        }
+
 	};
 
 	// get the canvas size depending on flags and device-dimensions
@@ -266,12 +271,11 @@ export class ParticlesFactory {
 
 		// draw background rectangle
 		ctx.fillStyle = this.main.fillStyle;
-        ctx.globalAlpha = 1;
+		ctx.globalAlpha = 1;
 
 		ctx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
 
-        this.#particles.forEach((particle, i) => {
-
+		this.#particles.forEach((particle, i) => {
 			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
 
 			((this.lines.draw && +this.lines.connectDistance) || collision) &&
@@ -299,10 +303,8 @@ export class ParticlesFactory {
 
 	// inner loop to get otherParticle - distance
 	// check for flags and recalculate/draw in case
-    #handleLinesAndCollision(particle, startIndex, len) {
-
-        for (let j = startIndex + 1; j < len; j++) {
-
+	#handleLinesAndCollision(particle, startIndex, len) {
+		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
@@ -316,7 +318,6 @@ export class ParticlesFactory {
 					otherParticle,
 					distance
 				);
-
 		}
 	}
 
@@ -324,8 +325,7 @@ export class ParticlesFactory {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-    #drawLine(ctx, particle, otherParticle, distance) {
-
+	#drawLine(ctx, particle, otherParticle, distance) {
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
 		// destructure used objects
@@ -357,8 +357,7 @@ export class ParticlesFactory {
 
 	// update instead of recreate by getting the difference old/new
 	// create and add or remove
-    setNumParticles(newValue) {
-
+	setNumParticles(newValue) {
 		const currentCount = this.#particles.length;
 		let difference = newValue - currentCount;
 
@@ -378,24 +377,27 @@ export class ParticlesFactory {
 		this.numParticles = this.#particles.length;
 	}
 
-    // ANIMATION
-    // Throttle function to control the execution rate of a function
-  #throttle(func) {
-      let inThrottle;
+	// ANIMATION
+	// Throttle function to control the execution rate of a function
+	#throttle(func) {
+		let inThrottle;
 
-    return function () {
-      const context = this;
-        if (!inThrottle) {
-           //console.log(inThrottle, this.main.frameRate)
-        func.apply(context, arguments);
-        inThrottle = true;
-        setTimeout(() => (inThrottle = false), 1000/this.main.frameRate);
-      }
-    };
-  }
+		return function () {
+			const context = this;
+			if (!inThrottle) {
+				//console.log(inThrottle, this.main.frameRate)
+				func.apply(context, arguments);
+				inThrottle = true;
+				setTimeout(
+					() => (inThrottle = false),
+					1000 / this.main.frameRate
+				);
+			}
+		};
+	}
 	#startAnimation() {
-        //this.#updateCanvas();
-        this.#throttledUpdate();
+		//this.#updateCanvas();
+		this.#throttledUpdate();
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
 		);
@@ -445,7 +447,6 @@ export class ParticlesFactory {
 		link.click();
 	}
 }
-
 
 // // test throttling on 100ms!!!!
 // function throttle(func, limit) {
