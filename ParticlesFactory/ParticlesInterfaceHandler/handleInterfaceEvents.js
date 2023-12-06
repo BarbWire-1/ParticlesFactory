@@ -17,7 +17,7 @@ export function handleInterfaceEvents(el, containerId) {
 		} else {
 			value = +value || value;
 		}
-
+        
 		// attributes which require recalculations
 		const updates = {
 			numParticles: () => el.setNumParticles(value),
@@ -34,7 +34,8 @@ export function handleInterfaceEvents(el, containerId) {
 			if (!el[path[0]]) return; // IF particles or lines are not defined eg
 
 			el[path[0]][path[1]] = value;
-			if (updates[path[1]]) updates[path[1]]();
+            if (updates[ path[ 1 ] ]) updates[ path[ 1 ] ]();
+             //console.log(path[1],value)
 		} else {
 			el[property] = value;
 		}
@@ -75,7 +76,7 @@ export function handleInterfaceEvents(el, containerId) {
 			togglePanel: () => container.classList.toggle('open'),
 			toggleAnimation: () => el.toggleAnimation(),
 			toggleVisibility: () =>
-				//e.target.nextElementSibling.classList.toggle('collapsed'),// this would allow opening/closing ALL
+				//e.target.nextElementSibling.classList.toggle('visible'),// this would allow opening/closing ALL
 				toggleVisibility(e),
 			// add more callbacks here if needed
 		};

@@ -13,7 +13,8 @@ const options = {
 		// fillStyle: '#000',
 	},
 	main: {
-		numParticles: 450,
+        numParticles: 450,
+        frameRate: 30,
 		speed: 0.2,
 		mouseDistance: 100,
 		isFullScreen: true,
@@ -23,7 +24,30 @@ const options = {
 	lines: { connectDistance: 60, strokeStyle: '#ff0000', opacity: 0.5, lineWidth: 1, draw: true }, // optional - with defaults if only "lines"
 };
 
+// for testing frame throttling
+const fullstuff = {
+
+            "canvas":
+                {"id":"my-particles","width":500,"height":500},
+
+            "main":
+                {"numParticles":45000,"speed":0.2,"mouseDistance":100,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
+
+            "particles":
+                {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":false,"size":50,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
+
+            "lines":
+                {"connectDistance":60,"strokeStyle":"#ff0000","draw":false,"lineWidth":1,"opacity":0.5},
+
+
+}
+
+
+
+
 const myParticles = new ParticlesFactory(options);
+// test object
+//const myParticles = new ParticlesFactory(JSON.parse(JSON.stringify(fullstuff)));
 
 handleInterfaceEvents(myParticles, 'controlPanelContainer');
 

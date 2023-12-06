@@ -25,7 +25,8 @@ export class ParticlesFactory {
 	#animationId;
 	#offscreenCanvas;
 	#offscreenCtx;
-	#originalBaseSize;
+    #originalBaseSize;
+    #throttledUpdate
 
 	constructor(options) {
 		const config = {
@@ -34,7 +35,8 @@ export class ParticlesFactory {
 				width: 500,
 				height: 500,
 			},
-			main: {
+            main: {
+                frameRate: 30,
 				numParticles: 100,
 				speed: 0.2,
 				mouseDistance: 100,
@@ -83,7 +85,9 @@ export class ParticlesFactory {
 		}
 
 		this.#particles = []; // holding all active particles
-		this.#originalBaseSize = this.particles?.size || 2; // Store the original base size
+        this.#originalBaseSize = this.particles?.size || 2; // Store the original base size
+
+        this.#throttledUpdate = this.#throttle(this.#updateCanvas); // Throttle to custom frameRate
 
 		// INITIALISATION
 		this.#setupCanvas();
@@ -354,7 +358,7 @@ export class ParticlesFactory {
 	// update instead of recreate by getting the difference old/new
 	// create and add or remove
     setNumParticles(newValue) {
-        
+
 		const currentCount = this.#particles.length;
 		let difference = newValue - currentCount;
 
@@ -374,10 +378,24 @@ export class ParticlesFactory {
 		this.numParticles = this.#particles.length;
 	}
 
-	// ANIMATION
+    // ANIMATION
+    // Throttle function to control the execution rate of a function
+  #throttle(func) {
+      let inThrottle;
+
+    return function () {
+      const context = this;
+        if (!inThrottle) {
+           //console.log(inThrottle, this.main.frameRate)
+        func.apply(context, arguments);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), 1000/this.main.frameRate);
+      }
+    };
+  }
 	#startAnimation() {
-		this.#updateCanvas();
-		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
+        //this.#updateCanvas();
+        this.#throttledUpdate();
 		this.#animationId = requestAnimationFrame(
 			this.#startAnimation.bind(this)
 		);
@@ -427,3 +445,27 @@ export class ParticlesFactory {
 		link.click();
 	}
 }
+
+
+// // test throttling on 100ms!!!!
+// function throttle(func, limit) {
+//   let inThrottle;
+//   return function (...args) {
+//     if (!inThrottle) {
+//       func.apply(this, args);
+//       inThrottle = true;
+//       setTimeout(() => {
+//         inThrottle = false;
+//       }, limit);
+//     }
+//   };
+// }
+//
+// // Example usage for updating particle positions
+// const updateParticlePositions = throttle(() => {
+//   // Expensive operation to update particle positions
+//   // ...
+// }, 100); // Adjust limit (in milliseconds) as needed
+//
+// // Call updateParticlePositions whenever needed
+// updateParticlePositions();
