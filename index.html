@@ -27,15 +27,15 @@
                 <h3 >▶ main</h3>
                 <div class="inputContainer" style="display: flex; flex-direction: column" ><!-- show on load -->
                     <label for="numParticles">Number of Particles:</label>
-                    <input id="numParticles" data-attribute="particles-main.numParticles" type="number" value="7000"
+                    <input id="numParticles" data-attribute="particles-main.numParticles" type="number" value="550"
                         min="50" max="40000" step="50">
 
                         <label for="frameRate">FrameRate:</label>
-                        <input id="frameRate" data-attribute="particles-main.frameRate" type="number" id="frameRate" step="1" value="21" min="1" max="120">
+                        <input id="frameRate" data-attribute="particles-main.frameRate" type="number" id="frameRate" step="1" value="17" min="1" max="120">
 
                     <label for="speed">Speed:</label>
                     <input id="speed" data-attribute="particles-main.speed" type="number" id="speed" step="0.1"
-                        value="2" min="0.1" max="5">
+                        value="0.7" min="0.1" max="5">
 
                     <label for="mouseReactive">Mouse Distance:</label>
                     <input id="mouseReactive" data-attribute="particles-main.mouseDistance" type="number" value="180"
@@ -60,7 +60,7 @@
                 <h3 data-action="particles-toggleVisibility">▶ particles</h3>
                 <div class="inputContainer">
                     <label for="particlesSize">Particles Size:</label>
-                    <input id="particlesSize" data-attribute="particles-particles.size" type="number" value="42" min="1"
+                    <input id="particlesSize" data-attribute="particles-particles.size" type="number" value="23" min="1"
                         max="100" step="1">
 
                     <label for="particlesOpacity">Particles Opacity:</label>
@@ -69,7 +69,7 @@
 
                     <label for="particlesFillStyle">Particles Color:</label>
                     <input id="particlesFillStyle" data-attribute="particles-particles.fillStyle" type="color"
-                        value='#0000ff'>
+                        value='#0033ff'>
 
 
 
@@ -93,7 +93,7 @@
                         <input id="particlesStrokeFlag" data-attribute="particles-particles.stroke" type="checkbox"
                             checked><br>
                             <label for="particlesTransparency">No Fill</label>
-                            <input id="particlesTransparency" data-attribute="particles-particles.noFill" type="checkbox" checked><br>
+                            <input id="particlesTransparency" data-attribute="particles-particles.noFill" type="checkbox" ><br>
 
 
 
@@ -106,8 +106,7 @@
                             checked><br>
 
                         <label for="particlesRandomColor">Random Fill</label>
-                        <input id="particlesRandomColor" data-attribute="particles-particles.randomFill" type="checkbox"
-                            checked>
+                        <input id="particlesRandomColor" data-attribute="particles-particles.randomFill" type="checkbox">
 
                     </div>
                 </div>
@@ -134,7 +133,7 @@
 
                     <div class="checkbox-container">
                         <label for="withLinesFlag">Draw Lines</label>
-                        <input id="withLinesFlag" data-attribute="particles-lines.draw" type="checkbox" >
+                        <input id="withLinesFlag" data-attribute="particles-lines.draw" type="checkbox" checked >
                     </div>
 
                 </div>

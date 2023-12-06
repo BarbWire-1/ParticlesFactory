@@ -32,13 +32,13 @@ const fullstuff =
         {"id":"my-particles","width":500,"height":500},
 
     "main":
-        {"frameRate":21,"numParticles":7000,"speed":2,"mouseDistance":180,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
+        {"frameRate":17,"numParticles":550,"speed":.7,"mouseDistance":180,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
 
     "particles":
-        {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":false,"size":42,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
+        {"shape":"circle","fillStyle":"#0033ff","randomFill":true,"noFill":false,"stroke":false,"size":23,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
 
     "lines":
-        {"connectDistance":60,"strokeStyle":"#79d1e6","draw":false,"lineWidth":1,"opacity":0.5},
+        {"connectDistance":60,"strokeStyle":"#79d1e6","draw":true,"lineWidth":1,"opacity":0.5},
 
 
 }
@@ -60,8 +60,8 @@ const proxy = particlesProxy(myParticles);
 //
 // proxy.lines.strokeStyle = "#ff0000"// ok
 //proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
-//proxy.particles.randomFill = false
-//proxy.particles.fillStyle = '#565656';
+proxy.particles.randomFill = false
+//myParticles.particles.fillStyle = '#0033ff';
 
 //proxy.particles.fillStyle = 'transparent';
 //proxy.lines.strokeStyle = '#8F5219';
