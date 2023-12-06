@@ -115,7 +115,7 @@ export class ParticlesFactory {
 		// if (this.main.isFullScreen) {
 		window.addEventListener('resize', () => {
             this.getCanvasSize();
-            this.#updateCanvas();
+            this.#updateCanvas();// call update to byPass throttling
 
 		});
 		//}
