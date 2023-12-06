@@ -44,7 +44,6 @@ export class ParticlesFactory {
 			},
 			particles: {
 				shape: 'circle',
-				sides: undefined,
 				fillStyle: '#ff0000',
 				randomFill: true,
 				noFill: false,
@@ -146,8 +145,7 @@ export class ParticlesFactory {
 					adjustedSize,
 					this.main.speed,
 					adjustedFill,
-					this.particles.shape,
-					this.particles.side
+					this.particles.shape
 				)
 			);
 			count--;
@@ -175,11 +173,11 @@ export class ParticlesFactory {
 
 		const isFullScreen = this.main.isFullScreen;
 
-		const screenWidth = isMobile ? availWidth : innerWidth;
-		const screenHeight = isMobile ? availHeight : innerHeight;
+		const sWidth = isMobile ? availWidth : innerWidth;
+		const sHeight = isMobile ? availHeight : innerHeight;
 
-		const width = isFullScreen ? screenWidth : this.canvas.width;
-		const height = isFullScreen ? screenHeight : this.canvas.height;
+		const width = isFullScreen ? sWidth : this.canvas.width;
+		const height = isFullScreen ? sHeight : this.canvas.height;
 
 		const prevDimensions = {
 			width: this.canvasEl.width,
@@ -271,21 +269,18 @@ export class ParticlesFactory {
 			this.canvasEl.height
 		);
 
-		for (let i = 0; i < len; i++) {
-			const particle = this.#particles[i];
+		this.#particles.forEach((particle, i) => {
 			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
 
 			((this.lines.draw && +this.lines.connectDistance) || collision) &&
 				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 
 			if (drawParticles) {
-				let adjustedFillStyle = fillStyle; // default
-
-				if (noFill) {
-					adjustedFillStyle = 'transparent';
-				} else if (randomFill) {
-					adjustedFillStyle = particle.fillStyle; // use the individual ly assigned fill
-				}
+				let adjustedFillStyle = noFill
+					? 'transparent'
+					: randomFill
+					? particle.fillStyle
+					: fillStyle; // default
 
 				particle.drawParticle(
 					this.#offscreenCtx,
@@ -296,28 +291,29 @@ export class ParticlesFactory {
 					strokeStyle
 				);
 			}
-		}
+		});
 		this.#renderOffscreenCanvas();
 	}
 
 	// inner loop to get otherParticle - distance
 	// check for flags and recalculate/draw in case
 	#handleLinesAndCollision(particle, startIndex, len) {
-		//console.log(this.lines.connectDistance)
 		for (let j = startIndex + 1; j < len; j++) {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-			this.particles?.collision &&
+			if (this.particles?.collision) {
 				particle.particlesCollision(particle, otherParticle, distance);
+			}
 
-			this.lines?.draw &&
+			if (this.lines?.draw) {
 				this.#drawLine(
 					this.#offscreenCtx,
 					particle,
 					otherParticle,
 					distance
 				);
+			}
 		}
 	}
 
@@ -330,12 +326,13 @@ export class ParticlesFactory {
 
 		// destructure used objects
 		const { strokeStyle, lineWidth, opacity, connectDistance } = this.lines;
-		const { x: x1, y: y1 } = particle;
-		const { x: x2, y: y2 } = otherParticle;
 		const isCloseEnough = distance <= connectDistance;
 
 		// set coords of connection -lines if in connectionDistance
 		if (isCloseEnough) {
+			const { x: x1, y: y1 } = particle;
+			const { x: x2, y: y2 } = otherParticle;
+
 			offCTX.beginPath();
 			offCTX.moveTo(x1, y1);
 			offCTX.lineTo(x2, y2);
@@ -365,10 +362,12 @@ export class ParticlesFactory {
 			: this.#removeParticles(currentCount, -difference);
 
 		this.main.numParticles = currentCount + difference;
-	}
+    }
+    
 	#addParticles(difference) {
 		this.#createParticles(difference);
-	}
+    }
+
 	#removeParticles(currentCount, difference) {
 		this.#particles.splice(currentCount - difference, difference);
 		this.numParticles = this.#particles.length;
