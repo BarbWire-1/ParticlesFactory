@@ -1,5 +1,6 @@
-// gets the canvas passed in calling methods from the consuming class
-//TODO pass canvas as arg where needed instead in constructor?
+// As drawing to an offscreenCanvas which is a private member of the  "factory"-instance,
+// the CONTEXT now gets passed as argument in called methods
+
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
 		this.canvas = canvas;
@@ -8,7 +9,7 @@ export class Particle {
 		this.size = size;
 		this.speed = speed;
 		this.fillStyle = fillStyle;
-		//this.type = type;
+
 
 		this.updateSpeed(speed);
 	}
@@ -127,7 +128,6 @@ export class Particle {
 		if (distance && distance < mouseDistance) {
 			dx /= distance;
 			dy /= distance;
-			// TODO remove moveAmount - go with px OR switch to using small int with higher miltilicator??
 			const moveAmount = 2;
 			this.x = x + dx * -moveAmount;
 			this.y = y + dy * -moveAmount;

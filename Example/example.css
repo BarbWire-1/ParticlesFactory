@@ -234,7 +234,7 @@ label {
 }
 
 /* Style to show elements when not collapsed */
-.controlPanelContent h3 + .inputContainer.collapsed {
+.controlPanelContent h3 + .inputContainer.visible {
     display: flex;
     flex-direction: column
 }

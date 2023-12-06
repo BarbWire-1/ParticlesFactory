@@ -21,10 +21,12 @@ export function handleInterfaceEvents(el, containerId) {
 		// attributes which require recalculations
 		const updates = {
 			numParticles: () => el.setNumParticles(value),
-            speed: () => el.setSpeed(),
-            //size:() => el.setParticlesSize(),
-            isFullScreen: () => el.getCanvasSize(),
-            size: () => { if (el.particles.randomSize) el.changeBaseSize(+value) }
+			speed: () => el.setSpeed(),
+			//size:() => el.setParticlesSize(),
+			isFullScreen: () => el.getCanvasSize(),
+			size: () => {
+				if (el.particles.randomSize) el.changeBaseSize(+value);
+			},
 		};
 
 		if (property.includes('.')) {
@@ -46,6 +48,24 @@ export function handleInterfaceEvents(el, containerId) {
 		return path;
 	}
 
+	// TODO not yet sure whether to go with this. UI looks more clean this way, but...
+	function toggleVisibility(e) {
+		const nextElement = e.target.nextElementSibling;
+		const isVisible = nextElement.classList.contains('visible');
+
+		// close any currently collapsed elements
+		const collapsedElements = document.querySelectorAll('.visible');
+
+		collapsedElements.forEach((element) => {
+			if (element !== nextElement) {
+				element.classList.remove('visible');
+			}
+		});
+
+		// toggle visibility
+		nextElement.classList.toggle('visible', !isVisible);
+	}
+
 	function handleButtonClick(e) {
 		//console.log(e.target)
 		const dataAction = isValidAttribute(e, 'action');
@@ -55,7 +75,8 @@ export function handleInterfaceEvents(el, containerId) {
 			togglePanel: () => container.classList.toggle('open'),
 			toggleAnimation: () => el.toggleAnimation(),
 			toggleVisibility: () =>
-				e.target.nextElementSibling.classList.toggle('collapsed'),
+				//e.target.nextElementSibling.classList.toggle('collapsed'),// this would allow opening/closing ALL
+				toggleVisibility(e),
 			// add more callbacks here if needed
 		};
 
