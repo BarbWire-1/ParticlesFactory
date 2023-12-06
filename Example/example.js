@@ -32,10 +32,10 @@ const fullstuff =
         {"id":"my-particles","width":500,"height":500},
 
     "main":
-        {"frameRate":21,"numParticles":10000,"speed":3.8,"mouseDistance":180,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
+        {"frameRate":21,"numParticles":7000,"speed":2,"mouseDistance":180,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
 
     "particles":
-        {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":false,"size":13,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
+        {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":false,"size":42,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
 
     "lines":
         {"connectDistance":60,"strokeStyle":"#79d1e6","draw":false,"lineWidth":1,"opacity":0.5},
