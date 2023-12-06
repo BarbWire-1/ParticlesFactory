@@ -10,7 +10,6 @@ export class Particle {
 		this.speed = speed;
 		this.fillStyle = fillStyle;
 
-
 		this.updateSpeed(speed);
 	}
 
@@ -90,11 +89,12 @@ export class Particle {
 		}
 	}
 
+	//TODO calc sharing cinetic "energy" ?
 	particlesCollision(particle, otherParticle, distance) {
 		if (Math.abs(distance) < (particle.size + otherParticle.size) / 2) {
 			[particle, otherParticle].forEach((p) => {
-				p.xSpeed *= -1.001;
-				p.ySpeed *= -1.001;
+				p.xSpeed *= -1.0001;
+				p.ySpeed *= -1.0001;
 			});
 		}
 	}
