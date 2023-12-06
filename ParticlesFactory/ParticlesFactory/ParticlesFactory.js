@@ -347,12 +347,12 @@ export class ParticlesFactory {
 		}
 	}
 	changeColorMode() {
-		this.#particles.map((p) => (p.fillStyle = this.particles.fillstyle));
+		this.#particles.forEach((p) => (p.fillStyle = this.particles.fillstyle));
 	}
 
 	// update on changes
 	setSpeed() {
-		this.#particles.map((p) => p.updateSpeed(this.main.speed));
+		this.#particles.forEach((p) => p.updateSpeed(this.main.speed));
 	}
 
 	// update instead of recreate by getting the difference old/new
