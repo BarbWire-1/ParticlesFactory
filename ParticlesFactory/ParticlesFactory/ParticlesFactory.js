@@ -133,8 +133,8 @@ export class ParticlesFactory {
 					? Math.max(0.2, Math.random()) // the particle gets an individual size!
 					: 1);
 			const { x, y } = {
-				x: Math.random() * (width - 2 * size) + size,
-				y: Math.random() * (height - 2 * size) + size,
+				x: Math.random() * (width - size / 2),
+				y: Math.random() * (height - size / 2),
 			};
 
 			this.#particles.push(
@@ -257,19 +257,17 @@ export class ParticlesFactory {
 			shape,
 		} = this.particles;
 		//console.log(stroke)
-		let strokeStyle = stroke ? this.lines.strokeStyle : undefined;
+		const strokeStyle = stroke ? this.lines.strokeStyle : undefined;
+		const ctx = this.#offscreenCtx;
 
 		// draw background rectangle
-		this.#offscreenCtx.fillStyle = this.main.fillStyle;
-		this.#offscreenCtx.globalAlpha = 1;
-		this.#offscreenCtx.fillRect(
-			0,
-			0,
-			this.canvasEl.width,
-			this.canvasEl.height
-		);
+		ctx.fillStyle = this.main.fillStyle;
+        ctx.globalAlpha = 1;
 
-		this.#particles.forEach((particle, i) => {
+		ctx.fillRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+
+        this.#particles.forEach((particle, i) => {
+
 			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
 
 			((this.lines.draw && +this.lines.connectDistance) || collision) &&
@@ -283,7 +281,7 @@ export class ParticlesFactory {
 					: fillStyle; // default
 
 				particle.drawParticle(
-					this.#offscreenCtx,
+					ctx,
 					adjustedFillStyle,
 					opacity,
 					randomSize ? particle.size : size,
@@ -297,23 +295,24 @@ export class ParticlesFactory {
 
 	// inner loop to get otherParticle - distance
 	// check for flags and recalculate/draw in case
-	#handleLinesAndCollision(particle, startIndex, len) {
-		for (let j = startIndex + 1; j < len; j++) {
+    #handleLinesAndCollision(particle, startIndex, len) {
+
+        for (let j = startIndex + 1; j < len; j++) {
+
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-			if (this.particles?.collision) {
+			this.particles?.collision &&
 				particle.particlesCollision(particle, otherParticle, distance);
-			}
 
-			if (this.lines?.draw) {
+			this.lines?.draw &&
 				this.#drawLine(
 					this.#offscreenCtx,
 					particle,
 					otherParticle,
 					distance
 				);
-			}
+
 		}
 	}
 
@@ -321,7 +320,8 @@ export class ParticlesFactory {
 		this.#ctx.drawImage(this.#offscreenCanvas, 0, 0);
 	}
 
-	#drawLine(offCTX, particle, otherParticle, distance) {
+    #drawLine(ctx, particle, otherParticle, distance) {
+
 		if (!particle || !otherParticle || !this.lines?.draw) return;
 
 		// destructure used objects
@@ -333,13 +333,13 @@ export class ParticlesFactory {
 			const { x: x1, y: y1 } = particle;
 			const { x: x2, y: y2 } = otherParticle;
 
-			offCTX.beginPath();
-			offCTX.moveTo(x1, y1);
-			offCTX.lineTo(x2, y2);
-			offCTX.strokeStyle = strokeStyle;
-			offCTX.lineWidth = lineWidth;
-			offCTX.globalAlpha = opacity;
-			offCTX.stroke();
+			ctx.beginPath();
+			ctx.moveTo(x1, y1);
+			ctx.lineTo(x2, y2);
+			ctx.strokeStyle = strokeStyle;
+			ctx.lineWidth = lineWidth;
+			ctx.globalAlpha = opacity;
+			ctx.stroke();
 		}
 	}
 	changeColorMode() {
@@ -353,7 +353,8 @@ export class ParticlesFactory {
 
 	// update instead of recreate by getting the difference old/new
 	// create and add or remove
-	setNumParticles(newValue) {
+    setNumParticles(newValue) {
+        
 		const currentCount = this.#particles.length;
 		let difference = newValue - currentCount;
 
@@ -362,11 +363,11 @@ export class ParticlesFactory {
 			: this.#removeParticles(currentCount, -difference);
 
 		this.main.numParticles = currentCount + difference;
-    }
-    
+	}
+
 	#addParticles(difference) {
 		this.#createParticles(difference);
-    }
+	}
 
 	#removeParticles(currentCount, difference) {
 		this.#particles.splice(currentCount - difference, difference);
