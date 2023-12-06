@@ -1,7 +1,7 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
-// TODO 1.1.1.1 - change back to simple logic: 3 times as performant!!!!!!!!!!
 
-// TODO2 change to baseParticle and extending shapes - particleType
+
+
 // TODO add a max-speed??
 
 // TODO check early returns, add errorHandling, comments, docu, update readme
@@ -15,6 +15,9 @@
 //TODO add a helper function: getRatio (used several times)
 
 // TODO unify create and update in a draw
+
+
+// TODO1.1.1.1.1 test particles.filter to get otherParticle
 // move helpers to an own utils.js to use wherever needed
 
 import { Particle } from './Particle.js';
