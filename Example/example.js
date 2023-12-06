@@ -25,19 +25,20 @@ const options = {
 };
 
 // for testing frame throttling
-const fullstuff = {
+const fullstuff =
+{
 
-            "canvas":
-                {"id":"my-particles","width":500,"height":500},
+    "canvas":
+        {"id":"my-particles","width":500,"height":500},
 
-            "main":
-                {"numParticles":45000,"speed":0.2,"mouseDistance":100,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
+    "main":
+        {"frameRate":21,"numParticles":10000,"speed":3.8,"mouseDistance":180,"fillStyle":"#000","isFullScreen":true,"isResponsive":true},
 
-            "particles":
-                {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":false,"size":50,"randomSize":true,"draw":true,"collision":false,"opacity":0.7},
+    "particles":
+        {"shape":"circle","fillStyle":"#565656","randomFill":true,"noFill":false,"stroke":false,"size":13,"randomSize":false,"draw":true,"collision":false,"opacity":0.7},
 
-            "lines":
-                {"connectDistance":60,"strokeStyle":"#ff0000","draw":false,"lineWidth":1,"opacity":0.5},
+    "lines":
+        {"connectDistance":60,"strokeStyle":"#79d1e6","draw":false,"lineWidth":1,"opacity":0.5},
 
 
 }
@@ -45,9 +46,9 @@ const fullstuff = {
 
 
 
-const myParticles = new ParticlesFactory(options);
+//const myParticles = new ParticlesFactory(options);
 // test object
-//const myParticles = new ParticlesFactory(JSON.parse(JSON.stringify(fullstuff)));
+const myParticles = new ParticlesFactory(JSON.parse(JSON.stringify(fullstuff)));
 
 handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
@@ -59,8 +60,8 @@ const proxy = particlesProxy(myParticles);
 //
 // proxy.lines.strokeStyle = "#ff0000"// ok
 //proxy.particles.fillStyle = 'blue'// applied at target but input needs hex to understand
-proxy.particles.randomFill = false
-proxy.particles.fillStyle = '#565656';
+//proxy.particles.randomFill = false
+//proxy.particles.fillStyle = '#565656';
 
 //proxy.particles.fillStyle = 'transparent';
 //proxy.lines.strokeStyle = '#8F5219';
