@@ -5,7 +5,6 @@ const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 // path and parent as parameters to have access through all levels
 export const particlesProxy = (target, path = '', parent = target) => {
-
 	const actions = {
 		'main.numParticles': (value) => parent.updateNumParticles(value),
 		'main.isFullScreen': () => parent.getCanvasSize(),
@@ -19,9 +18,9 @@ export const particlesProxy = (target, path = '', parent = target) => {
 		get(target, prop) {
 			const value = target[prop];
 			if (typeof value === 'object' && value !== null) {
-                const childPath = path ? `${path}.${prop}` : prop;
-                // Call bindInputElement when reaching leaf properties
-            //bindInputElement(`${path}.${prop}`, value);
+				const childPath = path ? `${path}.${prop}` : prop;
+				// Call bindInputElement when reaching leaf properties
+				//bindInputElement(`${path}.${prop}`, value);
 
 				return particlesProxy(value, childPath, target); // recursion target => parent
 			}
@@ -37,16 +36,15 @@ export const particlesProxy = (target, path = '', parent = target) => {
 				actionCallback(value); // call corresponding action callback if it exists
 			}
 
-            proxies.set(parent, proxy); // Update the synchronized data in the proxies map
+			proxies.set(parent, proxy); // Update the synchronized data in the proxies map
 
-            return true;
+			return true;
 		},
 	};
 
 	const proxy = new Proxy(target, handler);
 	proxies.set(target, proxy); // store newly created proxy in proxies
-    return proxy
-
+	return proxy;
 };
 
 function bindInputElement(path, value) {
