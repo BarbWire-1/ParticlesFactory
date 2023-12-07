@@ -19,7 +19,10 @@ export const particlesProxy = (target, path = '', parent = target) => {
 		get(target, prop) {
 			const value = target[prop];
 			if (typeof value === 'object' && value !== null) {
-				const childPath = path ? `${path}.${prop}` : prop;
+                const childPath = path ? `${path}.${prop}` : prop;
+                // Call bindInputElement when reaching leaf properties
+            //bindInputElement(`${path}.${prop}`, value);
+
 				return particlesProxy(value, childPath, target); // recursion target => parent
 			}
 			return value;

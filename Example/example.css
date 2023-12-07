@@ -230,14 +230,19 @@ label {
 
 /* Initially hide the elements under h3 */
 .controlPanelContent h3 + .inputContainer {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
 }
 
 /* Style to show elements when not collapsed */
 .controlPanelContent h3 + .inputContainer.visible {
-    display: flex;
-    flex-direction: column
+    max-height: 1000px;/*must be set to make transition work!*/
+    transition: max-height 0.4s ease;
 }
+
 
 input {
     background: transparent;

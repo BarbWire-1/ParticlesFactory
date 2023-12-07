@@ -43,17 +43,17 @@ const fullstuff =
 
 }
 
-
+const testOptions = JSON.parse(JSON.stringify(fullstuff))
 
 
 //const myParticles = new ParticlesFactory(options);
 // test object
-const myParticles = new ParticlesFactory(JSON.parse(JSON.stringify(fullstuff)));
+const myParticles = new ParticlesFactory(testOptions);
 
 handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
 // for setting dynamically in JS to update corresponding input use the proxy
-const proxy = particlesProxy(myParticles);
+const proxy = particlesProxy(myParticles,'',myParticles,testOptions);
 
 // proxy.numParticles = 30;
 //

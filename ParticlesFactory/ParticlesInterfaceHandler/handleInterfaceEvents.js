@@ -17,7 +17,7 @@ export function handleInterfaceEvents(el, containerId) {
 		} else {
 			value = +value || value;
 		}
-        
+
 		// attributes which require recalculations
 		const updates = {
 			numParticles: () => el.setNumParticles(value),
@@ -82,7 +82,10 @@ export function handleInterfaceEvents(el, containerId) {
 		};
 
 		if (clickAction[dataAction]) clickAction[dataAction]();
-	}
+    }
+
+
+    
 
 	// EVENT LISTENERS
 	container.addEventListener('click', handleButtonClick);
