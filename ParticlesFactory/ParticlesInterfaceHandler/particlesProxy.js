@@ -1,5 +1,5 @@
 // TODO!!! colorPicker only shows new color when using hexCode (on proxy)
-
+// TODO clean and clear this ugly thing!
 // The proxy is used to keep data-object and interface values in sync
 const proxies = new WeakMap(); // store new proxies to check for and re-use
 
