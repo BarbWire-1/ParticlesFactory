@@ -1,5 +1,5 @@
 //TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
-
+// TODO disable connecting lines from an amount of particles on (1000?) to avoid freezing -else handles up to 50k maybe more
 
 
 // TODO add a max-speed??
