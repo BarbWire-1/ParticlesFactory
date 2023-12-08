@@ -16,12 +16,14 @@
 
 // TODO unify create and update in a draw
 
+// TODO adjust dist for circle/rects as different pos!!!
+
 
 // TODO1.1.1.1.1 test particles.filter to get otherParticle
 // move helpers to an own utils.js to use wherever needed
 
 import { Particle } from './Particle.js';
-
+console.time('factory')
 export class ParticlesFactory {
 	#ctx;
 	#particles;
@@ -448,8 +450,10 @@ export class ParticlesFactory {
 		link.href = url;
 		link.download = 'particles-factory-config.json';
 		link.click();
-	}
+    }
+
 }
+console.timeEnd('factory')
 
 // // test throttling on 100ms!!!!
 // function throttle(func, limit) {

@@ -1,6 +1,6 @@
 // As drawing to an offscreenCanvas which is a private member of the  "factory"-instance,
 // the CONTEXT now gets passed as argument in called methods
-
+console.time('particle')
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
 		this.canvas = canvas;
@@ -90,7 +90,8 @@ export class Particle {
 	}
 
 	//TODO calc sharing cinetic "energy" ?
-	particlesCollision(particle, otherParticle, distance) {
+    particlesCollision(particle, otherParticle, distance) {
+        //const halfDiagonal = Math.sqrt(particle.size ** 2 + otherParticle.size ** 2) / 2;
     if (Math.abs(distance) < (particle.size + otherParticle.size) / 2) {
         [ particle, otherParticle ].forEach(p => {
             for (let speed of [ 'xSpeed', 'ySpeed' ]) {
@@ -136,3 +137,4 @@ export class Particle {
 		}
 	}
 }
+console.timeEnd('particle')

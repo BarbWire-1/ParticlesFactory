@@ -2,14 +2,14 @@
 
 // The input-elements need to have a data-attribute = "particles-<path.to.attribute>"
 // in order to get recognized and validated in here
-
+console.time('handler')
 export function handleInterfaceEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);
 
 	// EVENT - CALLBACKS
 	function handleInputChange(e) {
-		const property = isValidAttribute(e, 'attribute');
+		const property = isValidAttribute(e, 'bind');
 		let value = e.target.value;
 
 		if (e.target.type === 'checkbox') {
@@ -42,10 +42,11 @@ export function handleInterfaceEvents(el, containerId) {
 	}
 
 	function isValidAttribute(e, type) {
-		const dataAttribute = e.target.dataset?.[type]?.split('-');
+        const dataAttribute = e.target.dataset?.[ type ]//?.split('-');
+        //console.log(dataAttribute)
 		// search for input with corresponding data-attribute
-		if (!dataAttribute || dataAttribute[0] !== 'particles') return;
-		const path = dataAttribute[1];
+		if (!dataAttribute  /*|| dataAttribute[0] !== 'particles'*/) return;
+		const path = dataAttribute//[1];
 		return path;
 	}
 
@@ -85,9 +86,10 @@ export function handleInterfaceEvents(el, containerId) {
     }
 
 
-    
+
 
 	// EVENT LISTENERS
 	container.addEventListener('click', handleButtonClick);
 	container.addEventListener('input', handleInputChange);
 }
+console.timeEnd('handler')

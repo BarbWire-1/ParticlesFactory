@@ -1,35 +1,38 @@
 // TODO!!! colorPicker only shows new color when using hexCode (on proxy)
 // TODO clean and clear this ugly thing!
+
+console.time('proxy')
 // The proxy is used to keep data-object and interface values in sync
 const proxies = new WeakMap(); // store new proxies to check for and re-use
 
 // path and parent as parameters to have access through all levels
-export const particlesProxy = (target, path = '', parent = target) => {
+export  const particlesProxy = (target, path = '', parent = target) => {
 	const actions = {
 		'main.numParticles': (value) => parent.updateNumParticles(value),
 		'main.isFullScreen': () => parent.getCanvasSize(),
 		// Add more actions here as needed
-	};
+    };
+    // get the path for nested objects
+    const fullPath = prop => path ? `${path}.${prop}` : prop;
+    // reuse existing proxies
 	if (proxies.has(target)) {
-		return proxies.get(target); // reuse already exoisting proxies for sub-objects
+		return proxies.get(target);
 	}
 
 	const handler = {
 		get(target, prop) {
-			const value = target[prop];
-			if (typeof value === 'object' && value !== null) {
-				const childPath = path ? `${path}.${prop}` : prop;
-				// Call bindInputElement when reaching leaf properties
-				//bindInputElement(`${path}.${prop}`, value);
+            const value = target[ prop ];
 
-				return particlesProxy(value, childPath, target); // recursion target => parent
+			if (typeof value === 'object' && value !== null) {
+
+				return particlesProxy(value, fullPath(prop), target); // recursion
 			}
 			return value;
-		},
+        },
+
 		set(target, prop, value) {
 			target[prop] = value;
-			const fullPath = path ? `${path}.${prop}` : prop;
-			bindInputElement(fullPath, value);
+			bindInputElement(fullPath(prop), value);
 
 			const actionCallback = actions[fullPath];
 			if (actions[fullPath] && typeof actionCallback === 'function') {
@@ -37,10 +40,12 @@ export const particlesProxy = (target, path = '', parent = target) => {
 			}
 
 			proxies.set(parent, proxy); // Update the synchronized data in the proxies map
-
 			return true;
 		},
-	};
+    };
+
+
+
 
 	const proxy = new Proxy(target, handler);
 	proxies.set(target, proxy); // store newly created proxy in proxies
@@ -48,8 +53,9 @@ export const particlesProxy = (target, path = '', parent = target) => {
 };
 
 function bindInputElement(path, value) {
+    //console.log(path)
 	const inputElement = document.querySelector(
-		`[data-attribute="particles-${path}"]`
+		`[data-bind="${path}"]`
 	);
 
 	if (inputElement) {
@@ -62,3 +68,5 @@ function bindInputElement(path, value) {
 		console.log(`No input found for ${path}`);
 	}
 }
+
+console.timeEnd('proxy')
