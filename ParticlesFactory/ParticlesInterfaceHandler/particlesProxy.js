@@ -43,7 +43,7 @@ export const particlesProxy = (target, path = "", parent = target) => {
     },
   };
 
-  function initializeInputs(obj, currentPath = "") {
+  function initializeInputsSync(obj, currentPath = "") {
     for (const prop in obj) {
       const fullPath = currentPath ? `${currentPath}.${prop}` : prop;
       const value = obj[prop];
@@ -57,7 +57,7 @@ export const particlesProxy = (target, path = "", parent = target) => {
 
       if (typeof value === "object" && value !== null) {
         const nestedObj = Array.isArray(value) ? [...value] : { ...value }; // copy object or array to keep original
-        initializeInputs(nestedObj, fullPath); // recurse
+        initializeInputsSync(nestedObj, fullPath); // recurse
       } else {
         //console.log(fullPath, typeof fullPath)
         bindInputElement(fullPath, value); // Bind input values for properties
