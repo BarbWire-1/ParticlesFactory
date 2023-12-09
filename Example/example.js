@@ -17,7 +17,7 @@ export default (function createExample() {
             // fillStyle: '#000',
         },
         main: {
-            numParticles: 50,
+            numParticles: 150,
             frameRate: 17,
             speed: 1,
             mouseDistance: 100,
@@ -36,7 +36,7 @@ export default (function createExample() {
             { "id": "my-particles", "width": 500, "height": 500 },
 
         "main":
-            { "frameRate": 17, "numParticles": 40, "speed": .7, "mouseDistance": 180, "fillStyle": "#000", "isFullScreen": true, "isResponsive": true },
+            { "frameRate": 17, "numParticles": 100, "speed": .7, "mouseDistance": 180, "fillStyle": "#000", "isFullScreen": true, "isResponsive": true },
 
         "particles":
             { "shape": "circle", "fillStyle": "#0033ff", "randomFill": true, "noFill": false, "stroke": false, "size": 23, "randomSize": true, "draw": true, "collision": false, "opacity": 0.7 },

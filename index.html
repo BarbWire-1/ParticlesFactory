@@ -28,30 +28,30 @@
                 <div class="inputContainer" style="display: flex; flex-direction: column; max-height: 1000px">
                     <!-- show on load -->
                     <label for="numParticles">Number of Particles:</label>
-                    <input id="numParticles" data-bind="main.numParticles" type="number" value="50" min="50" max="40000"
+                    <input id="numParticles" data-bind="main.numParticles" type="number"  min="50" max="40000"
                         step="50">
 
                     <label for="frameRate">FrameRate:</label>
-                    <input id="frameRate" data-bind="main.frameRate" type="number" id="frameRate" step="1" value="17"
+                    <input id="frameRate" data-bind="main.frameRate" type="number" id="frameRate" step="1"
                         min="1" max="120">
 
                     <label for="speed">Speed:</label>
-                    <input id="speed" data-bind="main.speed" type="number" id="speed" step="0.1" value="1" min="0.1"
+                    <input id="speed" data-bind="main.speed" type="number" id="speed" step="0.1"min="0.1"
                         max="5">
 
                     <label for="mouseReactive">Mouse Distance:</label>
-                    <input id="mouseReactive" data-bind="main.mouseDistance" type="number" value="180" min="0" max="400"
+                    <input id="mouseReactive" data-bind="main.mouseDistance" type="number" min="0" max="400"
                         step="10">
 
 
                     <label for="bgFillStyle">Background Color:</label>
-                    <input id="bgFillStyle" data-bind="main.fillStyle" type="color" value="#000000">
+                    <input id="bgFillStyle" data-bind="main.fillStyle" type="color">
                     <div class="checkbox-container">
                         <label for="isResponsiveFlag">Responsive</label>
-                        <input id="isResponsiveFlag" data-bind="main.isResponsive" type="checkbox" checked><br>
+                        <input id="isResponsiveFlag" data-bind="main.isResponsive" type="checkbox" ><br>
 
                         <label for="isFullScreenFlag">Full Screen</label>
-                        <input id="isFullScreenFlag" data-bind="main.isFullScreen" type="checkbox" checked>
+                        <input id="isFullScreenFlag" data-bind="main.isFullScreen" type="checkbox" >
 
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                 <h3 data-action="toggleVisibility">▶ particles</h3>
                 <div class="inputContainer">
                     <label for="particlesSize">Particles Size:</label>
-                    <input id="particlesSize" data-bind="particles.size" type="number" value="23" min="1" max="100"
+                    <input id="particlesSize" data-bind="particles.size" type="number"  min="1" max="100"
                         step="1">
 
                     <label for="particlesOpacity">Particles Opacity:</label>
@@ -86,12 +86,12 @@
                         </select><br>
 
                         <label for="particlesFlag">Draw Particles</label>
-                        <input id="particlesFlag" data-bind="particles.draw" type="checkbox" checked><br>
+                        <input id="particlesFlag" data-bind="particles.draw" type="checkbox"><br>
 
                         <label for="particlesStrokeFlag">Draw Stroke</label>
-                        <input id="particlesStrokeFlag" data-bind="particles.stroke" type="checkbox" checked><br>
+                        <input id="particlesStrokeFlag" data-bind="particles.stroke" type="checkbox"><br>
                         <label for="particlesTransparency">No Fill</label>
-                        <input id="particlesTransparency" data-bind="particles.noFill" type="checkbox" checked><br>
+                        <input id="particlesTransparency" data-bind="particles.noFill" type="checkbox" ><br>
 
 
 
@@ -99,10 +99,10 @@
                         <input id="particlesCollisionFlag" data-bind="particles.collision" type="checkbox" ><br>
 
                         <label for="particlesRandomSize">Random Size</label>
-                        <input id="particlesRandomSize" data-bind="particles.randomSize" type="checkbox" checked><br>
+                        <input id="particlesRandomSize" data-bind="particles.randomSize" type="checkbox"><br>
 
                         <label for="particlesRandomColor">Random Fill</label>
-                        <input id="particlesRandomColor" data-bind="particles.randomFill" type="checkbox" checked>
+                        <input id="particlesRandomColor" data-bind="particles.randomFill" type="checkbox">
 
                     </div>
                 </div>
@@ -112,23 +112,23 @@
                 <div class="inputContainer">
 
                     <label for="connectDistance">Connect Distance:</label>
-                    <input id="connectDistance" data-bind="lines.connectDistance" type="number" value="100" min="0"
+                    <input id="connectDistance" data-bind="lines.connectDistance" type="number" min="0"
                         max="400" step="10">
 
                     <label for="linesStrokeStyle">Stroke Color:</label>
-                    <input id="linesStrokeStyle" data-bind="lines.strokeStyle" type="color" id="stroke" value="#79d1e6">
+                    <input id="linesStrokeStyle" data-bind="lines.strokeStyle" type="color" id="stroke" >
 
                     <label for="linesWidth">Lines Width:</label>
                     <input id="linesWidth" data-bind="lines.lineWidth" type="number" min="0.1" max="5" step="0.1"
-                        value="1">
+                       >
 
                     <label for="linesOpacity">Lines Opacity:</label>
                     <input id="linesOpacity" data-bind="lines.opacity" type="number" min="0" max="1" step="0.05"
-                        value="0.5">
+                        >
 
                     <div class="checkbox-container">
                         <label for="withLinesFlag">Draw Lines</label>
-                        <input id="withLinesFlag" data-bind="lines.draw" type="checkbox" checked>
+                        <input id="withLinesFlag" data-bind="lines.draw" type="checkbox">
                     </div>
 
                 </div>
