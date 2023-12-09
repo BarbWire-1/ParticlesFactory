@@ -1,6 +1,6 @@
 // As drawing to an offscreenCanvas which is a private member of the  "factory"-instance,
 // the CONTEXT now gets passed as argument in called methods
-console.time('particle')
+//console.time('particle')
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
 		this.canvas = canvas;
@@ -137,4 +137,4 @@ export class Particle {
 		}
 	}
 }
-console.timeEnd('particle')
+//console.timeEnd('particle')

@@ -7,7 +7,7 @@ import {
 
 export default (function createExample() {
 
-console.time('load')
+//console.time('load')
     // Initialisation
     const options = {
         canvas: {
@@ -24,7 +24,7 @@ console.time('load')
             isFullScreen: true,
             isResponsive: true, // whether to recalculate x,y of particles on resize
         },
-        particles: { fillStyle: '#0000ff', opacity: .7, noFill: true, size: 50, draw: true, collision: true, shape: 'circle' }, // optional - with defaults if only "particles"
+        particles: { fillStyle: '#0000ff', opacity: .7, noFill: true, size: 50, draw: true, collision: false, shape: 'circle' }, // optional - with defaults if only "particles"
         lines: { connectDistance: 100, strokeStyle: '#79d1e6', opacity: 0.5, lineWidth: 1, draw: true }, // optional - with defaults if only "lines"
     };
 
@@ -135,5 +135,5 @@ console.time('load')
     const config = JSON.parse(JSON.stringify(test));
     //console.log(config)// that's nice!
 
-    console.timeEnd('load')
+    //console.timeEnd('load')
 })();

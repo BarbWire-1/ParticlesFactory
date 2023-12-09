@@ -23,7 +23,7 @@
 // move helpers to an own utils.js to use wherever needed
 
 import { Particle } from './Particle.js';
-console.time('factory')
+//console.time('factory')
 export class ParticlesFactory {
 	#ctx;
 	#particles;
@@ -453,7 +453,7 @@ export class ParticlesFactory {
     }
 
 }
-console.timeEnd('factory')
+//console.timeEnd('factory')
 
 // // test throttling on 100ms!!!!
 // function throttle(func, limit) {

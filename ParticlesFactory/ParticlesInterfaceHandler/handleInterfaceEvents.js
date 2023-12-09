@@ -2,7 +2,7 @@
 
 // The input-elements need to have a data-attribute = "particles-<path.to.attribute>"
 // in order to get recognized and validated in here
-console.time('handler')
+//console.time('handler')
 export function handleInterfaceEvents(el, containerId) {
 	// event-delegation on parent container
 	const container = document.getElementById(containerId);
@@ -92,4 +92,4 @@ export function handleInterfaceEvents(el, containerId) {
 	container.addEventListener('click', handleButtonClick);
 	container.addEventListener('input', handleInputChange);
 }
-console.timeEnd('handler')
+//console.timeEnd('handler')
