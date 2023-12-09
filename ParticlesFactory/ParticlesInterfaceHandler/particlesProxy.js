@@ -68,7 +68,7 @@ export const particlesProxy = (target, path = '', parent = target) => {
 	}
 
 	// Initialize input values on proxy creation
-	initializeInputs(target, path);
+	initializeInputsSync(target, path);
 	const proxy = new Proxy(target, handler);
 	proxies.set(target, proxy); // Store newly created proxy in proxies
 	return proxy;
