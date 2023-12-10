@@ -293,8 +293,73 @@ input[type="number"]::-webkit-outer-spin-button {
     opacity: 1;
 }
 
+
+
 hr {
     border: none;
     height: 2px;
     background-color: #8f8679;
+}
+
+
+
+/* custom checkbox */
+
+[type="checkbox"] {
+  position: relative;
+  left: 30px;
+
+  z-index: 0;
+
+
+  -webkit-appearance: none;
+}
+[type="checkbox"] + label {
+    top: 5px;
+  position: relative;
+  display: block;
+  cursor: pointer;
+  /* font-family: sans-serif;
+  font-size: 24px;*/
+  line-height: 1.75;
+  padding-left:3em;
+  position: relative;
+  margin-top: -1.75em;
+
+}
+[type="checkbox"] + label:before {
+  width: 2.5em;
+  height: 1.5em;
+  border-radius: .75em;
+  border: 1px solid #ddd;
+  background-color: #d2d2d2;
+  content: "";
+  margin-right: 15px;
+  transition: background-color 0.5s linear;
+  z-index: 5;
+  position: absolute;
+  left: 0px;
+}
+[type="checkbox"] + label:after {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: .75em;
+  background-color: #fff;
+  content: "";
+  transition: margin 0.1s linear;
+  box-shadow: 0px 0px 5px #3b3b3b;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  z-index: 10;
+}
+[type="checkbox"]:checked + label:before {
+  background-color: #0389fe;
+}
+[type="checkbox"]:checked + label:after {
+  margin: 0 0 0 1em;
+}
+
+[type="checkbox"].last + label{
+    margin-bottom: .9em;
 }

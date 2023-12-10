@@ -47,11 +47,13 @@
                     <label for="bgFillStyle">Background Color:</label>
                     <input id="bgFillStyle" data-bind="main.fillStyle" type="color">
                     <div class="checkbox-container">
-                        <label for="isResponsiveFlag">Responsive</label>
-                        <input id="isResponsiveFlag" data-bind="main.isResponsive" type="checkbox" ><br>
 
+                        <input id="isResponsiveFlag" data-bind="main.isResponsive" type="checkbox" >
+                        <label for="isResponsiveFlag">Responsive</label><br>
+
+
+                        <input id="isFullScreenFlag" data-bind="main.isFullScreen" type="checkbox" class="last" >
                         <label for="isFullScreenFlag">Full Screen</label>
-                        <input id="isFullScreenFlag" data-bind="main.isFullScreen" type="checkbox" >
 
                     </div>
                 </div>
@@ -74,7 +76,7 @@
 
                     <div class="checkbox-container">
 
-                        <label for="particlesShape">Particles Shape</label>
+                        <label for="particlesShape">Particles Shape</label><br>
                         <select id="particlesShape" data-bind="particles.shape">
                             <option value="circle">Circle</option>
                             <option value="square">Square</option>
@@ -83,26 +85,32 @@
                             <option value="triangle">Triangle</option>
 
 
-                        </select><br>
-
-                        <label for="particlesFlag">Draw Particles</label>
-                        <input id="particlesFlag" data-bind="particles.draw" type="checkbox"><br>
-
-                        <label for="particlesStrokeFlag">Draw Stroke</label>
-                        <input id="particlesStrokeFlag" data-bind="particles.stroke" type="checkbox"><br>
-                        <label for="particlesTransparency">No Fill</label>
-                        <input id="particlesTransparency" data-bind="particles.noFill" type="checkbox" ><br>
+                        </select><br><hr>
 
 
+                        <input id="particlesFlag" data-bind="particles.draw" type="checkbox">
+                        <label for="particlesFlag">Draw Particles</label><br>
 
-                        <label for="particlesCollisionFlag">Particles Collision</label>
-                        <input id="particlesCollisionFlag" data-bind="particles.collision" type="checkbox" ><br>
 
-                        <label for="particlesRandomSize">Random Size</label>
-                        <input id="particlesRandomSize" data-bind="particles.randomSize" type="checkbox"><br>
+                        <input id="particlesStrokeFlag" data-bind="particles.stroke" type="checkbox">
+                        <label for="particlesStrokeFlag">Draw Stroke</label><br>
 
+                        <input id="particlesTransparency" data-bind="particles.noFill" type="checkbox" >
+                        <label for="particlesTransparency">No Fill</label><br>
+
+
+
+
+                        <input id="particlesCollisionFlag" data-bind="particles.collision" type="checkbox" >
+                        <label for="particlesCollisionFlag">Particles Collision</label><br>
+
+
+                        <input id="particlesRandomSize" data-bind="particles.randomSize" type="checkbox">
+                            <label for="particlesRandomSize">Random Size</label><br>
+
+
+                        <input id="particlesRandomColor" data-bind="particles.randomFill" type="checkbox" class="last">
                         <label for="particlesRandomColor">Random Fill</label>
-                        <input id="particlesRandomColor" data-bind="particles.randomFill" type="checkbox">
 
                     </div>
                 </div>
@@ -127,8 +135,9 @@
                         >
 
                     <div class="checkbox-container">
+
+                        <input id="withLinesFlag" data-bind="lines.draw" type="checkbox" class="last">
                         <label for="withLinesFlag">Draw Lines</label>
-                        <input id="withLinesFlag" data-bind="lines.draw" type="checkbox">
                     </div>
 
                 </div>
