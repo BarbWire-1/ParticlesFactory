@@ -304,7 +304,7 @@ hr {
 
 
 /* custom checkbox */
-
+/*
 [type="checkbox"] {
   position: relative;
   left: 30px;
@@ -315,16 +315,14 @@ hr {
   -webkit-appearance: none;
 }
 [type="checkbox"] + label {
-    top: 5px;
+    top: 15px;
   position: relative;
   display: block;
   cursor: pointer;
-  /* font-family: sans-serif;
-  font-size: 24px;*/
   line-height: 1.75;
   padding-left:3em;
   position: relative;
-  margin-top: -1.75em;
+  margin-top: -2.75em;
 
 }
 [type="checkbox"] + label:before {
@@ -361,5 +359,5 @@ hr {
 }
 
 [type="checkbox"].last + label{
-    margin-bottom: .9em;
-}
+    margin-bottom: 1.15em;
+} */
