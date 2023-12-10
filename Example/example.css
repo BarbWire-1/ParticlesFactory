@@ -182,7 +182,9 @@ a {
     z-index: 100;
     pointer-events: none;
 }
-
+h3 {
+    text-transform: capitalize;
+}
 h4 {
     margin-top: 50px;
     font-size: 2em;
