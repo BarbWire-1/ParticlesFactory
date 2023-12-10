@@ -1,18 +1,22 @@
 // Function to create and append elements based on properties
 //TODO create an object for the individual input-settings?
-function createElementsFromProperties() {
-	const properties = Object.getOwnPropertyNames(myParticles);
 
-	const fragment = document.createDocumentFragment();
+//TODO change this to the adjustments, add class ... and then decide
+export function createElementsFromProperties(obj, targetElId) {
+    console.log(obj)
+	const properties = Object.getOwnPropertyNames(obj);
+
+    const fragment = document.createDocumentFragment();
+    const targetElement = document.getElementById(targetElId);
 
 	properties.forEach((prop) => {
 		if (
 			!prop.startsWith('canvas') &&
-			typeof myParticles[prop] !== 'function'
+			typeof obj[prop] !== 'function'
 		) {
 			const sectionHeader = document.createElement('h3');
 			sectionHeader.setAttribute(
-				'data-action',
+				'data-bind',
 				'particles-toggleVisibility'
 			);
 			sectionHeader.textContent = `▶ ${prop}`;
@@ -21,7 +25,7 @@ function createElementsFromProperties() {
 			const inputContainer = document.createElement('div');
 			inputContainer.classList.add('inputContainer');
 
-			const propValue = myParticles[prop];
+			const propValue = obj[prop];
 			if (typeof propValue === 'object') {
 				for (const innerProp in propValue) {
 					const value = propValue[innerProp];
@@ -34,7 +38,7 @@ function createElementsFromProperties() {
 					};
 					const inputSettings = {
 						id: innerProp,
-						'data-attribute': `particles-${prop}.${innerProp}`,
+						'data-bind': `${prop}.${innerProp}`,
 						type:
 							typeof value === 'boolean'
 								? 'checkbox'
@@ -88,16 +92,16 @@ function createElementsFromProperties() {
 		}
 	});
 
-	return fragment;
+	// Append the generated HTML to a target element
+
+// console.log(targetElement);
+if (targetElement) {
+
+	targetElement.appendChild(fragment);
+}
 }
 
-// Append the generated HTML to a target element
-const targetElement = document.getElementById('inputSection');
-console.log(targetElement);
-if (targetElement) {
-	const elementsFragment = createElementsFromProperties();
-	targetElement.appendChild(elementsFragment);
-}
+
 //second variant using innerHTML - "easier" to directly add the necessary settings to the inputs
 //TEST -create inputs dynamically
 // get all props not starting with canvas... then create the input-structure

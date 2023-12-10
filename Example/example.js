@@ -1,7 +1,8 @@
 import {
 	ParticlesFactory,
 	handleInterfaceEvents,
-	particlesProxy,
+    particlesProxy,
+    createElementsFromProperties
 } from '../ParticlesFactory/index.js';
 
 
@@ -58,6 +59,7 @@ export default (function createExample() {
 
     // for setting dynamically in JS to update corresponding input use the proxy
     const proxy = particlesProxy(myParticles);
+    //createElementsFromProperties(myParticles, 'inputSection')
 
     //console.log(proxy.main.numParticles)
     //console.log(myParticles.main.numParticles)
