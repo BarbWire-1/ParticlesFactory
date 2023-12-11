@@ -290,10 +290,10 @@ export class ParticlesFactory {
 
 		this.#particles.forEach((particle, i) => {
 			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
-            ctx.beginPath();
-			((this.lines.draw && +this.lines.connectDistance) || collision) &&
-				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
+            //ctx.beginPath();
 
+             ((this.lines.draw && +this.lines.connectDistance) || collision) &&
+				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 			if (drawParticles) {
 				let adjustedFillStyle = noFill
 					? 'transparent'
@@ -309,7 +309,8 @@ export class ParticlesFactory {
 					shape,
 					strokeStyle
 				);
-			}
+            }
+
         });
 
 		this.#renderOffscreenCanvas();

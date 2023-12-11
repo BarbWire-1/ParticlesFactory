@@ -4,6 +4,7 @@
 
 
 //TODO change collision!!!!! as now creating polygons with a centerPoint!!!
+// TODO pass individualSize/commonSize!!!
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
 		this.canvas = canvas;
@@ -76,7 +77,8 @@ export class Particle {
 
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles) {
-		let { x, y, size } = this;
+        let { x, y, size} = this;
+
 		const { width, height } = this.canvas;
 
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
@@ -94,7 +96,7 @@ export class Particle {
 
 	//TODO calc sharing cinetic "energy" ?
     particlesCollision(randomSize, commonSize, particle, otherParticle, distance) {
-        //const halfDiagonal = Math.sqrt(particle.size ** 2 + otherParticle.size ** 2) / 2;
+
         const size = randomSize ? (particle.size + otherParticle.size) / 2 : commonSize;
         //console.log(randomSize, size)
         //const size = (particle.size + otherParticle.size) / (randomSize ? 2 : 1)
