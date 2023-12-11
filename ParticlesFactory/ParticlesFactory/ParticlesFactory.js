@@ -118,7 +118,9 @@ export class ParticlesFactory {
 		});
 
 		// if (this.main.isFullScreen) {
-		window.addEventListener('resize', () => {
+        window.addEventListener('resize', () => {
+
+            if (!this.main.isFullScreen ) return;
             this.getCanvasSize();
             this.#updateCanvas();// call update to byPass throttling
 
@@ -167,14 +169,16 @@ export class ParticlesFactory {
 
 	// get the calculated canvas diminsions and update particles coords accordingly
 	getCanvasSize = () => {
-		const { isResponsive /*, isFullScreen */ } = this.main;
+
 		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 
 		this.#setCanvasSize(width, height);
 
-		if (isResponsive /*&& isFullScreen*/) {
-			this.#updateParticleCoords(width, height, prevDimensions);
+		if (this.main.isResponsive) {
+            this.#updateParticleCoords(width, height, prevDimensions);
+            //console.log('recalculate particles')
         }
+        //console.log('resizing')
 
 	};
 
@@ -211,9 +215,13 @@ export class ParticlesFactory {
 		const dWidth = width / prevDimensions.width;
 		const dHeight = height / prevDimensions.height;
 
-		this.#particles.forEach((particle) => {
+        this.#particles.forEach((particle) => {
+
+            //this.#offscreenCtx.translate(particle.x *= dWidth, particle.y *= dHeight)
 			particle.x *= dWidth;
-			particle.y *= dHeight;
+            particle.y *= dHeight;
+
+
 		});
 	}
 
@@ -314,16 +322,20 @@ export class ParticlesFactory {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-			this.particles?.collision &&
-				particle.particlesCollision(particle, otherParticle, distance);
+            const { randomSize, size: commonSize } = this.particles
 
-			this.lines?.draw &&
+            this.lines?.draw &&
 				this.#drawLine(
 					this.#offscreenCtx,
 					particle,
 					otherParticle,
 					distance
 				);
+           // console.log(randomSize)
+            this.particles?.collision &&
+                particle.particlesCollision(randomSize, commonSize, particle, otherParticle, distance);
+
+
 		}
 	}
 
