@@ -12,7 +12,7 @@ export class Particle {
 		this.y = y;
 		this.size = size;
 		this.speed = speed;
-		this.fillStyle = fillStyle;
+        this.fillStyle = fillStyle;
 
 		this.updateSpeed(speed);
 	}
@@ -76,15 +76,14 @@ export class Particle {
 	}
 
 	// flag - particle drawn or not
-	keepInBoundaries(drawParticles) {
+	keepInBoundaries(drawParticles = true) {
         let { x, y, size} = this;
-
 		const { width, height } = this.canvas;
 
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
 		drawParticles ? (size /= 2) : (size = 0);
 		if (x <= size || x >= width - size) {
-			this.x = x <= size ? size : width - size;
+			x = x <= size ? size : width - size;
 			this.xSpeed *= -1;
 		}
 
@@ -103,7 +102,8 @@ export class Particle {
     if (Math.abs(distance) <= size) {
         [ particle, otherParticle ].forEach(p => {
             for (let speed of [ 'xSpeed', 'ySpeed' ]) {
-                p[ speed ] *= (p[speed] >= 6 ? -0.01 : -1.001);
+                p[ speed ] *= (p[ speed ] >= 6 ? -0.01 : -1.001);
+
 
             }
         });
@@ -139,10 +139,13 @@ export class Particle {
 		if (distance && distance < mouseDistance) {
 			dx /= distance;
 			dy /= distance;
-			const moveAmount = 2;
-			this.x = x + dx * -moveAmount;
+            const moveAmount = 2;
+
+            //TODO check why I need to define this here - something broken elsewhere!
+			this.x = Math.min(Math.max(x + dx * -moveAmount, this.size/2), this.canvas.width-this.size/2);
 			this.y = y + dy * -moveAmount;
-		}
+        }
+
 	}
 }
 //console.timeEnd('particle')
