@@ -4,7 +4,7 @@
 
 
 //TODO change collision!!!!! as now creating polygons with a centerPoint!!!
-// TODO pass individualSize/commonSize!!!
+// TODO pass individualSize/commonSize!!! to switch ONCE depending on usage!!!!
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
 		this.canvas = canvas;
@@ -139,7 +139,7 @@ export class Particle {
 		if (distance && distance < mouseDistance) {
 			dx /= distance;
 			dy /= distance;
-            const moveAmount = 2;
+            const moveAmount =1;// set to 1 to not have this distinct circle
 
             //TODO check why I need to define this here - something broken elsewhere!
 			this.x = Math.min(Math.max(x + dx * -moveAmount, this.size/2), this.canvas.width-this.size/2);

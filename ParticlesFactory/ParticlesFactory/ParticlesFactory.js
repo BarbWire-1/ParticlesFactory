@@ -135,7 +135,8 @@ export class ParticlesFactory {
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
 		const { width, height } = this.#offscreenCanvas;
-		const size = this.particles?.size || 2;
+        const size = this.particles?.size || 2;
+        const randomInBoundary = (dimension) => Math.random() * (dimension - size) + size / 2;
 
 		while (count) {
 			const adjustedFill = this.particles.randomFill
@@ -148,8 +149,8 @@ export class ParticlesFactory {
 					? Math.max(0.2, Math.random()) // the particle gets an individual size!
 					: 1);
 			const { x, y } = {
-				x: Math.random() * (width - size / 2),
-				y: Math.random() * (height - size / 2),
+				x: randomInBoundary(width),
+				y: randomInBoundary(height),
 			};
 
 			this.#particles.push(
