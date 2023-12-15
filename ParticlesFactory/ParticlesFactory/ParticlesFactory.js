@@ -448,8 +448,8 @@ export class ParticlesFactory {
 			const value = this[key];
 			const obj = `
             ${JSON.stringify(key)}:
-                ${JSON.stringify(value)}`;
-			// string representation of the property and its value
+                ${JSON.stringify(value)}`;// string representation of the property and its value
+
 			return obj;
 		});
 
@@ -469,26 +469,3 @@ export class ParticlesFactory {
 
 }
 //console.timeEnd('factory')
-
-// // test throttling on 100ms!!!!
-// function throttle(func, limit) {
-//   let inThrottle;
-//   return function (...args) {
-//     if (!inThrottle) {
-//       func.apply(this, args);
-//       inThrottle = true;
-//       setTimeout(() => {
-//         inThrottle = false;
-//       }, limit);
-//     }
-//   };
-// }
-//
-// // Example usage for updating particle positions
-// const updateParticlePositions = throttle(() => {
-//   // Expensive operation to update particle positions
-//   // ...
-// }, 100); // Adjust limit (in milliseconds) as needed
-//
-// // Call updateParticlePositions whenever needed
-// updateParticlePositions();
