@@ -437,7 +437,7 @@ export class ParticlesFactory {
 	}
 
 	// ONLY IN EXAMPLE TO GET CURRENT STATE FOR CONFIG
-	async savePropsStatus2File() {
+	async saveStatus2File() {
 		// Get all properties (excluding methods and canvasEl) of the current instance
 		const properties = Object.keys(this).filter(
 			(key) =>

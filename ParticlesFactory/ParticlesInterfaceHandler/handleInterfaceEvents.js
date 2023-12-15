@@ -1,7 +1,9 @@
 // TODO change early returns into try/catch?
 
-// The input-elements need to have a data-attribute = "particles-<path.to.attribute>"
+// The input-elements need to have a data-bind = "<path.to.attribute>" like data-bind="main.numParticles"
 // in order to get recognized and validated in here
+
+//The buttons calling an action currently have data-action = "functionName"
 //console.time('handler')
 export function handleInterfaceEvents(el, containerId) {
 	// event-delegation on parent container
@@ -22,8 +24,6 @@ export function handleInterfaceEvents(el, containerId) {
 		const updates = {
 			numParticles: () => el.setNumParticles(value),
 			speed: () => el.setSpeed(),
-			//size:() => el.setParticlesSize(),
-			isFullScreen: () => el.getCanvasSize(),
 			size: () => {
 				if (el.particles.randomSize) el.changeBaseSize(+value);
 			},
@@ -34,10 +34,9 @@ export function handleInterfaceEvents(el, containerId) {
 			if (!el[path[0]]) return; // IF particles or lines are not defined eg
 
 			el[path[0]][path[1]] = value;
-            if (updates[ path[ 1 ] ]) updates[ path[ 1 ] ]();
-             //console.log(path[1],value)
+            if (updates[ path[ 1 ] ]) updates[ path[ 1 ] ]();// call the update function if it exists
 		} else {
-			el[property] = value;
+			el[property] = value;// update the property
 		}
 	}
 
@@ -45,7 +44,7 @@ export function handleInterfaceEvents(el, containerId) {
         const dataAttribute = e.target.dataset?.[ type ]//?.split('-');
         //console.log(dataAttribute)
 		// search for input with corresponding data-attribute
-		if (!dataAttribute  /*|| dataAttribute[0] !== 'particles'*/) return;
+		if (!dataAttribute) return;
 		const path = dataAttribute//[1];
 		return path;
 	}
@@ -79,7 +78,7 @@ export function handleInterfaceEvents(el, containerId) {
 			toggleVisibility: () =>
 				//e.target.nextElementSibling.classList.toggle('visible'),// this would allow opening/closing ALL
 				toggleVisibility(e),
-			// add more callbacks here if needed
+			
 		};
 
 		if (clickAction[dataAction]) clickAction[dataAction]();

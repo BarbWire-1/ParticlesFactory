@@ -134,8 +134,6 @@ export default (function createExample() {
             350
     }
 
-    const config = JSON.parse(JSON.stringify(test));
-    //console.log(config)// that's nice!
 
     //console.timeEnd('load')
 })();
