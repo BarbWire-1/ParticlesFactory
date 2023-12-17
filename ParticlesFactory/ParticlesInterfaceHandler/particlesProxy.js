@@ -8,6 +8,8 @@ const proxies = new WeakMap(); // store new proxies to check for and re-use
 // path and parent as parameters to have access through all levels
 export const particlesProxy = (target, path = '', parent = target) => {
     // TODO change to setters in factory?
+
+    
 	const actions = {
 		'main.numParticles': (value) => parent.updateNumParticles(value),
 		'main.isFullScreen': () => parent.getCanvasSize(),
@@ -56,7 +58,7 @@ export const particlesProxy = (target, path = '', parent = target) => {
 				continue;
 			}
 
-			if (typeof value === 'object' && value !== null) {
+			if (typeof value === 'object' && value !== null ) {
 				const nestedObj = Array.isArray(value)
 					? [...value]
 					: { ...value }; // copy object or array to keep original
@@ -85,7 +87,7 @@ function bindInputElement(path, value) {
 		} else {
 			inputElement.value = +value || value;
 		}
-	} else {
+	} else if(!path.startsWith('config')){
 		console.log(`No input found for ${path}`);
 	}
 }

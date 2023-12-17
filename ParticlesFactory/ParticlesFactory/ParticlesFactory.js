@@ -1,28 +1,8 @@
-//TODO 1.1 update readme - EXCEPTION colors on proxy!!!!!!
-// TODO disable connecting lines from an amount of particles on (1000?) to avoid freezing -else handles up to 50k maybe more
-
-
-// TODO add a max-speed??
-
-// TODO check early returns, add errorHandling, comments, docu, update readme
-// TODO check performance - esp calculating multiple times for structures basing on same coords/results
-
-//TODO combine collisionDetections boundaries/otherParticle
-// better to pass ALL common stuff in constructor of Particle
-
-// private methods don't get inherited to child-classes - so that idea doesn't work :(
-
-//TODO add a helper function: getRatio (used several times)
-
-// TODO unify create and update in a draw
-
-// TODO adjust dist for circle/rects as different pos!!!
-
-
-// TODO1.1.1.1.1 test particles.filter to get otherParticle
-// move helpers to an own utils.js to use wherever needed
 
 import { Particle } from './Particle.js';
+import { config } from './config.js'
+
+
 //console.time('factory')
 export class ParticlesFactory {
 	#ctx;
@@ -34,45 +14,11 @@ export class ParticlesFactory {
 	#throttledUpdate;
 
 	constructor(options) {
-		const config = {
-			canvas: {
-				id: undefined,
-				width: 500,
-				height: 500,
-			},
-			main: {
-				frameRate: 30,
-				numParticles: 100,
-				speed: 0.2,
-				mouseDistance: 100,
-				fillStyle: '#000',
-				isFullScreen: true,
-				isResponsive: true,
-			},
-			particles: {
-				shape: 'circle',
-				fillStyle: '#ff0000',
-				randomFill: true,
-				noFill: false,
-				stroke: true,
-				size: 2,
-				randomSize: true,
-				draw: true,
-				collision: false,
-				opacity: 1,
-			},
-			lines: {
-				connectDistance: 100,
-				strokeStyle: '#ffffff',
-				draw: true,
-				lineWidth: 0.5,
-				opacity: 1,
-			},
-		};
 
-		if (options) {
-			// create the objects by merging
-			// allows to instantiate with default values when only the object-name itself is passed as arg
+       this.config = config;
+        if (options) {
+
+			// merge defaults from config and passed options
 			for (const key in options) {
 				if (key) {
 					this[key] = Object.preventExtensions({
@@ -127,31 +73,37 @@ export class ParticlesFactory {
 		});
 		//}
 	};
-	#randomHex = () => {
+	#randomHex(){
 		let number = (Math.random() * 0xffffff) >> 0;
 		return '#' + number.toString(16).padStart(6, '0');
-	};
+    };
+    #randomCoords(width, height, size) {
+return {
+			x: Math.random() * (width - size / 2),
+			y: Math.random() * (height - size / 2),
+		};
+    }
+    #randomSize(size) {
+        return size * Math.max(0.2, Math.random());
+    }
 
 	// initial creation
 	#createParticles(count = this.main.numParticles) {
 		const { width, height } = this.#offscreenCanvas;
         const size = this.particles?.size || 2;
-        const randomInBoundary = (dimension) => Math.random() * (dimension - size) + size / 2;
 
-		while (count) {
-			const adjustedFill = this.particles.randomFill
-				? this.#randomHex() // the particle gets an individual fill!
-				: this.particles.fillStyle;
+        let adjustedFill = this.particles?.fillStyle;
+        let adjustedSize = size;
 
-			const adjustedSize =
-				size *
-				(this.particles.randomSize
-					? Math.max(0.2, Math.random()) // the particle gets an individual size!
-					: 1);
-			const { x, y } = {
-				x: randomInBoundary(width),
-				y: randomInBoundary(height),
-			};
+        while (count) {
+
+            if (this.particles?.randomFill)
+                adjustedFill = this.#randomHex(); // individual fill
+
+            if (this.particles?.randomSize)
+                adjustedSize = this.#randomSize(size);// individual size (relative)
+
+            const { x, y } = this.#randomCoords(width, height, size);
 
 			this.#particles.push(
 				new Particle(
@@ -161,23 +113,21 @@ export class ParticlesFactory {
 					adjustedSize,
 					this.main.speed,
 					adjustedFill,
-					this.particles.shape
+					this.particles?.shape
 				)
 			);
 			count--;
 		}
 	}
 
-	// get the calculated canvas diminsions and update particles coords accordingly
+	// update particles coords in relation to screen dimensions
 	getCanvasSize = () => {
 
 		const { width, height, prevDimensions } = this.#calculateCanvasSize();
-
 		this.#setCanvasSize(width, height);
 
 		if (this.main.isResponsive) {
-            this.#updateParticleCoords(width, height, prevDimensions);
-            //console.log('recalculate particles')
+            this.#updatePosOnResize(width, height, prevDimensions);
         }
         //console.log('resizing')
 
@@ -212,31 +162,23 @@ export class ParticlesFactory {
 	}
 
 	// update particles coords by maintaining prev RELATIVE position
-	#updateParticleCoords(width, height, prevDimensions) {
+	#updatePosOnResize(width, height, prevDimensions) {
 		const dWidth = width / prevDimensions.width;
 		const dHeight = height / prevDimensions.height;
 
         this.#particles.forEach((particle) => {
 
-            //this.#offscreenCtx.translate(particle.x *= dWidth, particle.y *= dHeight)
 			particle.x *= dWidth;
             particle.y *= dHeight;
-
 
 		});
 	}
 
-	//     getRatio(attribute, newValue, oldValue) {
-	//         const ratio = newValue / oldValue;
-	//         attribute *= ratio;
-	//         oldValue = newValue;
-	//
-	//     }
+
 	// update randomSize relative on each particle IF randomSize
 	// in handleInterface... handled currently
 	changeBaseSize(newBaseSize) {
 		const scaleFactor = newBaseSize / this.#originalBaseSize;
-		//console.log(scaleFactor)
 
 		this.#particles.forEach((particle) => {
 			particle.size *= scaleFactor;
@@ -278,8 +220,9 @@ export class ParticlesFactory {
 			randomSize,
 			size,
 			shape,
-		} = this.particles;
-		//console.log(stroke)
+        } = this.particles;
+
+
 		const strokeStyle = stroke ? this.lines.strokeStyle : undefined;
 		const ctx = this.#offscreenCtx;
 
@@ -333,7 +276,7 @@ export class ParticlesFactory {
 					otherParticle,
 					distance
 				);
-           // console.log(randomSize)
+
             this.particles?.collision &&
                 particle.particlesCollision(randomSize, commonSize, particle, otherParticle, distance);
 
@@ -363,7 +306,7 @@ export class ParticlesFactory {
 			ctx.strokeStyle = strokeStyle;
 			ctx.lineWidth = lineWidth;
 			ctx.globalAlpha = opacity;
-			 ctx.stroke();
+			ctx.stroke();
 		}
 	}
 	changeColorMode() {
