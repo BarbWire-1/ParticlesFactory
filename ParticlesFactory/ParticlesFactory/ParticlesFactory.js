@@ -1,7 +1,5 @@
-
 import { Particle } from './Particle.js';
-import { config } from './config.js'
-
+import { config } from './config.js';
 
 //console.time('factory')
 export class ParticlesFactory {
@@ -14,10 +12,8 @@ export class ParticlesFactory {
 	#throttledUpdate;
 
 	constructor(options) {
-
-       this.config = config;
-        if (options) {
-
+		this.config = config;
+		if (options) {
 			// merge defaults from config and passed options
 			for (const key in options) {
 				if (key) {
@@ -56,81 +52,77 @@ export class ParticlesFactory {
 		this.getCanvasSize();
 	}
 
-	#initListeners = () => {
+	#initListeners() {
 		this.canvasEl.addEventListener('pointermove', (event) => {
 			this.#particles.forEach((particle) => {
 				particle.handleMouseMove(event, this.main.mouseDistance);
 			});
 		});
 
-		// if (this.main.isFullScreen) {
-        window.addEventListener('resize', () => {
-
-            if (!this.main.isFullScreen ) return;
-            this.getCanvasSize();
-            this.#updateCanvas();// call update to byPass throttling
-
+		window.addEventListener('resize', () => {
+			if (!this.main.isFullScreen) return;
+			this.getCanvasSize();
+			this.#updateCanvas(); // call update to byPass throttling
 		});
-		//}
-	};
-	#randomHex(){
+	}
+	#randomHex() {
 		let number = (Math.random() * 0xffffff) >> 0;
 		return '#' + number.toString(16).padStart(6, '0');
-    };
-    #randomCoords(width, height, size) {
-return {
+	}
+	#randomCoords(width, height, size) {
+		return {
 			x: Math.random() * (width - size / 2),
 			y: Math.random() * (height - size / 2),
 		};
-    }
-    #randomSize(size) {
-        return size * Math.max(0.2, Math.random());
-    }
+	}
+	#randomSize(size) {
+		return size * Math.max(0.2, Math.random());
+	}
 
-	// initial creation
-	#createParticles(count = this.main.numParticles) {
+	#createParticle() {
+		// Generate individual properties for a single particle based on configuration
 		const { width, height } = this.#offscreenCanvas;
-        const size = this.particles?.size || 2;
+		const { size, randomSize, fillStyle, randomFill, shape, draw } =
+			this.particles;
 
-        let adjustedFill = this.particles?.fillStyle;
-        let adjustedSize = size;
+		let adjustedFill = fillStyle;
+		let adjustedSize = size;
+		if (draw) {
+			if (randomFill) adjustedFill = this.#randomHex(); // individual fill
+			if (randomSize) adjustedSize = this.#randomSize(size); // individual size (relative)
+		}
+		const { x, y } = this.#randomCoords(width, height, size);
 
-        while (count) {
+		const particle = new Particle(
+			this.#offscreenCanvas,
+			x,
+			y,
+			adjustedSize,
+			this.main.speed,
+			adjustedFill,
+			shape
+		);
 
-            if (this.particles?.randomFill)
-                adjustedFill = this.#randomHex(); // individual fill
+		return particle;
+	}
 
-            if (this.particles?.randomSize)
-                adjustedSize = this.#randomSize(size);// individual size (relative)
-
-            const { x, y } = this.#randomCoords(width, height, size);
-
-			this.#particles.push(
-				new Particle(
-					this.#offscreenCanvas,
-					x,
-					y,
-					adjustedSize,
-					this.main.speed,
-					adjustedFill,
-					this.particles?.shape
-				)
-			);
+	#createParticles(count = this.main.numParticles) {
+		while (count) {
+			this.#particles.push(this.#createParticle());
 			count--;
 		}
+		//console.log(this.#particles);
 	}
 
 	// update particles coords in relation to screen dimensions
 	getCanvasSize = () => {
-
 		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 		this.#setCanvasSize(width, height);
 
 		if (this.main.isResponsive) {
-            this.#updatePosOnResize(width, height, prevDimensions);
-        }
-        //console.log('resizing')
-
+			this.#updatePosOnResize(width, height, prevDimensions);
+		}
+		//console.log('resizing')
 	};
 
 	// get the canvas size depending on flags and device-dimensions
@@ -166,14 +158,11 @@ return {
 		const dWidth = width / prevDimensions.width;
 		const dHeight = height / prevDimensions.height;
 
-        this.#particles.forEach((particle) => {
-
+		this.#particles.forEach((particle) => {
 			particle.x *= dWidth;
-            particle.y *= dHeight;
-
+			particle.y *= dHeight;
 		});
 	}
-
 
 	// update randomSize relative on each particle IF randomSize
 	// in handleInterface... handled currently
@@ -220,8 +209,7 @@ return {
 			randomSize,
 			size,
 			shape,
-        } = this.particles;
-
+		} = this.particles;
 
 		const strokeStyle = stroke ? this.lines.strokeStyle : undefined;
 		const ctx = this.#offscreenCtx;
@@ -234,9 +222,9 @@ return {
 
 		this.#particles.forEach((particle, i) => {
 			particle.updateCoords(drawParticles); // boolean/flag - needed for translating IF drawn
-            //ctx.beginPath();
+			//ctx.beginPath();
 
-             ((this.lines.draw && +this.lines.connectDistance) || collision) &&
+			((this.lines.draw && +this.lines.connectDistance) || collision) &&
 				this.#handleLinesAndCollision(particle, i, len); // loop over otherParticle
 			if (drawParticles) {
 				let adjustedFillStyle = noFill
@@ -246,16 +234,16 @@ return {
 					: fillStyle; // default
 
 				particle.drawParticle(
-					ctx,
 					adjustedFillStyle,
 					opacity,
 					randomSize ? particle.size : size,
 					shape,
 					strokeStyle
 				);
-            }
 
-        });
+
+			}
+		});
 
 		this.#renderOffscreenCanvas();
 	}
@@ -267,9 +255,9 @@ return {
 			const otherParticle = this.#particles[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-            const { randomSize, size: commonSize } = this.particles
+			const { randomSize, size: commonSize } = this.particles;
 
-            this.lines?.draw &&
+			this.lines?.draw &&
 				this.#drawLine(
 					this.#offscreenCtx,
 					particle,
@@ -277,10 +265,14 @@ return {
 					distance
 				);
 
-            this.particles?.collision &&
-                particle.particlesCollision(randomSize, commonSize, particle, otherParticle, distance);
-
-
+			this.particles?.collision &&
+				particle.particlesCollision(
+					randomSize,
+					commonSize,
+					particle,
+					otherParticle,
+					distance
+				);
 		}
 	}
 
@@ -310,7 +302,9 @@ return {
 		}
 	}
 	changeColorMode() {
-		this.#particles.forEach((p) => (p.fillStyle = this.particles.fillstyle));
+		this.#particles.forEach(
+			(p) => (p.fillStyle = this.particles.fillstyle)
+		);
 	}
 
 	// update on changes
@@ -391,7 +385,7 @@ return {
 			const value = this[key];
 			const obj = `
             ${JSON.stringify(key)}:
-                ${JSON.stringify(value)}`;// string representation of the property and its value
+                ${JSON.stringify(value)}`; // string representation of the property and its value
 
 			return obj;
 		});
@@ -408,7 +402,6 @@ return {
 		link.href = url;
 		link.download = 'particles-factory-config.json';
 		link.click();
-    }
-
+	}
 }
 //console.timeEnd('factory')

@@ -1,42 +1,38 @@
-// As drawing to an offscreenCanvas which is a private member of the  "factory"-instance,
-// the CONTEXT now gets passed as argument in called methods
-//console.time('particle')
 
-
-//TODO change collision!!!!! as now creating polygons with a centerPoint!!!
-// TODO pass individualSize/commonSize!!! to switch ONCE depending on usage!!!!
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
-		this.canvas = canvas;
+        this.canvas = canvas;
+        this.context = this.canvas.getContext('2d');
 		this.x = x;
 		this.y = y;
 		this.size = size;
 		this.speed = speed;
-        this.fillStyle = fillStyle;
+		this.fillStyle = fillStyle;
 
 		this.updateSpeed(speed);
 	}
 
-	drawParticle(ctx, fillColor, opacity, size, shape, strokeStyle) {
+    drawParticle(fillColor, opacity, size, shape, strokeStyle) {
+        const ctx = this.context;
 		strokeStyle && (ctx.strokeStyle = strokeStyle); // set strokeStyle if stroke
 		ctx.fillStyle = fillColor; //|| this.fillStyle;
 		ctx.globalAlpha = opacity;
 
 		switch (shape) {
 			case 'circle':
-				this.drawCircle(ctx, size);
+				this.drawCircle(size);
 				break;
 			case 'square':
-				this.drawPolygon(ctx, size, 4, -Math.PI / 4, 1, 'square');
+				this.drawPolygon(size, 4, -Math.PI / 4, 1, 'square');
 				break;
 			case 'rhombus':
-				this.drawPolygon(ctx, size, 4, 0, 2 / 3, 'rhombus');
+				this.drawPolygon(size, 4, 0, 2 / 3, 'rhombus');
 				break;
 			case 'hexagon':
-				this.drawPolygon(ctx, size, 6, 0, 1, 'hexagon');
+				this.drawPolygon( size, 6, 0, 1, 'hexagon');
 				break;
 			case 'triangle':
-				this.drawPolygon(ctx, size, 3, -Math.PI / 2, 1, 'triangle');
+				this.drawPolygon(size, 3, -Math.PI / 2, 1, 'triangle');
 				break;
 			default:
 				break;
@@ -48,13 +44,15 @@ export class Particle {
 		}
 	}
 
-	drawCircle(ctx, size) {
+    drawCircle(size) {
+        const ctx = this.context;
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
 		ctx.fill();
 	}
 
-	drawPolygon(ctx, size, sides, rotate, squeeze) {
+    drawPolygon(size, sides, rotate, squeeze) {
+        const ctx = this.ctx;
 		const angle = (Math.PI * 2) / sides;
 		const radius = size / 2;
 
@@ -77,8 +75,8 @@ export class Particle {
 
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles = true) {
-        let { x, y, size} = this;
-		const { width, height } = this.canvas;
+		let { x, y, size } = this;
+		const { width, height } = this.context;
 
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
 		drawParticles ? (size /= 2) : (size = 0);
@@ -94,21 +92,25 @@ export class Particle {
 	}
 
 	//TODO calc sharing cinetic "energy" ?
-    particlesCollision(randomSize, commonSize, particle, otherParticle, distance) {
+	particlesCollision(
+		randomSize,
+		commonSize,
+		particle,
+		otherParticle,
+		distance
+	) {
+		const size = randomSize
+			? (particle.size + otherParticle.size) / 2
+			: commonSize;
 
-        const size = randomSize ? (particle.size + otherParticle.size) / 2 : commonSize;
-        //console.log(randomSize, size)
-        //const size = (particle.size + otherParticle.size) / (randomSize ? 2 : 1)
-    if (Math.abs(distance) <= size) {
-        [ particle, otherParticle ].forEach(p => {
-            for (let speed of [ 'xSpeed', 'ySpeed' ]) {
-                p[ speed ] *= (p[ speed ] >= 6 ? -0.01 : -1.001);
-
-
-            }
-        });
-    }
-}
+		if (Math.abs(distance) <= size) {
+			[particle, otherParticle].forEach((p) => {
+				for (let speed of ['xSpeed', 'ySpeed']) {
+					p[speed] *= p[speed] >= 6 ? -0.01 : -1.001;
+				}
+			});
+		}
+	}
 
 	updateCoords(drawParticles) {
 		this.size = this.size;
@@ -118,7 +120,6 @@ export class Particle {
 	}
 
 	updateSpeed(speed) {
-		// rondomize speed and direction
 		this.xSpeed = speed * (Math.random() * 2 - 1);
 		this.ySpeed = speed * (Math.random() * 2 - 1);
 	}
@@ -139,13 +140,15 @@ export class Particle {
 		if (distance && distance < mouseDistance) {
 			dx /= distance;
 			dy /= distance;
-            const moveAmount =1;// set to 1 to not have this distinct circle
+			const moveAmount = 1; // set to 1 to not have this distinct circle
 
-            //TODO check why I need to define this here - something broken elsewhere!
-			this.x = Math.min(Math.max(x + dx * -moveAmount, this.size/2), this.canvas.width-this.size/2);
+			//TODO check why I need to define this here - something broken elsewhere!
+			this.x = Math.min(
+				Math.max(x + dx * -moveAmount, this.size / 2),
+				this.canvas.width - this.size / 2
+			);
 			this.y = y + dy * -moveAmount;
-        }
-
+		}
 	}
 }
 //console.timeEnd('particle')
