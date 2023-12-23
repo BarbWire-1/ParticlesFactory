@@ -76,7 +76,7 @@ export class Particle {
 	// flag - particle drawn or not
 	keepInBoundaries(drawParticles = true) {
 		let { x, y, size } = this;
-		const { width, height } = this.context;
+		const { width, height } = this.canvas;
 
 		// adjust to correct prev translating of particles to center when drawn or to 0 if not
 		drawParticles ? (size /= 2) : (size = 0);
