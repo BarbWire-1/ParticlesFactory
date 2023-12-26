@@ -75,6 +75,9 @@ export default (function createExample() {
     //proxy.lines.strokeStyle = '#8F5219';
     // proxy.particles.size = 5;// ok
     // proxy.particles.draw = false;// ok
+    //
+
+    myParticles.main.isFullScreen = false
     //--------------------------------------------------------------------------------------------------
     // unrelated, just to demonstrate how to use particlesFactory as background
     document.getElementById('toggleContent').addEventListener('click', function () {

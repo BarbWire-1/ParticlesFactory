@@ -1,3 +1,5 @@
+// TODO crashed fullSize vs canvasSize and responsiveness
+
 import { Particle } from './Particle.js';
 import { config } from './config.js';
 
@@ -40,7 +42,8 @@ export class ParticlesFactory {
 		this.#setupCanvas();
 		this.#initListeners();
 		this.#createParticles();
-		this.#startAnimation();
+        this.#startAnimation();
+        console.log(this.main.isFullScreen)
 	}
 
 	#setupCanvas() {
@@ -86,7 +89,7 @@ export class ParticlesFactory {
 			this.particles;
 
 		let adjustedFill = fillStyle;
-		let adjustedSize = size;
+		let adjustedSize = size || 2;
 		if (draw) {
 			if (randomFill) adjustedFill = this.#randomHex(); // individual fill
 			if (randomSize) adjustedSize = this.#randomSize(size); // individual size (relative)
@@ -119,10 +122,11 @@ export class ParticlesFactory {
 		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 		this.#setCanvasSize(width, height);
 
+
 		if (this.main.isResponsive) {
-			this.#updatePosOnResize(width, height, prevDimensions);
+			this.#updateParticleCoords(width, height, prevDimensions);
 		}
-		//console.log('resizing')
+		console.log('resizing')
 	};
 
 	// get the canvas size depending on flags and device-dimensions
@@ -148,13 +152,14 @@ export class ParticlesFactory {
 		return { width, height, prevDimensions };
 	}
 
-	#setCanvasSize(width, height) {
+    #setCanvasSize(width, height) {
+        console.log("setting canvas dimensions")
 		this.#offscreenCanvas.width = this.canvasEl.width = width;
 		this.#offscreenCanvas.height = this.canvasEl.height = height;
 	}
 
 	// update particles coords by maintaining prev RELATIVE position
-	#updatePosOnResize(width, height, prevDimensions) {
+	#updateParticleCoords(width, height, prevDimensions) {
 		const dWidth = width / prevDimensions.width;
 		const dHeight = height / prevDimensions.height;
 

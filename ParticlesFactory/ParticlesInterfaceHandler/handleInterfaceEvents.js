@@ -26,7 +26,9 @@ export function handleInterfaceEvents(el, containerId) {
 			speed: () => el.setSpeed(),
 			size: () => {
 				if (el.particles.randomSize) el.changeBaseSize(+value);
-			},
+            },
+            isFullScreen: () => el.getCanvasSize(),
+
 		};
 
 		if (property.includes('.')) {
@@ -42,7 +44,7 @@ export function handleInterfaceEvents(el, containerId) {
 
 	function isValidAttribute(e, type) {
         const dataAttribute = e.target.dataset?.[ type ]//?.split('-');
-        //console.log(dataAttribute)
+
 		// search for input with corresponding data-attribute
 		if (!dataAttribute) return;
 		const path = dataAttribute//[1];
@@ -78,7 +80,7 @@ export function handleInterfaceEvents(el, containerId) {
 			toggleVisibility: () =>
 				//e.target.nextElementSibling.classList.toggle('visible'),// this would allow opening/closing ALL
 				toggleVisibility(e),
-			
+
 		};
 
 		if (clickAction[dataAction]) clickAction[dataAction]();

@@ -9,7 +9,7 @@ const proxies = new WeakMap(); // store new proxies to check for and re-use
 export const particlesProxy = (target, path = '', parent = target) => {
     // TODO change to setters in factory?
 
-    
+
 	const actions = {
 		'main.numParticles': (value) => parent.updateNumParticles(value),
 		'main.isFullScreen': () => parent.getCanvasSize(),
@@ -66,7 +66,8 @@ export const particlesProxy = (target, path = '', parent = target) => {
 			} else {
 				//console.log(fullPath, typeof fullPath)
 				bindInputElement(fullPath, value); // Bind input values for properties
-			}
+            }
+
 		}
 	}
 
@@ -78,7 +79,7 @@ export const particlesProxy = (target, path = '', parent = target) => {
 };
 
 function bindInputElement(path, value) {
-	//console.log(path)
+    console.log({ path })
 	const inputElement = document.querySelector(`[data-bind="${path}"]`);
 
 	if (inputElement) {
@@ -86,7 +87,8 @@ function bindInputElement(path, value) {
 			inputElement.checked = value;
 		} else {
 			inputElement.value = +value || value;
-		}
+        }
+
 	} else if(!path.startsWith('config')){
 		console.log(`No input found for ${path}`);
 	}
