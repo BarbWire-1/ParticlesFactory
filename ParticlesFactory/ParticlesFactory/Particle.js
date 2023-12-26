@@ -17,46 +17,46 @@ export class Particle {
 		strokeStyle && (ctx.strokeStyle = strokeStyle); // set strokeStyle if stroke
 		ctx.fillStyle = fillColor; //|| this.fillStyle;
 		ctx.globalAlpha = opacity;
-
+        ctx.beginPath();
 		switch (shape) {
 			case 'circle':
-				this.drawCircle(size);
+				this.createCircle(ctx,size);
 				break;
 			case 'square':
-				this.drawPolygon(size, 4, -Math.PI / 4, 1, 'square');
+				this.createPolygon(ctx,size, 4, -Math.PI / 4, 1, 'square');
 				break;
 			case 'rhombus':
-				this.drawPolygon(size, 4, 0, 2 / 3, 'rhombus');
+				this.createPolygon(ctx,size, 4, 0, 2 / 3, 'rhombus');
 				break;
 			case 'hexagon':
-				this.drawPolygon( size, 6, 0, 1, 'hexagon');
+				this.createPolygon( ctx,size, 6, 0, 1, 'hexagon');
 				break;
 			case 'triangle':
-				this.drawPolygon(size, 3, -Math.PI / 2, 1, 'triangle');
+				this.createPolygon(ctx,size, 3, -Math.PI / 2, 1, 'triangle');
 				break;
 			default:
 				break;
 		}
-
+ctx.fill();
 		if (strokeStyle) {
 			ctx.strokeStyle = strokeStyle;
 			ctx.stroke();
 		}
 	}
 
-    drawCircle(size) {
-        const ctx = this.context;
-		ctx.beginPath();
+    createCircle(ctx,size) {
+
+
 		ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
-		ctx.fill();
+
 	}
 
-    drawPolygon(size, sides, rotate, squeeze) {
-        const ctx = this.ctx;
+    createPolygon(ctx,size, sides, rotate, squeeze) {
+
 		const angle = (Math.PI * 2) / sides;
 		const radius = size / 2;
 
-		ctx.beginPath();
+
 		ctx.moveTo(
 			this.x + radius * Math.cos(rotate),
 			this.y + radius * Math.sin(rotate * squeeze)
@@ -70,7 +70,7 @@ export class Particle {
 		}
 
 		ctx.closePath();
-		ctx.fill();
+
 	}
 
 	// flag - particle drawn or not
