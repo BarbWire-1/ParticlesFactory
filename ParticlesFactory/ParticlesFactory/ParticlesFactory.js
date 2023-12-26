@@ -1,4 +1,5 @@
 // TODO crashed responsiveness
+// TODO crashed mouseRadius on resize to small as repositioning inside boundaries.
 
 import { Particle } from './Particle.js';
 import { config } from './config.js';
@@ -42,8 +43,8 @@ export class ParticlesFactory {
 		this.#setupCanvas();
 		this.#initListeners();
 		this.#createParticles();
-        this.#startAnimation();
-        console.log(this.main.isFullScreen)
+		this.#startAnimation();
+		console.log(this.main.isFullScreen);
 	}
 
 	#setupCanvas() {
@@ -122,11 +123,10 @@ export class ParticlesFactory {
 		const { width, height, prevDimensions } = this.#calculateCanvasSize();
 		this.#setCanvasSize(width, height);
 
-
 		if (this.main.isResponsive) {
 			this.#updateParticleCoords(width, height, prevDimensions);
 		}
-		console.log('resizing')
+		//console.log('resizing');
 	};
 
 	// get the canvas size depending on flags and device-dimensions
@@ -152,8 +152,8 @@ export class ParticlesFactory {
 		return { width, height, prevDimensions };
 	}
 
-    #setCanvasSize(width, height) {
-        console.log("setting canvas dimensions")
+	#setCanvasSize(width, height) {
+		//console.log('setting canvas dimensions');
 		this.#offscreenCanvas.width = this.canvasEl.width = width;
 		this.#offscreenCanvas.height = this.canvasEl.height = height;
 	}
@@ -337,11 +337,16 @@ export class ParticlesFactory {
 		this.numParticles = this.#particles.length;
 	}
 
+	toggleDimensions() {
+		this.main.isFullScreen = !this.main.isFullScreen; // Toggling the value
+		this.getCanvasSize();
+	}
+
 	// ANIMATION
 	// Throttle function to control the execution rate of a function
 	#throttle(func) {
-        let inThrottle;
-        const FPS = Math.min(this.main.frameRate, 60)
+		let inThrottle;
+		const FPS = Math.min(this.main.frameRate, 60);
 
 		return function () {
 			const context = this;
@@ -349,10 +354,7 @@ export class ParticlesFactory {
 				//console.log(inThrottle, this.main.frameRate)
 				func.apply(context, arguments);
 				inThrottle = true;
-				setTimeout(
-					() => (inThrottle = false),
-					1000 / FPS
-				);
+				setTimeout(() => (inThrottle = false), 1000 / FPS);
 			}
 		};
 	}

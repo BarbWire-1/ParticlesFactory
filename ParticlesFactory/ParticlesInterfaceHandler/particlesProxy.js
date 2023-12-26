@@ -79,7 +79,7 @@ export const particlesProxy = (target, path = '', parent = target) => {
 };
 
 function bindInputElement(path, value) {
-    console.log({ path })
+    //console.log({ path })
 	const inputElement = document.querySelector(`[data-bind="${path}"]`);
 
 	if (inputElement) {
