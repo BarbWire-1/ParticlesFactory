@@ -1,4 +1,4 @@
-// TODO crashed fullSize vs canvasSize and responsiveness
+// TODO crashed responsiveness
 
 import { Particle } from './Particle.js';
 import { config } from './config.js';
