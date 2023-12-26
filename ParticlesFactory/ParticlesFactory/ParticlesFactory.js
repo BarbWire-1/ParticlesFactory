@@ -335,7 +335,8 @@ export class ParticlesFactory {
 	// ANIMATION
 	// Throttle function to control the execution rate of a function
 	#throttle(func) {
-		let inThrottle;
+        let inThrottle;
+        const FPS = Math.min(this.main.frameRate, 60)
 
 		return function () {
 			const context = this;
@@ -345,7 +346,7 @@ export class ParticlesFactory {
 				inThrottle = true;
 				setTimeout(
 					() => (inThrottle = false),
-					1000 / this.main.frameRate
+					1000 / FPS
 				);
 			}
 		};
