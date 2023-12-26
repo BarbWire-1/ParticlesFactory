@@ -1,8 +1,7 @@
-
 export class Particle {
 	constructor(canvas, x, y, size, speed, fillStyle) {
-        this.canvas = canvas;
-        this.context = this.canvas.getContext('2d');
+		this.canvas = canvas;
+		this.context = this.canvas.getContext('2d');
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -12,50 +11,45 @@ export class Particle {
 		this.updateSpeed(speed);
 	}
 
-    drawParticle(fillColor, opacity, size, shape, strokeStyle) {
-        const ctx = this.context;
+	drawParticle(fillColor, opacity, size, shape, strokeStyle) {
+		const ctx = this.context;
 		strokeStyle && (ctx.strokeStyle = strokeStyle); // set strokeStyle if stroke
 		ctx.fillStyle = fillColor; //|| this.fillStyle;
 		ctx.globalAlpha = opacity;
-        ctx.beginPath();
+		ctx.beginPath();
 		switch (shape) {
 			case 'circle':
-				this.createCircle(ctx,size);
+				this.createCircle(ctx, size);
 				break;
 			case 'square':
-				this.createPolygon(ctx,size, 4, -Math.PI / 4, 1, 'square');
+				this.createPolygon(ctx, size, 4, -Math.PI / 4, 1, 'square');
 				break;
 			case 'rhombus':
-				this.createPolygon(ctx,size, 4, 0, 2 / 3, 'rhombus');
+				this.createPolygon(ctx, size, 4, 0, 2 / 3, 'rhombus');
 				break;
 			case 'hexagon':
-				this.createPolygon( ctx,size, 6, 0, 1, 'hexagon');
+				this.createPolygon(ctx, size, 6, 0, 1, 'hexagon');
 				break;
 			case 'triangle':
-				this.createPolygon(ctx,size, 3, -Math.PI / 2, 1, 'triangle');
+				this.createPolygon(ctx, size, 3, -Math.PI / 2, 1, 'triangle');
 				break;
 			default:
 				break;
 		}
-ctx.fill();
+		ctx.fill();
 		if (strokeStyle) {
 			ctx.strokeStyle = strokeStyle;
 			ctx.stroke();
 		}
 	}
 
-    createCircle(ctx,size) {
-
-
+	createCircle(ctx, size) {
 		ctx.arc(this.x, this.y, size / 2, 0, Math.PI * 2);
-
 	}
 
-    createPolygon(ctx,size, sides, rotate, squeeze) {
-
+	createPolygon(ctx, size, sides, rotate, squeeze) {
 		const angle = (Math.PI * 2) / sides;
 		const radius = size / 2;
-
 
 		ctx.moveTo(
 			this.x + radius * Math.cos(rotate),
@@ -70,7 +64,6 @@ ctx.fill();
 		}
 
 		ctx.closePath();
-
 	}
 
 	// flag - particle drawn or not
