@@ -12,7 +12,7 @@ export class ParticlesFactory {
 	#throttledUpdate;
 
 	constructor(options) {
-		this.config = config;
+		//this.config = config;
 		if (options) {
 			// merge defaults from config and passed options
 			for (const key in options) {
@@ -374,34 +374,31 @@ export class ParticlesFactory {
 	}
 
 	// ONLY IN EXAMPLE TO GET CURRENT STATE FOR CONFIG
-	async savePropsStatus2File() {
-		// Get all properties (excluding methods and canvasEl) of the current instance
-		const properties = Object.keys(this).filter(
-			(key) =>
-				typeof this[key] !== 'function' && this[key] !== this.canvasEl
-		);
+async savePropsStatus2File() {
+    const properties = Object.keys(this).filter(
+        (key) =>
+            typeof this[key] !== 'function' && this[key] !== this.canvasEl
+    );
 
-		const propertyValues = properties.map((key) => {
-			const value = this[key];
-			const obj = `
-            ${JSON.stringify(key)}:
-                ${JSON.stringify(value)}`; // string representation of the property and its value
+    const propertyValues = properties.map((key) => {
+        const value = this[key];
+        const obj = `${JSON.stringify(key)}: ${JSON.stringify(value, null, 4).replace(/\n/g, '\n    ')}`; // string representation of the property and its value
 
-			return obj;
-		});
+        return obj;
+    });
 
-		// convert to formatted string
-		const propertiesText = `{
-            ${propertyValues.join(', \n')}
-    }`;
+    const propertiesText = `{
+    ${propertyValues.join(',\n    ')}
+}`;
 
-		// BLOB
-		const blob = new Blob([propertiesText], { type: 'JSON' });
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = 'particles-factory-config.json';
-		link.click();
-	}
+    const blob = new Blob([propertiesText], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'particles-factory-config.json';
+    link.click();
+}
+
+
 }
 //console.timeEnd('factory')
