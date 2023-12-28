@@ -133,14 +133,15 @@ export class ParticlesFactory {
 	// need to use available(!) screen for mobiles
 	#calculateCanvasSize() {
 		const { innerWidth, innerHeight } = window;
-		const { availWidth, availHeight } = screen;
-		const isMobile = innerWidth < 750;
+		// const { availWidth, availHeight } = screen;
+		// const isMobile = innerWidth < 750;
 
 		const isFullScreen = this.main.isFullScreen;
 
-		const sWidth = isMobile ? availWidth : innerWidth;
-		const sHeight = isMobile ? availHeight : innerHeight;
-
+		// const sWidth = isMobile ? availWidth : innerWidth;
+		// const sHeight = isMobile ? availHeight : innerHeight;
+        const sWidth = innerWidth;
+        const sHeight= innerHeight;
 		const width = isFullScreen ? sWidth : this.canvas.width;
 		const height = isFullScreen ? sHeight : this.canvas.height;
 

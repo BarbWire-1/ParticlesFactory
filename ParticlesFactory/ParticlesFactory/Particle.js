@@ -121,13 +121,15 @@ export class Particle {
 	handleMouseMove(event, mouseDistance) {
 		if (!+mouseDistance) return; // need number here to use as bool!!!
 		const mouseX = event.clientX;
-		const mouseY = event.clientY;
+        const mouseY = event.clientY;
+        console.log(mouseX,this.canvas.getBoundingClientRect())
+
 
 		//console.log(mouseDistance,'listening for mouse')
 		const { x, y } = this;
 		let dx = mouseX - x;
 		let dy = mouseY - y;
-
+ //console.log(dx,dy)
 		const distance = Math.sqrt(dx * dx + dy * dy);
 
 		if (distance && distance < mouseDistance) {
@@ -135,12 +137,14 @@ export class Particle {
 			dy /= distance;
 			const moveAmount = 1; // set to 1 to not have this distinct circle
 
-			//TODO check why I need to define this here - something broken elsewhere!
 			this.x = Math.min(
 				Math.max(x + dx * -moveAmount, this.size / 2),
 				this.canvas.width - this.size / 2
-			);
-			this.y = y + dy * -moveAmount;
+			) // WHY do I need this here??
+			//this.x = x + dx * -moveAmount;
+			this.y =  Math.min(Math.max(y + dy * -moveAmount, this.size / 2),
+				this.canvas.width - this.size / 2
+			)
 		}
 	}
 }
