@@ -110,7 +110,8 @@ export class Particle {
 		this.y += this.ySpeed;
 	}
 
-	updateSpeed(speed) {
+    updateSpeed(speed) {
+        
 		// rondomize speed and direction
 		this.xSpeed = speed * (Math.random() * 2 - 1);
 		this.ySpeed = speed * (Math.random() * 2 - 1);

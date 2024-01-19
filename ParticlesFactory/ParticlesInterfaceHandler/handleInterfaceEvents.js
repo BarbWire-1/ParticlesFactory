@@ -23,7 +23,7 @@ export function handleInterfaceEvents(el, containerId) {
 		// attributes which require recalculations
 		const updates = {
 			numParticles: () => el.setNumParticles(value),
-			speed: () => el.setSpeed(),
+			speed: () => el.setSpeed(value),
 			size: () => {
 				if (el.particles.randomSize) el.changeBaseSize(+value);
             },

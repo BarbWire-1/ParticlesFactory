@@ -268,7 +268,9 @@ export class ParticlesFactory {
 	}
 
 	// update on changes
-	setSpeed(newSpeed) {
+    setSpeed(newSpeed) {
+
+        console.log(newSpeed)
 		this.main.speed = newSpeed;
 		this.#particlesObjects.forEach((p) => {
 			p.updateSpeed(newSpeed);
