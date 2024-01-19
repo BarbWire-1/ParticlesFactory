@@ -20,7 +20,7 @@ export default (function createExample() {
         main: {
             numParticles: 150,
             frameRate: 17,
-            speed: 1,
+            speed: .3,
             mouseDistance: 100,
             isFullScreen: true,
             isResponsive: true, // whether to recalculate x,y of particles on resize

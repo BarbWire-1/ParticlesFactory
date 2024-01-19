@@ -263,14 +263,12 @@ export class ParticlesFactory {
 	//-------------------------------------------------------------------UPDATES
 	setColorMode() {
 		this.#particlesObjects.forEach(
-			(p) => (p.fillStyle = this.particles.fillstyle)
+			(p) => (p.fillStyle = this.particles.fillStyle)
 		);
 	}
 
 	// update on changes
     setSpeed(newSpeed) {
-
-        console.log(newSpeed)
 		this.main.speed = newSpeed;
 		this.#particlesObjects.forEach((p) => {
 			p.updateSpeed(newSpeed);
