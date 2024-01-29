@@ -90,10 +90,11 @@ export class Particle {
 		}
 	}
 
-	//TODO calc sharing cinetic "energy" ?
-    particlesCollision(particle, otherParticle, distance) {
-
-    if (Math.abs(distance) < (particle.size + otherParticle.size) / 2) {
+	//TODO calc sharing kinetic "energy" ?
+    particlesCollision(isRandomSize, commonSize, particle, otherParticle, distance) {
+        const dist = isRandomSize ? particle.size + otherParticle.size: 2*commonSize;
+//console.log(particle.size)
+    if (Math.abs(distance) < dist / 2) {
         [ particle, otherParticle ].forEach(p => {
             for (let speed of [ 'xSpeed', 'ySpeed' ]) {
                 p[ speed ] *= (p[speed] >= 6 ? -0.01 : -1.001);
@@ -110,9 +111,8 @@ export class Particle {
 		this.y += this.ySpeed;
 	}
 
-    updateSpeed(speed) {
-        
-		// rondomize speed and direction
+	updateSpeed(speed) {
+		// randomise speed and direction
 		this.xSpeed = speed * (Math.random() * 2 - 1);
 		this.ySpeed = speed * (Math.random() * 2 - 1);
 	}

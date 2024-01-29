@@ -268,7 +268,7 @@ export class ParticlesFactory {
 	}
 
 	// update on changes
-    setSpeed(newSpeed) {
+	setSpeed(newSpeed) {
 		this.main.speed = newSpeed;
 		this.#particlesObjects.forEach((p) => {
 			p.updateSpeed(newSpeed);
@@ -328,7 +328,7 @@ export class ParticlesFactory {
 			const otherParticle = this.#particlesObjects[j];
 			const distance = this.#getDistance(particle, otherParticle);
 
-			//const { randomSize, size: commonSize } = this.particles;
+			const { randomSize: isRandomSize, size: commonSize } = this.particles;
 
 			this.lines?.draw &&
 				this.#drawLine(
@@ -340,8 +340,8 @@ export class ParticlesFactory {
 
 			this.particles?.collision &&
 				particle.particlesCollision(
-					//randomSize,
-					//commonSize,
+					isRandomSize,
+					commonSize,
 					particle,
 					otherParticle,
 					distance
@@ -388,6 +388,9 @@ export class ParticlesFactory {
 			this.#startAnimation();
 		}
 	}
+
+
+
 // ONLY IN EXAMPLE TO GET CURRENT STATE FOR CONFIG
 	async savePropsStatus2File() {
 		const properties = Object.keys(this).filter(

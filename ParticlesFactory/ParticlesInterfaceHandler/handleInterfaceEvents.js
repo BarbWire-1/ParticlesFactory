@@ -25,7 +25,7 @@ export function handleInterfaceEvents(el, containerId) {
 			numParticles: () => el.setNumParticles(value),
 			speed: () => el.setSpeed(value),
 			size: () => {
-				if (el.particles.randomSize) el.changeBaseSize(+value);
+				if (el.particles.randomSize) el.setBaseSize(+value);
             },
             isFullScreen: () => el.getCanvasSize(),
 
