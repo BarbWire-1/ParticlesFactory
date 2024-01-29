@@ -46,13 +46,7 @@ export default (function createExample() {
     "numParticles": 4
 }
 
-
-    const testOptions = JSON.parse(JSON.stringify(options));
-
-
-    //const myParticles = new ParticlesFactory(options);
-    // test object
-    const myParticles = new ParticlesFactory(testOptions);
+    const myParticles = new ParticlesFactory(options);
 
     handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
