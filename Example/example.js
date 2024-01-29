@@ -8,45 +8,44 @@ import {
 
 export default (function createExample() {
 
-//console.time('load')
-    // Initialisation
+    // downloaded config from https://particles-factory.netlify.app/ after having changed the settings
     const options = {
-        canvas: {
-            id: 'my-particles',
-            width: 500,
-            height: 500,
-            // fillStyle: '#000',
-        },
-        main: {
-            numParticles: 150,
-            frameRate: 17,
-            speed: .3,
-            mouseDistance: 100,
-            isFullScreen: true,
-            isResponsive: true, // whether to recalculate x,y of particles on resize
-        },
-        particles: { fillStyle: '#0000ff', opacity: .7, noFill: true, size: 50, draw: true, collision: false, shape: 'circle' }, // optional - with defaults if only "particles"
-        lines: { connectDistance: 100, strokeStyle: '#79d1e6', opacity: 0.5, lineWidth: 1, draw: true }, // optional - with defaults if only "lines"
-    };
+    "canvas": {
+        "id": "my-particles",
+        "width": 500,
+        "height": 500
+    },
+    "main": {
+        "frameRate": 17,
+        "numParticles": 400,
+        "speed": 0.5,
+        "mouseDistance": 100,
+        "fillStyle": "#000",
+        "isFullScreen": true,
+        "isResponsive": true
+    },
+    "particles": {
+        "shape": "square",
+        "fillStyle": "#ff0000",
+        "randomFill": false,
+        "noFill": false,
+        "stroke": false,
+        "size": 8,
+        "randomSize": false,
+        "draw": true,
+        "collision": false,
+        "opacity": 0.7
+    },
+    "lines": {
+        "connectDistance": 80,
+        "strokeStyle": "#f7f7f7",
+        "draw": true,
+        "lineWidth": 1,
+        "opacity": 0.5
+    },
+    "numParticles": 4
+}
 
-    // for testing frame throttling
-    const fullstuff =
-    {
-
-        "canvas":
-            { "id": "my-particles", "width": 500, "height": 500 },
-
-        "main":
-            { "frameRate": 17, "numParticles": 100, "speed": .7, "mouseDistance": 180, "fillStyle": "#000", "isFullScreen": true, "isResponsive": true },
-
-        "particles":
-            { "shape": "circle", "fillStyle": "#0033ff", "randomFill": true, "noFill": false, "stroke": false, "size": 23, "randomSize": true, "draw": true, "collision": false, "opacity": 0.7 },
-
-        "lines":
-            { "connectDistance": 60, "strokeStyle": "#79d1e6", "draw": true, "lineWidth": 1, "opacity": 0.5 },
-
-
-    }
 
     const testOptions = JSON.parse(JSON.stringify(options))
 
