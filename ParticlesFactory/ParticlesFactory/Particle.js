@@ -58,13 +58,13 @@ export class Particle {
 
 		ctx.moveTo(
 			this.x + radius * Math.cos(rotate),
-			this.y + radius * Math.sin(rotate * squeeze)
+			this.y + radius * Math.sin(rotate / squeeze)
 		);
 
 		for (let i = 1; i <= sides; i++) {
 			ctx.lineTo(
 				this.x + radius * Math.cos(angle * i + rotate),
-				this.y + radius * Math.sin(angle * i + rotate) * squeeze
+				this.y + radius * Math.sin(angle * i + rotate) / squeeze
 			);
 		}
 

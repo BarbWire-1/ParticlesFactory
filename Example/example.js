@@ -43,7 +43,7 @@ export default (function createExample() {
         "lineWidth": 1,
         "opacity": 0.5
     },
-    "numParticles": 4
+   
 }
 
     const myParticles = new ParticlesFactory(options);
@@ -111,24 +111,7 @@ export default (function createExample() {
     });
 
 
-    // testing the use of downloaded config
-    const test = {
 
-        "canvas":
-            { "id": "my-particles", "width": 500, "height": 500 },
-
-        "main":
-            { "numParticles": 3200, "speed": 4.7, "mouseDistance": 100, "fillStyle": "#000", "isFullScreen": true, "isResponsive": true },
-
-        "particles":
-            { "shape": "circle", "fillStyle": "#565656", "randomFill": true, "noFill": false, "stroke": true, "size": 60, "randomSize": true, "draw": true, "collision": false, "opacity": 0.7 },
-
-        "lines":
-            { "connectDistance": 60, "strokeStyle": "#3a9862", "draw": false, "lineWidth": 1, "opacity": 0.5 },
-
-        "numParticles":
-            350
-    }
 
 
     //console.timeEnd('load')
