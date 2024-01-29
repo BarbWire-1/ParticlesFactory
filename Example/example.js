@@ -2,7 +2,7 @@ import {
 	ParticlesFactory,
 	handleInterfaceEvents,
     particlesProxy,
-    createElementsFromProperties
+
 } from '../ParticlesFactory/index.js';
 
 
@@ -47,7 +47,7 @@ export default (function createExample() {
 }
 
 
-    const testOptions = JSON.parse(JSON.stringify(options))
+    const testOptions = JSON.parse(JSON.stringify(options));
 
 
     //const myParticles = new ParticlesFactory(options);
