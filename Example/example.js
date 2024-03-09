@@ -16,36 +16,35 @@ export default (function createExample() {
         "height": 500
     },
     "main": {
-        "frameRate": 17,
-        "numParticles": 400,
-        "speed": 0.5,
+        "frameRate": 40,
+        "numParticles": 100,
+        "speed": 1,
         "mouseDistance": 100,
         "fillStyle": "#000",
         "isFullScreen": true,
         "isResponsive": true
     },
     "particles": {
-        "shape": "square",
+        "shape": "circle",
         "fillStyle": "#ff0000",
         "randomFill": false,
         "noFill": false,
         "stroke": false,
-        "size": 8,
-        "randomSize": false,
+        "size": 24,
+        "randomSize": true,
         "draw": true,
-        "collision": false,
-        "opacity": 0.7
+        "collision": true,
+        "opacity": 1
     },
     "lines": {
-        "connectDistance": 80,
+        "connectDistance": 150,
         "strokeStyle": "#f7f7f7",
         "draw": true,
         "lineWidth": 1,
-        "opacity": 0.5
+        "opacity": 0.7
     },
-   
+    "numParticles": 50
 }
-
     const myParticles = new ParticlesFactory(options);
 
     handleInterfaceEvents(myParticles, 'controlPanelContainer');
