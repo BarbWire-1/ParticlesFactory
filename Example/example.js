@@ -27,7 +27,7 @@ export default (function createExample() {
     "particles": {
         "shape": "circle",
         "fillStyle": "#ff0000",
-        "randomFill": false,
+        "randomFill": true,
         "noFill": false,
         "stroke": false,
         "size": 24,
