@@ -1,5 +1,5 @@
 import { Particle } from './Particle.js';
-import { config } from './config.js';
+import { config } from './config.js';// TODO place that in constructor instead?
 // TODO add setters for those properties which need special handling
 // so easier to just set props.
 // TODO create new clean repo - bundle with vite
