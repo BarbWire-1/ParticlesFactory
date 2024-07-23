@@ -11,9 +11,11 @@
 <body>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">  THIS CAUSED 500MS BLOCKING!!!!!!!-->
     <div id="canvas-container">
+
         <!-- <canvas id="canvas" ></canvas> -->
         <canvas id="my-particles" width="500" height="500"></canvas>
     </div>
+    <h1>Here you can explore the different possible settings for the particles-factory</h1>
     <div id="controlPanelContainer">
         <div id="controlPanel" class="controlPanel">
 
@@ -148,7 +150,7 @@
             </div>
             <div id="buttonContainer" class="button-container">
                 <button id="toggleAnimation" data-action="toggleAnimation">Toggle Animation</button>
-                <button id="toggleContent">Toggle Page Content</button>
+                <button id="toggleContent" style="height: 50px">Information and Usage</button>
 
                 <button id="downloadButton">Download Config</button>
 
@@ -165,10 +167,22 @@
     </a>
     <div id="content-container" class="display-toggle">
         <h4 class="description">Use Particles As Interactive Background</h4>
-        <div id="landing">Your Page Content Example
-            <button id="test-button">I'm listening :)</button>
+        <div id="landing">
+            <h2 style="text-align: center">Here you can explore the different possible settings for the particles-factory
+            </h2>
+            <p style="text-align: center; line-height: 1.8">
+                If you like what you see, you can download the object holding the current configuration data and use it for
+                instantiating your own particles background.<br>
+                Check out the following example<a style="display: inline"
+                    href="https://github.com/BarbWire-1/ParticlesFactory/blob/refactor-optionals/Example/example.js"
+                    target="_blank">EXAMPLE INSTANTIATION</a><br>for more details.<br>
+                    You'd only need the ParticlesFactory and instantiate it.<br>Handler and Proxy are for this userInterface.
+            </p>
+
         </div>
+       <!-- <button id="test-button">I'm listening :)</button> -->
     </div>
+
 
     <script type="module" src="./Example/example.js"></script>
 </body>

@@ -209,6 +209,7 @@ h4 {
     color: white;
     font-size: 1em;
     pointer-events: visible;
+    padding: 50px;
     /* this way hovering over the inner div does not interact with the canvas - preferences*/
 }
 
