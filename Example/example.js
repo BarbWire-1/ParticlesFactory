@@ -50,7 +50,7 @@ export default (function createExample() {
     handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
     // for setting dynamically in JS to update corresponding input use the proxy
-    const proxy = particlesProxy(myParticles);
+    //const proxy = particlesProxy(myParticles);
     //createElementsFromProperties(myParticles, 'inputSection')
 
     //console.log(proxy.main.numParticles)

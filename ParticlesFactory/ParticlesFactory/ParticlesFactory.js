@@ -1,5 +1,10 @@
 import { Particle } from './Particle.js';
 import { config } from './config.js';
+// TODO add setters for those properties which need special handling
+// so easier to just set props.
+// TODO create new clean repo - bundle with vite
+// TODO create npm module
+// TODO include min.js in repo
 
 //console.time('factory')
 export class ParticlesFactory {
