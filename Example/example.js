@@ -50,8 +50,8 @@ export default (function createExample() {
     handleInterfaceEvents(myParticles, 'controlPanelContainer');
 
     // for setting dynamically in JS to update corresponding input use the proxy
-    //const proxy = particlesProxy(myParticles);
-    //createElementsFromProperties(myParticles, 'inputSection')
+    const proxy = particlesProxy(myParticles);
+    createElementsFromProperties(myParticles, 'inputSection')
 
     //console.log(proxy.main.numParticles)
     //console.log(myParticles.main.numParticles)
@@ -69,7 +69,7 @@ export default (function createExample() {
     // proxy.particles.draw = false;// ok
     //
 
-    //myParticles.toggleDimensions()
+    myParticles.toggleDimensions()
     //--------------------------------------------------------------------------------------------------
     // unrelated, just to demonstrate how to use particlesFactory as background
     document.getElementById('toggleContent').addEventListener('click', function () {
