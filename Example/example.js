@@ -69,7 +69,7 @@ export default (function createExample() {
     // proxy.particles.draw = false;// ok
     //
 
-    myParticles.toggleDimensions()
+
     //--------------------------------------------------------------------------------------------------
     // unrelated, just to demonstrate how to use particlesFactory as background
     document.getElementById('toggleContent').addEventListener('click', function () {
