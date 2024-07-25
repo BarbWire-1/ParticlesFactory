@@ -1,207 +1,367 @@
 body {
-     background: rgb(0, 0, 0);
-     font-family: Arial;
+    background: rgb(0, 0, 0);
+    font-family: Arial;
+    overflow: hidden;
 }
+
 * {
-     margin: 0;
-     padding: 0;
-     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-#canvas {
-     position: absolute;
-     top: 0;
-     left: 0;
-     width: 100%;
-     height: 100%;
-     /* not sure whether to keep this.... */
-     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" opacity=".5"><path d="M12 2v20m8-8H4m16-8L4 20M4 4l16 16"/></svg>')
-               12 12,
-          auto;
+
+#my-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+    /* width: 100%;
+     height: 100%; */
+    /* not sure whether to keep this.... */
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" opacity=".5"><path d="M12 2v20m8-8H4m16-8L4 20M4 4l16 16"/></svg>') 12 12,
+        auto;
 }
+
+#controlPanel {
+    margin-left: 0 !important;
+}
+
 #controlPanelContainer {
-     position: fixed;
-     top: 0;
-     right: -200px; /* Initially hidden */
-     /*right: 0;*/
-     width: 200px;
-     height: 100%;
-     background-color: #ffffff4d; /* Transparent white */
-     transition: right 0.3s ease;
-     margin-left: 30px;
-     /*overflow: hidden;*/
-     border-radius: 20px 0 0 20px;
-     border-left: 1px solid #ffffff5d;
-     z-index: 999;
+    position: fixed;
+    top: 0;
+    right: -200px;
+    /* Initially hidden */
+    /*right: 0;*/
+    width: 200px;
+    height: 100%;
+    background-color: #312b2ba5;
+    /* Transparent white */
+    transition: right 0.3s ease;
+    margin-left: 0px;
+    /*overflow: hidden;*/
+    border-radius: 20px 0 0 20px;
+    border-left: 1px solid #ffffff5d;
+    z-index: 999;
 }
 
 .controlPanel {
-     height: 100%;
-     display: flex;
-     flex-direction: column;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
-     position: relative;
+    position: relative;
 }
 
 .controlPanelHeader {
-     display: flex;
-     justify-content: flex-start;
-     padding: 30px;
+    display: flex;
+    justify-content: flex-start;
+    padding: 30px;
 
-     position: relative;
+    position: relative;
 }
 
 /*settings and cursor*/
 .toggleButton {
-     position: absolute;
-     left: -150px;
-     background: none !important;
-     border: none !important;
-     font-size: 25px;
-     cursor: pointer;
-     outline: none;
-     color: red !important;
-     text-shadow: 2px 2px 2px black;
-     box-shadow: none;
+    position: absolute;
+    left: -150px;
+    background: none !important;
+    border: none !important;
+    font-size: 25px;
+    cursor: pointer;
+    outline: none;
+    color: red !important;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: none;
 }
 
 .controlPanelContent {
-     padding: 10px;
-     display: flex;
-     flex-direction: column;
-     font-family: Arial, Helvetica, sans-serif;
-     color: white;
-     text-shadow: 2px 2px 2px black;
-     display: none;
-     height: fit-content;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    display: none;
+    height: fit-content;
 }
+
 .controlPanelContent * {
-     margin-top: 10px;
+    margin-top: 10px;
 }
+
 .controlPanelContent input,
 button {
-     box-shadow: 2px 2px 2px #000000b1;
+    box-shadow: 2px 2px 2px #000000b1;
 }
 
 #controlPanelContainer.open {
-     right: 0px;
+    right: 0px;
+    overflow-y: auto;
 }
+
 #controlPanelContainer.open .controlPanelContent {
-     right: 0px;
-     display: flex;
+    right: 0px;
+    display: flex;
 }
 
 #controlPanelContainer.open .toggleButton {
-     left: 5px;
-     position: absolute;
+    left: 5px;
+    position: absolute;
 }
 
-input [type="color"] {
-     padding: 0;
-     margin: 0;
-}
+
 /* Hide the default color picker dropdown arrow */
 input[type="color"]::-webkit-color-swatch-wrapper {
-     height: 50px;
-     width: 56px;
-     left: -5px;
-     position: relative;
+    height: 35px;
+    width: 190px;
+    left: -5px;
+    padding: 0;
+
 }
 
-.controlPanelContent button {
-     margin-top: 50px;
-     position: relative;
-     font-size: 1.1em;
-     height: 40px;
-     background: #fff;
-     color: black;
-     transition: background 0.3s ease, color 0.3s ease;
+input[type="color"]::-webkit-color-swatch {
+
+    border: none;
+    border-bottom: 2px solid #8f8679;
+
+    box-shadow: 2px 2px 2px black;
+
+
 }
 
-.controlPanelContent button:hover {
-     background: #f95050; /* New background color on hover */
-     color: white;
+
+
+
+.button-container button {
+    width: 90%;
+    left: 5%;
+    margin-top: 30px;
+    position: relative;
+    font-size: 1.1em;
+    height: 40px;
+    background: #fff;
+    color: black;
+    transition: background 0.3s ease, color 0.3s ease;
 }
+
+.button-container button:hover {
+    background: #f95050;
+    /* New background color on hover */
+    color: white;
+}
+
 #toggleContent {
-     margin-top: 10px;
+    margin-top: 10px;
 }
+
 
 a {
-     color: white;
-     position: absolute;
-     bottom: 10px;
-     left: 50%;
-     transform: translateX(-50%);
-     font-size: 16px;
-     z-index: 100;
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    z-index: 100;
 }
+
+/* .controlPanelContent input[type="checkbox"] {
+  box-shadow: none;
+} */
 /*-------------------------------------------------------------------------------------------------*/
 #content-container {
-     position: absolute;
-     top: 0;
-     left: 0;
-     width: 100vw;
-     height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 
-     display: none;
-     flex-direction: column;
-     align-items: center;
-     z-index: 100;
-     pointer-events: none;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+    pointer-events: none;
+}
+h3 {
+    text-transform: capitalize;
 }
 h4 {
-     margin-top: 50px;
-     font-size: 2em;
-     color: white;
+    margin-top: 50px;
+    font-size: 2em;
+    color: white;
 }
 
 #landing {
-     position: absolute;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: space-around;
-     top: 50%;
-     transform: translateY(-50%);
-     width: clamp(300px, 50vw, 750px);
-     height: clamp(240px, 40vw, 600px);
-     background-color: #000000e0;
-     box-shadow: 15px 15px 15px #ffffff33;
-     border-radius: 50px;
-     border: 1px solid white;
-     color: white;
-     font-size: 1em;
-     pointer-events: visible; /* this way hovering over the inner div does not interact with the canvas - preferences*/
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(300px, 50vw, 750px);
+    height: clamp(240px, 40vw, 600px);
+    background-color: #000000e0;
+    box-shadow: 15px 15px 15px #ffffff33;
+    border-radius: 50px;
+    border: 1px solid white;
+    color: white;
+    font-size: 1em;
+    pointer-events: visible;
+    padding: 50px;
+    /* this way hovering over the inner div does not interact with the canvas - preferences*/
 }
+
 #landing button {
-     transform: scale(1.5);
-     padding: 3px 6px;
-     border: radius 5px;
-     cursor: pointer;
-     pointer-events:all;
+    transform: scale(1.5);
+    padding: 3px 6px;
+    border: radius 5px;
+    cursor: pointer;
+    pointer-events: all;
 }
+
 #landing button:hover {
-     background: #f95050; /* New background color on hover */
-     color: white;
+    background: #f95050;
+    /* New background color on hover */
+    color: white;
 }
 
 /* Single class for toggling display */
 .display-toggle {
-     display: none !important;
+    display: none !important;
 }
+
 .display-toggle.show {
-     display: flex !important;
-     flex-direction: column !important;
-     justify-items: center;
-     align-items: center;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-items: center;
+    align-items: center;
 }
 
 button {
-     cursor: pointer;
+    cursor: pointer;
 }
 
-#checkbox-container {
+/* .checkbox-container {
     margin-top: 25px;
+} */
+.checkbox-container * {
+    margin-top: 10px;
 }
-#checkbox-container * {
-    margin-top: 20px;
+
+hr {
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 2px black;
 }
+
+label {
+    font-size: 0.8em
+}
+
+
+/* Initially hide the elements under h3 */
+.controlPanelContent h3+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+/* Style to show elements when not collapsed */
+.controlPanelContent h3+.inputContainer.visible {
+    max-height: 1000px;
+    /*must be set to make transition work!*/
+    transition: max-height 0.4s ease;
+}
+
+
+input {
+    background: transparent;
+    border: none;
+
+    border-bottom: 2px solid #8f8679;
+
+    color: white;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 2px black;
+    outline: none;
+    box-shadow: 2px 2px 2px black;
+}
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: inner-spin-button;
+    opacity: 1;
+}
+
+
+
+hr {
+    border: none;
+    height: 2px;
+    background-color: #8f8679;
+}
+
+
+
+/* custom checkbox */
+/*
+[type="checkbox"] {
+  position: relative;
+  left: 30px;
+
+  z-index: 0;
+
+
+  -webkit-appearance: none;
+}
+[type="checkbox"] + label {
+    top: 15px;
+  position: relative;
+  display: block;
+  cursor: pointer;
+  line-height: 1.75;
+  padding-left:3em;
+  position: relative;
+  margin-top: -2.75em;
+
+}
+[type="checkbox"] + label:before {
+  width: 2.5em;
+  height: 1.5em;
+  border-radius: .75em;
+  border: 1px solid #ddd;
+  background-color: #d2d2d2;
+  content: "";
+  margin-right: 15px;
+  transition: background-color 0.5s linear;
+  z-index: 5;
+  position: absolute;
+  left: 0px;
+}
+[type="checkbox"] + label:after {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: .75em;
+  background-color: #fff;
+  content: "";
+  transition: margin 0.1s linear;
+  box-shadow: 0px 0px 5px #3b3b3b;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  z-index: 10;
+}
+[type="checkbox"]:checked + label:before {
+  background-color: #0389fe;
+}
+[type="checkbox"]:checked + label:after {
+  margin: 0 0 0 1em;
+}
+
+[type="checkbox"].last + label{
+    margin-bottom: 1.15em;
+} */

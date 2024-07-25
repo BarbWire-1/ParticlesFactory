@@ -9,73 +9,180 @@
 </head>
 
 <body>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">  THIS CAUSED 500MS BLOCKING!!!!!!!-->
     <div id="canvas-container">
-        <canvas id="canvas"></canvas>
+
+        <!-- <canvas id="canvas" ></canvas> -->
+        <canvas id="my-particles" width="500" height="500"></canvas>
     </div>
+    <h1>Here you can explore the different possible settings for the particles-factory</h1>
     <div id="controlPanelContainer">
         <div id="controlPanel" class="controlPanel">
+
             <div class="controlPanelHeader">
-                <button id="togglePanel" data-action="particles-togglePanel" class="toggleButton"><span
+                <button id="togglePanel" data-action="togglePanel" class="toggleButton"><span
                         style="color: white">Settings </span>▶</button>
             </div>
-            <div class="controlPanelContent">
-                <label for="num">Number of Particles:</label>
-                <input data-attribute="particles-numParticles" type="number" id="num" value="200" min="50" max="10000"
-                    step="50">
 
-                <label for="size">Particles Size:</label>
-                <input data-attribute="particles-particlesSize" type="number" id="size" value="2" min="1" max="10"
-                    step="1">
+            <div id="inputSection" class="controlPanelContent">
 
-                <label for="speed">Speed:</label>
-                <input data-attribute="particles-speed" type="number" id="speed" step="0.1" value="0.2" min="0" max="5">
+                <h3>▶ main</h3>
+                <div class="inputContainer" style="display: flex; flex-direction: column; max-height: 1000px">
+                    <!-- show on load -->
+                    <label for="numParticles">Number of Particles:</label>
+                    <input id="numParticles" data-bind="main.numParticles" type="number"  min="0" max="40000"
+                        step="10">
 
-                <label for="pColor">Particles Color:</label>
-                <input data-attribute="particles-particlesColor" type="color" id="particle" value='#E1FF00'>
+                    <label for="frameRate">FrameRate:</label>
+                    <input id="frameRate" data-bind="main.frameRate" type="number" id="frameRate" step="1"
+                        min="1" max="60">
 
-                <label for="stroke">Stroke Color:</label>
-                <input data-attribute="particles-strokeColor" type="color" id="stroke" value="#4f4f4f">
+                    <label for="speed">Speed:</label>
+                    <input id="speed" data-bind="main.speed" type="number" id="speed" step="0.1"min="0.1"
+                        max="5">
 
-                <label for="bg">Fill Color:</label>
-                <input data-attribute="particles-bgColor" type="color" id="bg" value="#000000">
+                    <label for="mouseReactive">Mouse Distance:</label>
+                    <input id="mouseReactive" data-bind="main.mouseDistance" type="number" min="0" max="400"
+                        step="10">
 
-                <label for="connect">Connect Distance:</label>
-                <input data-attribute="particles-connectDistance" type="number" id="connect" value="100" min="0"
-                    max="400" step="50">
 
-                <label for="mouse">Mouse Distance:</label>
-                <input data-attribute="particles-mouseDistance" type="number" id="mouse" value="100" min="0" max="400"
-                    step="50">
+                    <label for="bgFillStyle">Background Color:</label>
+                    <input id="bgFillStyle" data-bind="main.fillStyle" type="color">
+                    <div class="checkbox-container">
 
-                <button id="toggleAnimation" data-action="particles-toggleAnimation">Toggle Animation</button>
-                <button id="toggleContent">Toggle Page Content</button>
-                <div id="checkbox-container">
-                    <label for="particlesFlag">Draw Particles</label>
-                    <input data-attribute="particles-withParticles" type="checkbox" checked>
+                        <input id="isResponsiveFlag" data-bind="main.isResponsive" type="checkbox" >
+                        <label for="isResponsiveFlag">Responsive</label><br>
 
-                    <label for="particlesCollisionFlag">Particles Collision</label>
-                    <input data-attribute="particles-particlesCollision" type="checkbox" checked>
 
-                    <label for="withLinesFlag">Draw Lines</label>
-                    <input data-attribute="particles-withLines" type="checkbox" checked>
+                        <input id="isFullScreenFlag" data-bind="main.isFullScreen" type="checkbox" class="last" >
+                        <label for="isFullScreenFlag">Full Screen</label>
+
+                    </div>
                 </div>
+                <hr>
+
+                <h3 data-action="toggleVisibility">▶ particles</h3>
+                <div class="inputContainer">
+                    <label for="particlesSize">Particles Size:</label>
+                    <input id="particlesSize" data-bind="particles.size" type="number"  min="1" max="100"
+                        step="1">
+
+                    <label for="particlesOpacity">Particles Opacity:</label>
+                    <input id="particlesOpacity" data-bind="particles.opacity" type="number" min="0" max="1" step="0.05"
+                        value="0.7">
+
+                    <label for="particlesFillStyle">Particles Color:</label>
+                    <input id="particlesFillStyle" data-bind="particles.fillStyle" type="color" value='#0033ff'>
+
+
+
+                    <div class="checkbox-container">
+
+                        <label for="particlesShape">Particles Shape</label><br>
+                        <select id="particlesShape" data-bind="particles.shape">
+                            <option value="circle">Circle</option>
+                            <option value="square">Square</option>
+                            <option value="rhombus">Rhombus</option>
+                            <option value="hexagon">Hexagon</option>
+                            <option value="triangle">Triangle</option>
+
+
+                        </select><br><hr>
+
+
+                        <input id="particlesFlag" data-bind="particles.draw" type="checkbox">
+                        <label for="particlesFlag">Draw Particles</label><br>
+
+
+                        <input id="particlesStrokeFlag" data-bind="particles.stroke" type="checkbox">
+                        <label for="particlesStrokeFlag">Draw Stroke</label><br>
+
+                        <input id="particlesTransparency" data-bind="particles.noFill" type="checkbox" >
+                        <label for="particlesTransparency">No Fill</label><br>
+
+
+
+
+                        <input id="particlesCollisionFlag" data-bind="particles.collision" type="checkbox" >
+                        <label for="particlesCollisionFlag">Particles Collision</label><br>
+
+
+                        <input id="particlesRandomSize" data-bind="particles.randomSize" type="checkbox">
+                            <label for="particlesRandomSize">Random Size</label><br>
+
+
+                        <input id="particlesRandomColor" data-bind="particles.randomFill" type="checkbox" class="last">
+                        <label for="particlesRandomColor">Random Fill</label>
+
+                    </div>
+                </div>
+                <hr>
+
+                <h3 data-action="toggleVisibility">▶ lines</h3>
+                <div class="inputContainer">
+
+                    <label for="connectDistance">Connect Distance:</label>
+                    <input id="connectDistance" data-bind="lines.connectDistance" type="number" min="0"
+                        max="400" step="10">
+
+                    <label for="linesStrokeStyle">Stroke Color:</label>
+                    <input id="linesStrokeStyle" data-bind="lines.strokeStyle" type="color" id="stroke" >
+
+                    <label for="linesWidth">Lines Width:</label>
+                    <input id="linesWidth" data-bind="lines.lineWidth" type="number" min="0.1" max="5" step="0.1"
+                       >
+
+                    <label for="linesOpacity">Lines Opacity:</label>
+                    <input id="linesOpacity" data-bind="lines.opacity" type="number" min="0" max="1" step="0.05"
+                        >
+
+                    <div class="checkbox-container">
+
+                        <input id="withLinesFlag" data-bind="lines.draw" type="checkbox" class="last">
+                        <label for="withLinesFlag">Draw Lines</label>
+                    </div>
+
+                </div>
+                <hr>
+
+
+
+            </div>
+            <div id="buttonContainer" class="button-container">
+                <button id="toggleAnimation" data-action="toggleAnimation">Toggle Animation</button>
+                <button id="toggleContent" style="height: 50px">Information and Usage</button>
+
+                <button id="downloadButton">Download Config</button>
+
             </div>
         </div>
     </div>
 
     <!-- Link with text and GitHub icon -->
-    <a href="https://github.com/BarbWire-1/ParticlesFactory" target="_blank" rel="noopener noreferrer">
+    <a href="https://github.com/BarbWire-1/js-particles-factory" target="_blank"
+        rel="noopener noreferrer">
         <i class="fab fa-github"></i>
         Github Repo
 
     </a>
     <div id="content-container" class="display-toggle">
-        <h4 class="description">Use Particles As A Background</h4>
-        <div id="landing">Your Page Content Example
-            <button id="test-button">I'm listening :)</button>
+        <h4 class="description">Use Particles As Interactive Background</h4>
+        <div id="landing">
+            <h2 style="text-align: center">Here you can explore the different possible settings for the particles-factory
+            </h2>
+            <p style="text-align: center; line-height: 1.8">
+                If you like what you see, you can download the object holding the current configuration data and use it for
+                instantiating your own particles background.<br>
+                Check out the following example<a style="display: inline"
+                    href="https://github.com/BarbWire-1/ParticlesFactory/blob/refactor-optionals/Example/example.js"
+                    target="_blank">EXAMPLE INSTANTIATION</a><br>for more details.<br>
+                    You'd only need the ParticlesFactory and instantiate it.<br>Handler and Proxy are for this userInterface.
+            </p>
+
         </div>
+       <!-- <button id="test-button">I'm listening :)</button> -->
     </div>
+
 
     <script type="module" src="./Example/example.js"></script>
 </body>

@@ -1,9 +1,21 @@
 .vscode
-*.txt
 .DS_Store
-.shapes
 
+//working on...
+.shapes
+.refactoring
+reactiveParticlesFactory.js
+testCreateInput.js
+
+// private documentation
+*.txt
+*.odg
+
+
+.ideas
 minify.js
+src
 
 .refactoring
 *odg
+
