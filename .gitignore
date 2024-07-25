@@ -11,6 +11,11 @@ testCreateInput.js
 *.txt
 *.odg
 
+
 .ideas
 minify.js
 src
+
+.refactoring
+*odg
+
