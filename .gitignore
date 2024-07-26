@@ -13,9 +13,17 @@ testCreateInput.js
 
 
 .ideas
+.ParticlesFactory
+.Example
 minify.js
-src
+
 
 .refactoring
 *odg
 
+node_modules
+
+.vscode
+resizing.*
+
+.testCreateInputs.js

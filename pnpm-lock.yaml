@@ -1,0 +1,16 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  js-particles-factory:
+    specifier: ^1.0.6
+    version: 1.0.6
+
+packages:
+
+  /js-particles-factory@1.0.6:
+    resolution: {integrity: sha512-XuoNjkPlwnlnnktmot/jmtLZQw4DBOf8RiVtX6BfTRvbvUhdbJromGKaJpb91H+A3vWoEBQjRn5qbx9VDReidA==}
+    dev: false
