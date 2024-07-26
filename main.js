@@ -1,8 +1,7 @@
 import {
-    ParticlesFactory,
     handleInterfaceEvents,
     particlesProxy,
-} from '../ParticlesFactory/index.js';
+} from './src/ParticlesInterfaceHandler/index.js';
 export default (function createExample() {
     // downloaded config from https://particles-factory.netlify.app/ after having changed the settings
     const options = {
