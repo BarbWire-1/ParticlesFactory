@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Barbara Kälin aka BarbWire",
+  "license": "MIT",
   "dependencies": {
     "js-particles-factory": "^1.0.6"
   }

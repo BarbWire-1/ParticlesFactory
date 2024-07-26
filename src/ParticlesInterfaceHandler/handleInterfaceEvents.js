@@ -1,12 +1,12 @@
-// TODO change early returns into try/catch?
+
 
 // The input-elements need to have a data-bind = "<path.to.attribute>" like data-bind="main.numParticles"
 // in order to get recognized and validated in here
-
 //The buttons calling an action currently have data-action = "functionName"
 //console.time('handler')
+
 export function handleInterfaceEvents(el, containerId) {
-	// event-delegation on parent container
+
 	const container = document.getElementById(containerId);
 
 	// EVENT - CALLBACKS
@@ -38,7 +38,7 @@ export function handleInterfaceEvents(el, containerId) {
 			el[path[0]][path[1]] = value;
             if (updates[ path[ 1 ] ]) updates[ path[ 1 ] ]();// call the update function if it exists
 		} else {
-			el[property] = value;// update the property
+			el[property] = value;
 		}
 	}
 
@@ -51,7 +51,7 @@ export function handleInterfaceEvents(el, containerId) {
 		return path;
 	}
 
-	// TODO not yet sure whether to go with this. UI looks more clean this way, but...
+
 	function toggleVisibility(e) {
 		const nextElement = e.target.nextElementSibling;
 		const isVisible = nextElement.classList.contains('visible');
@@ -77,9 +77,7 @@ export function handleInterfaceEvents(el, containerId) {
 		const clickAction = {
 			togglePanel: () => container.classList.toggle('open'),
 			toggleAnimation: () => el.toggleAnimation(),
-			toggleVisibility: () =>
-				//e.target.nextElementSibling.classList.toggle('visible'),// this would allow opening/closing ALL
-				toggleVisibility(e),
+			toggleVisibility: () => toggleVisibility(e),
 
 		};
 
