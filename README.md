@@ -8,7 +8,8 @@ Just click the button below to open it on netlify:<br><br>
 ![PartilesFactory_Image](/Particles-Factory.png)
 
 
-### To the repo for the factory with detailed instructions
-[Click here! ](https://github.com/BarbWire-1/js-particles-factory")<br>
+# To the repo for the factory with detailed instructions [<strong>click here</strong> ](https://github.com/BarbWire-1/js-particles-factory)!<br>
+
+
 or on the link in the netlify app
 ![factory-image](/factory-img.png)
